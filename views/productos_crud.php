@@ -23,15 +23,13 @@
     <div class="container-fluid mt-2">
         <div class="row">
             <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-10 mx-auto table-responsive">
-                <form name="fProductos" method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>"
-                    enctype="multipart/form-data">
+                <form name="fProductos" method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>" enctype="multipart/form-data">
                     <fieldset>
                         <legend class='purple'>Administración de Productos</legend>
 
                         <input type='submit' class='btn btn_purple text-white fw-bold' name='Insertar' value='Insertar'>
                         <input type='submit' class='btn btn_purple text-white fw-bold' name='Buscar' value='Buscar'>
-                        <input type='submit' class='btn btn_purple text-white fw-bold' name='Actualizar'
-                            value='Actualizar'>
+                        <input type='submit' class='btn btn_purple text-white fw-bold' name='Actualizar' value='Actualizar'>
                         <input type='submit' class='btn btn_purple text-white fw-bold' name='Borrar' value='Borrar'>
 
 
@@ -54,7 +52,7 @@
                         $numPaginas = $daoProductos->hallarPaginas($numReg);
 
                         $inicio = ($pagina - 1) * $numReg; // algoritmo para mostrar los registros necesarios
-                        echo "<br><label class='form-label my-2' for='numReg'>Número de registros que desea visualizar:: </label>";
+                        echo "<br><label class='form-label my-2' for='numReg'>Número de registros que desea visualizar: </label>";
 
                         // permite recargar la página sin necesidad de tener un submit, usando javascript
                         echo "<select name='numReg' class='form-select w-25' onChange='document.fProductos.submit()'>";

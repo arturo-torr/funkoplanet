@@ -95,6 +95,10 @@ class StoreManagerView {
       "beforeend",
       '<li><a id="adminProds" class="dropdown-item fw-bold" href="/funkoplanet/views/productos_crud.php">Productos</a></li>'
     );
+    subContainer.insertAdjacentHTML(
+      "beforeend",
+      '<li><a id="adminEvents" class="dropdown-item fw-bold" href="/funkoplanet/views/eventos_crud.php">Eventos</a></li>'
+    );
 
     li.append(subContainer);
 
