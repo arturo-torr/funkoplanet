@@ -1,0 +1,54 @@
+* {
+    box-sizing: border-box;
+}
+
+/** --- HEADER --- **/
+.navbar {
+    background-color: #6F006A !important;
+}
+
+.navbar__logo {
+    width: 100%;
+    max-width: 200px;
+}
+
+/** --- COLOR PREFERENCES --- **/
+.purple {
+    color: #6F006A;
+}
+
+.bg_purple {
+    background-color: #6F006A;
+}
+
+.btn_purple {
+    background-color: #6F006A;
+}
+
+.btn_purple:hover {
+    background-color: #951392;
+}
+
+.border_purple {
+    border-color: #951392;
+}
+
+.purple_line {
+    width: 70%;
+    color: #6F006A;
+    background-color: #6F006A;
+    margin: 0 auto;
+    height: 2px;
+}
+
+.no_decoration {
+    text-decoration: none;
+}
+
+.page-link:hover {
+    background-color: #951392;
+}
+
+.active_link {
+    background-color: #da1ddc;
+}
