@@ -238,8 +238,17 @@ if (isset($_POST['Buscar'])) {
     $nombre = $_POST['nombreNuevo'];
     $usuario = $_POST['usuarioNuevo'];
     $fecha = $_POST['fechaNueva'];
+    $fechaEpoch = "";
 
-    $daoEventos->buscar($nombre);
+    if (!empty($fecha)) {
+        // Almacenamos en array la fecha
+        $camposFecha = explode("/", $fecha);
+
+        // La convertimos a epoch para guardarla de esta forma
+        $fechaEpoch = mktime(0, 0, 0, $camposFecha[1], $camposFecha[0], $camposFecha[2]);
+    }
+
+    $daoEventos->buscar($nombre, $usuario, $fechaEpoch);
     echo "<div class='container-fluid'><div class='row'>";
     echo "<div class='col-12 col-sm-12 col-md-12 col-lg-12 col-xl-10 mx-auto table-responsive'>";
     echo "<fieldset><legend class='purple'>Resultados de la búsqueda</legend>";

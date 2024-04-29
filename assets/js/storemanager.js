@@ -1,6 +1,6 @@
 import { BaseException } from "./exceptions.js";
 
-import { Category } from "./objects.js";
+import { Category, Evento } from "./objects.js";
 
 // Excepción que heredad de Base para crear excepciones propias del Manager de Restaurantes
 class ManagerException extends BaseException {
@@ -53,10 +53,12 @@ const StoreManager = (function () {
   class StoreManager {
     // Propiedades privadas
     #categories = [];
+    #eventos = [];
     #name = "";
 
     #objectsConstructors = {
       Category,
+      Evento,
     };
 
     // Función interna que permite obtener la posición de una categoría
@@ -64,6 +66,11 @@ const StoreManager = (function () {
       return this.#categories.findIndex(
         (x) => x.category.name === category.name
       );
+    }
+
+    // Función interna que permite obtener la posición de una categoría
+    #getEventPosition(evento) {
+      return this.#eventos.findIndex((x) => x.event.name === evento.name);
     }
 
     // Inicio de constructor, el nombre será, por defecto, el nombre
@@ -79,6 +86,20 @@ const StoreManager = (function () {
             *[Symbol.iterator]() {
               for (const category of array) {
                 yield category;
+              }
+            },
+          };
+        },
+      });
+      // Getter de eventos
+      Object.defineProperty(this, "eventos", {
+        enumerable: true,
+        get() {
+          const array = this.#eventos;
+          return {
+            *[Symbol.iterator]() {
+              for (const evento of array) {
+                yield evento;
               }
             },
           };
@@ -106,6 +127,24 @@ const StoreManager = (function () {
       return this;
     }
 
+    // Permite añadir una o más categorías siempre y cuando sean una instancia de Category
+    addEvent(...events) {
+      for (const event of events) {
+        if (!(event instanceof Evento)) {
+          throw new ObjecManagerException("event", "Evento");
+        }
+        const position = this.#getEventPosition(event);
+        if (position === -1) {
+          this.#eventos.push({
+            event,
+          });
+        } else {
+          throw new ObjectExistsException(event);
+        }
+      }
+      return this;
+    }
+
     // Permite eliminar una o más categorías, siempre que sea una instancia de Category y esté registrada
     removeCategory(...categories) {
       for (const category of categories) {
@@ -117,6 +156,22 @@ const StoreManager = (function () {
           this.#categories.splice(position, 1);
         } else {
           throw new ObjectNotExistException(category);
+        }
+      }
+      return this;
+    }
+
+    // Permite eliminar una o más eventos, siempre que sea una instancia de Evento y esté registrada
+    removeEvent(...events) {
+      for (const event of events) {
+        if (!(event instanceof Evento)) {
+          throw new ObjecManagerException("event", "Evento");
+        }
+        const position = this.#getEventPosition(event);
+        if (position !== -1) {
+          this.#eventos.splice(position, 1);
+        } else {
+          throw new ObjectNotExistException(event);
         }
       }
       return this;
@@ -136,6 +191,19 @@ const StoreManager = (function () {
       }
       return category;
     }
+
+    // Función que permite crear una evento siempre y cuando no exista. Si el vento existe,
+    // Devuelve la instancia de ese evento.
+    createEvent(name, type) {
+      let event = this.#eventos.find((element) => element.event.name === name);
+
+      if (!event) {
+        event = new this.#objectsConstructors[type](name);
+      } else {
+        event = event.event;
+      }
+      return event;
+    }
   }
 
   function init() {
@@ -152,8 +220,9 @@ const StoreManager = (function () {
       return instantiated;
     },
     Category: Category.name,
+    Event: Event.name,
   };
 })();
 
 export default StoreManager;
-export { Category } from "./objects.js";
+export { Category, Evento } from "./objects.js";

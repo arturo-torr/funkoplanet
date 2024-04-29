@@ -61,6 +61,19 @@ class StoreManagerView {
     }
   }
 
+  // Función que permite mostrar en el menú de navegación un ítem dropdown con los eventos
+  showEventsInMenu(events) {
+    const navEvents = document.getElementById("navEvents");
+    const container = navEvents.nextElementSibling;
+    container.replaceChildren();
+    for (const event of events) {
+      container.insertAdjacentHTML(
+        "beforeend",
+        `<li class="hover-menu"><a data-category="${event.name}" class="dropdown-item fw-bold" href="#event-list">${event.name}</a></li>`
+      );
+    }
+  }
+
   // Función que tiene las herramientas necesarias para la administración de la página
   showAdminMenu() {
     // Crea un div y le asignamos formato de navegación

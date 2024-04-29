@@ -6,6 +6,7 @@ require_once '../models/Evento.php';
 class DaoEventos extends DB
 {
     public $eventos = array();
+    public $eventosJSON = array();
 
     // Al instanciar el DAO, especicamos sobre que BBDD trabajaremos
     public function __construct($base)
@@ -30,14 +31,13 @@ class DaoEventos extends DB
 
             // Asignamos las propiedades correspondientes al nuevo objeto
             $event->__set("id", $fila['id']);
-            $event->__set("eventname", $fila['eventname']);
-            $event->__set("email", $fila['email']);
-            $event->__set("password", $fila['password']);
-            $event->__set("tipo", $fila['tipo']);
-            $event->__set("monedero", $fila['monedero']);
-            $event->__set("foto", $fila['foto']);
+            $event->__set("id_usuario", $fila['id_usuario']);
+            $event->__set("nombre", $fila['nombre']);
+            $event->__set("descripcion", $fila['descripcion']);
+            $event->__set("fecha", $fila['fecha']);
 
             $this->eventos[] = $event;
+            $this->eventosJSON[] = $event->toArray();
         }
     }
 
@@ -170,6 +170,7 @@ class DaoEventos extends DB
             $consulta .= " AND fecha LIKE :fecha";
             $param[":fecha"] = "%" . $fecha . "%";
         }
+
         // Realiza la consulta;
         $this->ConsultaDatos($consulta, $param);
 
