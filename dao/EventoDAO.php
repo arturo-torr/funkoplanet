@@ -170,6 +170,7 @@ class DaoEventos extends DB
             $consulta .= " AND fecha LIKE :fecha";
             $param[":fecha"] = "%" . $fecha . "%";
         }
+
         // Realiza la consulta;
         $this->ConsultaDatos($consulta, $param);
 

@@ -19,8 +19,8 @@
     </main>
 
     <?php
-require_once "./views/scripts.php";
-?>
+    require_once "./views/scripts.php";
+    ?>
 </body>
 
 </html>

@@ -17,15 +17,13 @@
     <div class="container-fluid mt-2">
         <div class="row">
             <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-10 mx-auto table-responsive">
-                <form name="fEventos" method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>"
-                    enctype="multipart/form-data">
+                <form name="fEventos" method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>" enctype="multipart/form-data">
                     <fieldset>
                         <legend class='purple'>Administración de Eventos</legend>
 
                         <input type='submit' class='btn btn_purple text-white fw-bold' name='Insertar' value='Insertar'>
                         <input type='submit' class='btn btn_purple text-white fw-bold' name='Buscar' value='Buscar'>
-                        <input type='submit' class='btn btn_purple text-white fw-bold' name='Actualizar'
-                            value='Actualizar'>
+                        <input type='submit' class='btn btn_purple text-white fw-bold' name='Actualizar' value='Actualizar'>
                         <input type='submit' class='btn btn_purple text-white fw-bold' name='Borrar' value='Borrar'>
 
 
@@ -238,8 +236,17 @@ if (isset($_POST['Buscar'])) {
     $nombre = $_POST['nombreNuevo'];
     $usuario = $_POST['usuarioNuevo'];
     $fecha = $_POST['fechaNueva'];
+    $fechaEpoch = "";
 
-    $daoEventos->buscar($nombre);
+    if (!empty($fecha)) {
+        // Almacenamos en array la fecha
+        $camposFecha = explode("/", $fecha);
+
+        // La convertimos a epoch para guardarla de esta forma
+        $fechaEpoch = mktime(0, 0, 0, $camposFecha[1], $camposFecha[0], $camposFecha[2]);
+    }
+
+    $daoEventos->buscar($nombre, $usuario, $fechaEpoch);
     echo "<div class='container-fluid'><div class='row'>";
     echo "<div class='col-12 col-sm-12 col-md-12 col-lg-12 col-xl-10 mx-auto table-responsive'>";
     echo "<fieldset><legend class='purple'>Resultados de la búsqueda</legend>";
