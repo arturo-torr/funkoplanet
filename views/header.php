@@ -18,6 +18,12 @@
                     <ul class="dropdown-menu" data-bs-popper="static">
                     </ul>
                 </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle show text-white fw-bold" href="#" id="navEvents" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="true">Eventos</a>
+                    <ul class="dropdown-menu" data-bs-popper="static">
+                    </ul>
+                </li>
         </div>
     </div>
 </nav>

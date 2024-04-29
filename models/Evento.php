@@ -16,4 +16,15 @@ class Evento
     {
         $this->$nombre = $valor;
     }
+
+    public function toArray()
+    {
+        return array(
+            'id' => $this->id,
+            'id_usuario' => $this->id_usuario,
+            'nombre' => $this->nombre,
+            'descripcion' => $this->descripcion,
+            'fecha' => $this->fecha
+        );
+    }
 }
