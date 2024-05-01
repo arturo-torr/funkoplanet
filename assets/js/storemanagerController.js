@@ -27,6 +27,9 @@ class StoreManagerController {
     this.handleCategoriesInCentralZone().catch((error) => {
       console.error("Error:", error);
     });
+    this.handleNuevosProductos().catch((error) => {
+      console.error("Error:", error);
+    });
   };
 
   // Manejador de inicio
@@ -75,6 +78,35 @@ class StoreManagerController {
           })
           .then((html) => {
             this[VIEW].centralzone.innerHTML = html;
+            resolve();
+          })
+          .catch((error) => {
+            reject(error);
+          });
+      });
+    } else {
+      return Promise.resolve(); // Devuelve una promesa resuelta si centralzone no está definido
+    }
+  };
+
+  handleNuevosProductos = () => {
+    if (this[VIEW].nuevosProductos) {
+      return new Promise((resolve, reject) => {
+        fetch("/funkoplanet/web/controlador_productos.php", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+          body: "parametro=nuevosProductos",
+        })
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("Error al obtener las categorías");
+            }
+            return response.text();
+          })
+          .then((html) => {
+            this[VIEW].nuevosProductos.innerHTML = html;
             resolve();
           })
           .catch((error) => {

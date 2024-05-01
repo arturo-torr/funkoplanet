@@ -75,6 +75,33 @@ class DaoFotosProductos extends DB
         }
     }
 
+
+    public function listarUnaImagenPorId($id)
+    {
+        $consulta = "SELECT * FROM fotopro WHERE id_producto = :id ORDER BY id_foto DESC LIMIT 1";
+        $param = array();
+
+        $param[":id"] = $id;
+
+        $this->fotosPro = array();
+
+        // Realiza la consulta;
+        $this->ConsultaDatos($consulta, $param);
+
+        foreach ($this->filas as $fila) {
+            // Creamos una nueva situación
+            $fotoPro = new FotoPro();
+
+            // Asignamos las propiedades correspondientes al nuevo objeto
+            $fotoPro->__set("id_foto", $fila['id_foto']);
+            $fotoPro->__set("id_producto", $fila['id_producto']);
+            $fotoPro->__set("foto", $fila['foto']);
+
+            $this->fotosPro[] = $fotoPro;
+        }
+    }
+
+
     public function eliminar($idFoto, $idProducto)
     {
         $consulta = "DELETE FROM fotopro WHERE id_foto = :id_foto AND id_producto = :id_producto";

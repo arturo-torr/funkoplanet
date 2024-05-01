@@ -12,6 +12,27 @@
     max-width: 200px;
 }
 
+/** --- CATEGORIAS --- **/
+.category_scale:hover {
+    transform: scale(1.02);
+    transition: 1s;
+}
+
+/** -- PRODUCTOS --- **/
+.product__box {
+    border-color: #6f00695b !important;
+}
+
+.product__box:hover {
+    background-color: rgba(211, 211, 211, 0.281);
+    transition: 0.2s;
+}
+
+.product__name {
+    color: #6F006A;
+    font-size: 1.35em;
+}
+
 /** --- COLOR PREFERENCES --- **/
 .purple {
     color: #6F006A;
@@ -30,7 +51,7 @@
 }
 
 .border_purple {
-    border-color: #951392;
+    border-color: #951392 !important;
 }
 
 .purple_line {
