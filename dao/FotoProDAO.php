@@ -52,7 +52,7 @@ class DaoFotosProductos extends DB
 
     public function listarPorId($id)
     {
-        $consulta = "SELECT * FROM fotopro WHERE id_producto = :id";
+        $consulta = "SELECT * FROM fotopro WHERE id_producto = :id ORDER BY id_foto DESC";
         $param = array();
 
         $param[":id"] = $id;
