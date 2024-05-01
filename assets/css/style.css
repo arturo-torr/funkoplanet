@@ -33,6 +33,7 @@
     font-size: 1.35em;
 }
 
+
 /** --- COLOR PREFERENCES --- **/
 .purple {
     color: #6F006A;
@@ -48,10 +49,20 @@
 
 .btn_purple:hover {
     background-color: #951392;
+    transition: 0.5s;
+}
+
+.btn_purple:active {
+    background-color: #6F006A !important;
+    border: 1px solid #6F006A !important;
 }
 
 .border_purple {
     border-color: #951392 !important;
+}
+
+.product-image {
+    width: 100%;
 }
 
 .purple_line {
