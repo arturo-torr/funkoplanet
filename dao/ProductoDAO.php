@@ -6,6 +6,7 @@ require_once '../models/Producto.php';
 class DaoProductos extends DB
 {
     public $productos = array();
+    public $productosJSON = array();
 
     // Al instanciar el DAO, especicamos sobre que BBDD trabajaremos
     public function __construct($base)
@@ -41,6 +42,37 @@ class DaoProductos extends DB
         }
     }
 
+    // Método que permite listar el contenido de la tabla
+    public function listarNovedades()
+    {
+        $consulta = "SELECT * FROM producto ORDER BY fecha_subida DESC LIMIT 8";
+
+        $param = array();
+
+        $this->productos = array();
+
+        // Realiza la consulta;
+        $this->ConsultaDatos($consulta);
+
+        foreach ($this->filas as $fila) {
+            // Creamos una nueva situación
+            $prod = new Producto();
+
+            // Asignamos las propiedades correspondientes al nuevo objeto
+            $prod->__set("id", $fila['id']);
+            $prod->__set("id_categoria", $fila['id_categoria']);
+            $prod->__set("id_usuario", $fila['id_usuario']);
+            $prod->__set("nombre", $fila['nombre']);
+            $prod->__set("descripcion", $fila['descripcion']);
+            $prod->__set("precio", $fila['precio']);
+            $prod->__set("estado", $fila['estado']);
+            $prod->__set("fecha_subida", $fila['fecha_subida']);
+
+            $this->productos[] = $prod;
+            $this->productosJSON[] = $prod->toArray();
+        }
+    }
+
     // Función que permite obtener un elemento a partir de un ID
     public function obtener($id)
     {
@@ -69,6 +101,7 @@ class DaoProductos extends DB
             $prod->__set("descripcion", $fila['descripcion']);
             $prod->__set("precio", $fila['precio']);
             $prod->__set("estado", $fila['estado']);
+            $prod->__set("fecha_subida", $fila['fecha_subida']);
         } else {
             echo "<b>El Id introducido no corresponde con un producto.</b>";
         }
@@ -94,7 +127,7 @@ class DaoProductos extends DB
     public function insertar($prod)
     {
         // Consulta para evitar inyección de SQL
-        $consulta = "INSERT INTO producto VALUES (:id, :idcategoria, :idusuario, :nombre, :descripcion, :precio, :estado)";
+        $consulta = "INSERT INTO producto VALUES (:id, :idcategoria, :idusuario, :nombre, :descripcion, :precio, :estado, :fecha_subida)";
         $param = array();
 
         // Asignamos los valores del objeto que hemos recibido por parámetro
@@ -105,6 +138,7 @@ class DaoProductos extends DB
         $param[":descripcion"] = $prod->__get("descripcion");
         $param[":precio"] = $prod->__get("precio");
         $param[":estado"] = $prod->__get("estado");
+        $param[":fecha_subida"] = $prod->__get("fecha_subida");
         // Ejecutamos la consulta
         $this->ConsultaSimple($consulta, $param);
     }
@@ -215,6 +249,7 @@ class DaoProductos extends DB
             $prod->__set("descripcion", $fila['descripcion']);
             $prod->__set("precio", $fila['precio']);
             $prod->__set("estado", $fila['estado']);
+            $prod->__set("fecha_subida", $fila['fecha_subida']);
             // Se inserta el objeto que acabamos de crear en el Array de objetos prodgorías
             $this->productos[] = $prod;
         }

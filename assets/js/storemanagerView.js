@@ -4,6 +4,7 @@ class StoreManagerView {
   constructor() {
     this.initzone = document.getElementById("init_zone");
     this.centralzone = document.getElementById("central_zone");
+    this.nuevosProductos = document.getElementById("nuevos_productos");
     this.menu = document.querySelector(".navbar");
   }
 

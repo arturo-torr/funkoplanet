@@ -9,6 +9,7 @@ class Producto
     private $descripcion;
     private $precio;
     private $estado;
+    private $fecha_subida;
 
     public function __get($nombre)
     {
@@ -17,5 +18,19 @@ class Producto
     public function __set($nombre, $valor)
     {
         $this->$nombre = $valor;
+    }
+
+    public function toArray()
+    {
+        return array(
+            'id' => $this->id,
+            'id_categoria' => $this->id_categoria,
+            'id_usuario' => $this->id_usuario,
+            'nombre' => $this->nombre,
+            'descripcion' => $this->descripcion,
+            'precio' => $this->precio,
+            'estado' => $this->estado,
+            'fecha_subida' => $this->fecha_subida
+        );
     }
 }

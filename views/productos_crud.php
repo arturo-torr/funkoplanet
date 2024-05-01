@@ -23,13 +23,15 @@
     <div class="container-fluid mt-2">
         <div class="row">
             <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-10 mx-auto table-responsive">
-                <form name="fProductos" method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>" enctype="multipart/form-data">
+                <form name="fProductos" method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>"
+                    enctype="multipart/form-data">
                     <fieldset>
                         <legend class='purple'>Administración de Productos</legend>
 
                         <input type='submit' class='btn btn_purple text-white fw-bold' name='Insertar' value='Insertar'>
                         <input type='submit' class='btn btn_purple text-white fw-bold' name='Buscar' value='Buscar'>
-                        <input type='submit' class='btn btn_purple text-white fw-bold' name='Actualizar' value='Actualizar'>
+                        <input type='submit' class='btn btn_purple text-white fw-bold' name='Actualizar'
+                            value='Actualizar'>
                         <input type='submit' class='btn btn_purple text-white fw-bold' name='Borrar' value='Borrar'>
 
 
@@ -111,6 +113,7 @@
                             }
                         }
 
+                        // Genera un ID aleatorio con numeros y el nombre del producto y su categoria
                         function generarId($nombre, $categoria)
                         {
                             global $daoCategorias;
@@ -150,6 +153,7 @@
                             $prod->__set("descripcion", $descripcion);
                             $prod->__set("precio", $precio);
                             $prod->__set("estado", $estado);
+                            $prod->__set("fecha_subida", time());
 
                             $daoProductos->insertar($prod);
                         }
@@ -312,6 +316,7 @@
                         <select name="productos" class='form-select w-25'>
                             <option value=""></option>
                             <?php
+                            $daoProductos->listar();
                             $id = "";
                             if (isset($_POST['productos'])) {
                                 $id = $_POST['productos'];
