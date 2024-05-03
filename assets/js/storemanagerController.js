@@ -102,13 +102,13 @@ class StoreManagerController {
         })
           .then((response) => {
             if (!response.ok) {
-              throw new Error("Error al obtener las categorías");
+              throw new Error("Error al obtener los productos");
             }
             return response.text();
           })
           .then((html) => {
             this[VIEW].nuevosProductos.innerHTML = html;
-            this.addImageHoverHandlers();
+            this[VIEW].changeImagesInNewProducts();
             resolve();
           })
           .catch((error) => {
@@ -118,27 +118,6 @@ class StoreManagerController {
     } else {
       return Promise.resolve(); // Devuelve una promesa resuelta si centralzone no está definido
     }
-  };
-
-  // Manejador que selecciona las imágenes de los productos y cambia a la siguiente cuando se realiza un hover
-  addImageHoverHandlers = () => {
-    let productImages = document.querySelectorAll(".product-image");
-    productImages.forEach(function (image) {
-      image.addEventListener("mouseover", function () {
-        let nextImage = this.nextElementSibling;
-        if (nextImage && nextImage.classList.contains("product-image")) {
-          this.style.display = "none";
-          nextImage.style.display = "block";
-        }
-      });
-      image.addEventListener("mouseout", function () {
-        let prevImage = this.previousElementSibling;
-        if (prevImage && prevImage.classList.contains("product-image")) {
-          this.style.display = "none";
-          prevImage.style.display = "block";
-        }
-      });
-    });
   };
 
   // Manejador que devuelve una promesa permitiendo cargar las categorías en la barra de navegación
