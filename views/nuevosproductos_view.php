@@ -1,20 +1,21 @@
 <?php
-echo "<div class='container-fluid text-center'>
+echo "<div class='row mx-auto text-center w-75'>
 <h1 class='purple mt-2'>¡Últimas novedades!</h1>
 <hr class='purple_line'>";
 
 $cont = 0;
 // Recorre los productos
 foreach ($daoProductos->productosJSON as $key => $prod) {
-    // Nueva row si es la primera vez que lo recorre o es múltiplo de 4, que son los productos que queremos mostrar como máximo en pantallas grandes
-    if ($cont == 0  || $cont % 4 == 0) {
-        echo "<div class='row mx-auto'>";
-        echo "<div class='col-sm-0 col-md-0 col-lg-0 col-xl-2'></div>";
-    }
 
     // Se lista por el id del producto para obtener posteriormente sus imágenes
     $daoFotosProductos->listarPorId($prod["id"]);
-    echo "<div class='col-sm-12 col-md-6 col-lg-6 col-xl-2 my-3 p-3 product__box'>
+
+    // Abre un nuevo div de fila si es el primer producto o si ya se han mostrado 4 productos
+    if ($cont == 0 || $cont % 4 == 0) {
+        echo "<div class='row'>";
+    }
+
+    echo "<div class='col-sm-12 col-md-6 col-lg-6 col-xl-3 p-2 product__box'>
             <a class='no_decoration' data-product='" . $prod["id"] . "' href='#'>
                 <div class='p-3 bg-white'>";
 
@@ -36,13 +37,18 @@ foreach ($daoProductos->productosJSON as $key => $prod) {
                 </div>
             </a>
         </div>";
+
     $cont++;
 
-    // Si es múltiplo de 4 cierra los contenedores
+    // Cierra la fila si se han mostrado 4 productos
     if ($cont % 4 == 0) {
-        echo "<div class='col-sm-0 col-md-0 col-lg-0 col-xl-2'></div>
-</div>";
+        echo "</div>"; // Cierre de la fila
     }
+}
+
+// Cierra la fila final si no se han mostrado 4 productos
+if ($cont % 4 != 0) {
+    echo "</div>"; // Cierre de la fila
 }
 
 // Cierre de contenedor principal

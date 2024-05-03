@@ -135,6 +135,27 @@ class StoreManagerView {
       );
     });
   }
+
+  // Función que selecciona las imágenes de los productos y cambia a la siguiente cuando se realiza un hover
+  changeImagesInNewProducts() {
+    let productImages = document.querySelectorAll(".product-image");
+    productImages.forEach(function (image) {
+      image.addEventListener("mouseover", function () {
+        let nextImage = this.nextElementSibling;
+        if (nextImage && nextImage.classList.contains("product-image")) {
+          this.style.display = "none";
+          nextImage.style.display = "block";
+        }
+      });
+      image.addEventListener("mouseout", function () {
+        let prevImage = this.previousElementSibling;
+        if (prevImage && prevImage.classList.contains("product-image")) {
+          this.style.display = "none";
+          prevImage.style.display = "block";
+        }
+      });
+    });
+  }
 }
 
 export default StoreManagerView;
