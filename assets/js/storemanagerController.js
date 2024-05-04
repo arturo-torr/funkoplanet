@@ -24,10 +24,10 @@ class StoreManagerController {
 
   // Función que se ejecuta al cargar la página
   onInit = () => {
-    this.handleCategoriesInCentralZone().catch((error) => {
+    this.handleNuevosProductos().catch((error) => {
       console.error("Error:", error);
     });
-    this.handleNuevosProductos().catch((error) => {
+    this.handleCategoriesInCentralZone().catch((error) => {
       console.error("Error:", error);
     });
   };
@@ -59,36 +59,6 @@ class StoreManagerController {
       });
   };
 
-  // Manejador que devuelve una promesa que permite cargar las categorías en la zona central de la página
-  handleCategoriesInCentralZone = () => {
-    if (this[VIEW].centralzone) {
-      return new Promise((resolve, reject) => {
-        fetch("/funkoplanet/web/controlador_categorias.php", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-          },
-          body: "parametro=categoriesCentral",
-        })
-          .then((response) => {
-            if (!response.ok) {
-              throw new Error("Error al obtener las categorías");
-            }
-            return response.text();
-          })
-          .then((html) => {
-            this[VIEW].centralzone.innerHTML = html;
-            resolve();
-          })
-          .catch((error) => {
-            reject(error);
-          });
-      });
-    } else {
-      return Promise.resolve(); // Devuelve una promesa resuelta si centralzone no está definido
-    }
-  };
-
   // Manejador para los últimos productos subidos en la página
   handleNuevosProductos = () => {
     if (this[VIEW].nuevosProductos) {
@@ -109,6 +79,36 @@ class StoreManagerController {
           .then((html) => {
             this[VIEW].nuevosProductos.innerHTML = html;
             this[VIEW].changeImagesInNewProducts();
+            resolve();
+          })
+          .catch((error) => {
+            reject(error);
+          });
+      });
+    } else {
+      return Promise.resolve(); // Devuelve una promesa resuelta si centralzone no está definido
+    }
+  };
+
+  // Manejador que devuelve una promesa que permite cargar las categorías en la zona central de la página
+  handleCategoriesInCentralZone = () => {
+    if (this[VIEW].centralzone) {
+      return new Promise((resolve, reject) => {
+        fetch("/funkoplanet/web/controlador_categorias.php", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+          body: "parametro=categoriesCentral",
+        })
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("Error al obtener las categorías");
+            }
+            return response.text();
+          })
+          .then((html) => {
+            this[VIEW].centralzone.innerHTML = html;
             resolve();
           })
           .catch((error) => {
