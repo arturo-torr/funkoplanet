@@ -1,7 +1,7 @@
 <?php
-echo "<div class='row mx-auto text-center w-75'>
+echo "<div class='container-fluid mx-auto text-center w-75'>
 <h1 class='purple mt-2'>¡Últimas novedades!</h1>
-<hr class='purple_line'>";
+<hr class='purple_line mb-2'>";
 
 $cont = 0;
 // Recorre los productos
@@ -15,8 +15,15 @@ foreach ($daoProductos->productosJSON as $key => $prod) {
         echo "<div class='row'>";
     }
 
-    echo "<div class='col-sm-12 col-md-6 col-lg-6 col-xl-3 p-2 product__box'>
-            <a class='no_decoration' data-product='" . $prod["id"] . "' href='#'>
+    echo "<div class='col-sm-12 col-md-6 col-lg-6 col-xl-3 p-2 product__box'>";
+    if (strtoupper($prod["estado"]) == "STOCK") {
+        echo "<div class='label__stock rounded'>DISPONIBLE</div>";
+    } else if (strtoupper($prod["estado"]) == "RESERVA") {
+        echo "<div class='label__reserva rounded'>RESERVA</div>";
+    } else if (strtoupper($prod["estado"]) == "AGOTADO") {
+        echo "<div class='label__agotado rounded'>AGOTADO</div>";
+    }
+    echo "<a class='no_decoration' data-product='" . $prod["id"] . "' href='#'>
                 <div class='p-3 bg-white'>";
 
     // Manejo de imágenes con bucle, el estilo en línea solo muestra una imagen, que es la primera que obtiene de la bbdd 
@@ -31,10 +38,17 @@ foreach ($daoProductos->productosJSON as $key => $prod) {
 
     // Definición de producto
     echo "<h3 class='product__name'>" . $prod["nombre"] . "</h3>
-                    <span class='purple'>" . $prod["precio"] . "€</span>
-                    <br>
-                    <button class='btn btn_purple fw-bold text-white no_decoration mt-2'>COMPRAR</button>
-                </div>
+                    <span class='purple product__price fw-bold'>" . $prod["precio"] . "€</span>
+                    <br>";
+
+    if (strtoupper($prod["estado"]) == "STOCK") {
+        echo "<button class='btn btn_purple fw-bold text-white no_decoration mt-2' data-product='" . $prod["id"] . "'>COMPRAR</button>";
+    } else if (strtoupper($prod["estado"]) == "RESERVA") {
+        echo "<button class='btn btn_purple fw-bold text-white no_decoration mt-2' data-product='" . $prod["id"] . "'>RESERVAR</button>";
+    } else if (strtoupper($prod["estado"]) == "AGOTADO") {
+        echo "<button class='btn btn_purple fw-bold text-white no_decoration mt-2 disabled' role='button' aria-disabled='true' data-product='" . $prod["id"] . "'>COMPRAR</button>";
+    }
+    echo "</div>
             </a>
         </div>";
 
