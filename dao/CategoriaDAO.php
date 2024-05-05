@@ -42,7 +42,7 @@ class DaoCategorias extends DB
         }
     }
 
-    // Función que permite obtener un elemento a partir de un NIF
+    // Función que permite obtener un elemento a partir de un id
     public function obtener($id)
     {
         // Consulta para evitar inyectado de SQL

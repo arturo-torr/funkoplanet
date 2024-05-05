@@ -42,6 +42,7 @@ class StoreManagerController {
     this.handleCategoriesInMenu()
       .then((categorias) => {
         this[VIEW].showCategoriesInMenu(categorias);
+        this[VIEW].bindCategoryListInMenu(this.handleCategoryList);
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -109,6 +110,7 @@ class StoreManagerController {
           })
           .then((html) => {
             this[VIEW].centralzone.innerHTML = html;
+            this[VIEW].bindCategoryList(this.handleCategoryList);
             resolve();
           })
           .catch((error) => {
@@ -118,6 +120,12 @@ class StoreManagerController {
     } else {
       return Promise.resolve(); // Devuelve una promesa resuelta si centralzone no está definido
     }
+  };
+
+  // Manejador que redirige hacia la vista php con el id de la categoría
+  handleCategoryList = (id) => {
+    console.log(id);
+    window.location.href = `/funkoplanet/web/controlador_categorias.php?parametro=categoryClicked&id=${id}`;
   };
 
   // Manejador que devuelve una promesa permitiendo cargar las categorías en la barra de navegación
@@ -140,6 +148,7 @@ class StoreManagerController {
           const categories = data.map((categoria) => {
             let cat = this[MODEL].createCategory(categoria.nombre, "Category");
             cat.description = categoria.descripcion;
+            cat.id = categoria.id;
             this[MODEL].addCategory(cat);
             return cat;
           });
