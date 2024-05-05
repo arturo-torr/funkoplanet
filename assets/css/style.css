@@ -13,13 +13,9 @@
 }
 
 /** --- CATEGORIAS --- **/
-/* .category_scale:hover {
-    transform: scale(1.02);
-    transition: 1s;
-} */
 
 .category {
-    height: 40vh;
+    height: 32vh;
     overflow: hidden;
 }
 
@@ -27,16 +23,17 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: 1s;
+    transition: 0.5s;
 }
 
 .category img:hover {
-    transform: scale(1.1);
+    transform: scale(1.05);
 }
 
 /** -- PRODUCTOS --- **/
 .product__box {
     border-color: #6f00695b !important;
+    position: relative;
 }
 
 .product__box:hover {
@@ -49,6 +46,59 @@
     font-size: 1.35em;
 }
 
+.product__price {
+    display: inline-block;
+    animation: expandir 0.8s ease-in-out infinite alternate;
+}
+
+product__price--noeffect {
+    display: inline-block;
+}
+
+@keyframes expandir {
+    0% {
+        transform: scale(1);
+    }
+
+    100% {
+        transform: scale(1.15);
+    }
+}
+
+.label__stock, .label__reserva, .label__agotado {
+    position: absolute;
+    z-index: 1;
+    top: 15;
+    right: 1;
+    max-width: 50%;
+    margin-top: 10px;
+    padding: 2px 5px;
+    color: #fff;
+    font-weight: bold;
+    font-size: 1em;
+    line-height: 1.4em;
+    text-align: left;
+    text-transform: uppercase;
+    word-break: break-word;
+}
+
+.label__stock {
+    background-color: green;
+}
+
+.label__reserva {
+    background-color: #6F006A;
+}
+
+.label__agotado {
+    background-color: red;
+}
+
+.btn.btn_purple.disabled,
+.btn.btn_purple:disabled {
+    background-color: #6F006A;
+    border-color: #6F006A;
+}
 
 /** --- COLOR PREFERENCES --- **/
 .purple {

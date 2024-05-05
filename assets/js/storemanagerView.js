@@ -57,7 +57,7 @@ class StoreManagerView {
     for (const category of categories) {
       container.insertAdjacentHTML(
         "beforeend",
-        `<li class="hover-menu"><a data-category="${category.name}" class="dropdown-item fw-bold" href="#product-list">${category.name}</a></li>`
+        `<li class="hover-menu"><a data-category="${category.id}" class="dropdown-item fw-bold" href="#">${category.name}</a></li>`
       );
     }
   }
@@ -155,6 +155,33 @@ class StoreManagerView {
         }
       });
     });
+  }
+
+  // Manejador que se da cuando se realiza click en la zona central de categorías
+  bindCategoryList(handler) {
+    // Obtiene el elemento y aquellos que dentro se compongan con el tag <a>
+    const categoryList = document.getElementById("categories-list");
+    const links = categoryList.querySelectorAll("a");
+    // Los recorre y recupera el id de la categoría con el atributo personalizado dataset.category
+    for (const link of links) {
+      link.addEventListener("click", (event) => {
+        const { category } = event.currentTarget.dataset;
+        handler(category);
+      });
+    }
+  }
+
+  // Función que permite mostrar en el menú de navegación un ítem dropdown con las categorías
+  bindCategoryListInMenu(handler) {
+    const navCats = document.getElementById("categories-list-menu");
+    const links = navCats.querySelectorAll("a");
+    // Los recorre y recupera el id de la categoría con el atributo personalizado dataset.category
+    for (const link of links) {
+      link.addEventListener("click", (event) => {
+        const { category } = event.currentTarget.dataset;
+        handler(category);
+      });
+    }
   }
 }
 
