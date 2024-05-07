@@ -242,6 +242,55 @@ class DaoProductos extends DB
         }
     }
 
+    public function listarConFiltro($categoria, $busqueda = "", $disponibilidad = "", $orden = "")
+    {
+        $consulta = "SELECT * FROM producto WHERE 1 ";
+        $param = array();
+
+        $this->productos = array();
+
+        if ($busqueda != "") {
+            $consulta .= " AND nombre LIKE :busqueda";
+            $param[":busqueda"] = "%" . $busqueda . "%";
+        }
+
+        if ($categoria != "") {
+            $consulta .= " AND id_categoria LIKE :categoria";
+            $param[":categoria"] = "%" . $categoria . "%";
+        }
+
+        if ($disponibilidad != "") {
+            $consulta .= " AND estado LIKE :disponibilidad";
+            $param[":disponibilidad"] = "%" . $disponibilidad . "%";
+        }
+
+        // if ($usuario != "") {
+        //     $consulta .= " AND id_usuario LIKE :usuario";
+        //     $param[":usuario"] = "%" . $usuario . "%";
+        // }
+
+        // Realiza la consulta;
+        $this->ConsultaDatos($consulta, $param);
+
+        foreach ($this->filas as $fila) {
+            // Creamos una nueva situación
+            $prod = new Producto();
+
+            // Asignamos las propiedades correspondientes al nuevo objeto
+            $prod->__set("id", $fila['id']);
+            $prod->__set("id_categoria", $fila['id_categoria']);
+            $prod->__set("id_usuario", $fila['id_usuario']);
+            $prod->__set("nombre", $fila['nombre']);
+            $prod->__set("descripcion", $fila['descripcion']);
+            $prod->__set("precio", $fila['precio']);
+            $prod->__set("estado", $fila['estado']);
+
+            // Se inserta el objeto que acabamos de crear en el Array de objetos tiendas
+            $this->productos[] = $prod;
+            $this->productosJSON[] = $prod->toArray();
+        }
+    }
+
     public function hallarPaginas($numRegistros)
     {
         $consulta = "SELECT COUNT(*) as total FROM producto";

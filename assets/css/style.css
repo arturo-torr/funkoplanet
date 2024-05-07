@@ -113,6 +113,15 @@ product__price--noeffect {
     background-color: #6F006A;
 }
 
+.btn_purple--dark {
+    background-color: #951392;
+}
+
+.btn_purple--dark:hover {
+    background-color: #560955;
+    transition: 0.5s;
+}
+
 .btn_purple:hover {
     background-color: #951392;
     transition: 0.5s;

@@ -75,6 +75,38 @@ class DaoCategorias extends DB
         return $cate;
     }
 
+    // Función que permite obtener un elemento a partir de un id
+    public function obtenerUltimoId()
+    {
+        // Consulta para evitar inyectado de SQL
+        $consulta = "SELECT * FROM categoria ORDER BY id DESC LIMIT 1";
+
+        // Se realiza para vaciar el array de las mascotas entre consulta y consulta
+        $this->categorias = array();
+
+        $this->ConsultaDatos($consulta);
+
+        // Cómo solo puede devolver una fila, hacemos la comprobación
+        if (count($this->filas) == 1) {
+            // Asignamos en una variable el array de filas en la posición 0, que es la única que hay
+            $fila = $this->filas[0];
+
+            // Creamos una nueva situación
+            $cate = new Categoria();
+
+            // Asignamos las propiedades correspondientes al nuevo objeto
+            $cate->__set("id", $fila['id']);
+            $cate->__set("nombre", $fila['nombre']);
+            $cate->__set("descripcion", $fila['descripcion']);
+            $cate->__set("foto", $fila['foto']);
+        } else {
+            echo "<b>El Id introducido no corresponde con una categoria.</b>";
+        }
+
+        // Devolvemos el objeto
+        return $cate;
+    }
+
     // Método que permite eliminar una situación dado un ID
     public function borrar($id)
     {
