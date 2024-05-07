@@ -19,6 +19,7 @@ class StoreManagerController {
     this.onAddCategory();
     this.onAddEvent();
     this[VIEW].showAdminMenu();
+    this[VIEW].changeImagesInNewProducts();
     // this[VIEW].bindAdminMenu(this.handleNewCategoryForm);
   };
 
