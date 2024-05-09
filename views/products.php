@@ -20,11 +20,6 @@
     // Id de categoría correspondiente
     // Se realizan las comprobaciones pertinentes por si se accede directamente a products.php
     $idCategoria = "";
-    if ($idCategoria == "") {
-        $cat = new Categoria();
-        $cat = $daoCategorias->obtenerUltimoId();
-        $idCategoria = $cat->__get("id");
-    }
     if (isset($_GET['category'])) {
         $idCategoria = $_GET['category'];
     }
@@ -34,7 +29,7 @@
     if (isset($_GET['busqueda'])) {
         $busqueda = $_GET['busqueda'];
     }
-    $disponibilidad = "";
+    $disponibilidad = "Todos los productos";
     if (isset($_GET['disponibilidad'])) {
         $disponibilidad = $_GET['disponibilidad'];
     }
@@ -45,13 +40,22 @@
 
     // Contador para rows
     $cont = 0;
+    $cat = "";
 
+    // Si se ha clickeado en filtrar
     if (isset($_GET['Filtrar'])) {
         $daoProductos->listarConFiltro($idCategoria, $busqueda, $disponibilidad, $orden);
     } else {
-        $daoProductos->listarPorCategoria($idCategoria);
+        // Si no, comprueba que la categoría no sea vacía 
+        if ($idCategoria == "") {
+            // Si es vacía, lista todos los productos
+            $daoProductos->listar();
+        } else {
+            // Si no está vacía, obtiene la categoría y lista los productos perttenecientes a ella
+            $cat = $daoCategorias->obtener($idCategoria);
+            $daoProductos->listarPorCategoria($idCategoria);
+        }
     }
-    $cat = $daoCategorias->obtener($idCategoria);
 
 
 
@@ -68,9 +72,8 @@
             <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-3">
                 <label for="disponibilidad" class="form-label text-white">Disponibilidad:</label>
                 <select class="form-select" id="disponibilidad" name="disponibilidad">
-                    <option selected>Seleccionar...</option>
                     <?php
-                    $arrDisponibilidad = array('Stock', 'Reserva', 'Agotado');
+                    $arrDisponibilidad = array('Todos los productos', 'Stock', 'Reserva', 'Agotado');
                     foreach ($arrDisponibilidad as $dis) {
                         echo "<option value='$dis' ";
 
@@ -114,7 +117,7 @@
     </div>
 
     <div class='container-fluid mx-auto w-75'>
-        <h1 class='purple mt-2 text-center'><?php echo $cat->__get("nombre") ?></h1>
+        <h1 class='purple mt-2 text-center'><?php echo ($cat ? $cat->__get("nombre") : "Todos los productos"); ?></h1>
         <hr class='purple_line mb-2'>
         <div class="row">
 
