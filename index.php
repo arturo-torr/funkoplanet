@@ -13,7 +13,8 @@
     ?>
     <main>
 
-        <section id="nuevos_productos"></section>
+        <section id="nuevos_productos">
+        </section>
         <section id="central_zone">
         </section>
     </main>

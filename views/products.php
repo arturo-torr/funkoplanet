@@ -44,6 +44,9 @@
 
     // Si se ha clickeado en filtrar
     if (isset($_GET['Filtrar'])) {
+        if ($idCategoria) {
+            $cat = $daoCategorias->obtener($idCategoria);
+        }
         $daoProductos->listarConFiltro($idCategoria, $busqueda, $disponibilidad, $orden);
     } else {
         // Si no, comprueba que la categoría no sea vacía 
@@ -56,10 +59,8 @@
             $daoProductos->listarPorCategoria($idCategoria);
         }
     }
-
-
-
     ?>
+
     <div class="d-flex justify-content-center mt-2 mx-5">
         <form name='f1' class='row bg_purple p-3 rounded' method='get' action='<?php echo $_SERVER['PHP_SELF']; ?>'>
             <!-- Campo oculto para poder recuperar la categoría que tenemos -->
@@ -111,13 +112,14 @@
 
             <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-3 mx-auto mt-2 text-center">
                 <br>
-                <input type="submit" name='Filtrar' value='Filtrar' class="btn btn_purple--dark text-white px-5 fw-bold">
+                <input type="submit" name='Filtrar' value='Filtrar'
+                    class="btn btn_purple--dark text-white px-5 fw-bold">
             </div>
         </form>
     </div>
 
     <div class='container-fluid mx-auto w-75'>
-        <h1 class='purple mt-2 text-center'><?php echo ($cat ? $cat->__get("nombre") : "Todos los productos"); ?></h1>
+        <h1 class='purple mt-2 text-center'><?php echo ($cat ? $cat->__get("nombre") : "Todas las categorías"); ?></h1>
         <hr class='purple_line mb-2'>
         <div class="row">
 
@@ -125,16 +127,19 @@
             <!-- Contenido principal -->
             <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 text-center">
                 <?php
+                if (count($daoProductos->productosJSON) == 0) {
+                    echo "<p class='fw-bold'>No se han encontrado productos. ¿Por qué no pruebas con otra categoría o filtro?</p>";
+                }
                 foreach ($daoProductos->productosJSON as $key => $prod) {
                     // Se lista por el id del producto para obtener posteriormente sus imágenes
                     $daoFotosProductos->listarPorId($prod["id"]);
-
                     // Abre un nuevo div de fila si es el primer producto o si ya se han mostrado 3 productos
                     if ($cont == 0 || $cont % 4 == 0) {
                         echo "<div class='row'>";
                     }
 
-                    echo "<div class='col-sm-12 col-md-6 col-lg-3 col-xl-3 p-2 product__box'>";
+                    echo "<div class='col-sm-12 col-md-6 col-lg-3 col-xl-3 p-2 product__box' data-aos='fade-up'
+                    data-aos-duration='1000'>";
                     if (strtoupper($prod["estado"]) == "STOCK") {
                         echo "<div class='label__stock rounded'>DISPONIBLE</div>";
                     } else if (strtoupper($prod["estado"]) == "RESERVA") {
