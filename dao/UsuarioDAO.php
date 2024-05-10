@@ -230,4 +230,12 @@ class DaoUsuarios extends DB
             $this->usuarios[] = $user;
         }
     }
+
+    public function login($user, $pass)
+    {
+        $consulta = "SELECT * FROM usuarios WHERE username = :usuario AND password = :password";
+        $param = array(":usuario" => $user, ":password" => $pass);
+        $this->ConsultaDatos($consulta, $param);
+        return $this->filas[0] ?? null;
+    }
 }

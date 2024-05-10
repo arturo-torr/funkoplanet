@@ -53,7 +53,7 @@ class StoreManagerView {
   showCategoriesInMenu(categories) {
     const navCats = document.getElementById("navCats");
     const container = navCats.nextElementSibling;
-    container.replaceChildren();
+    //container.replaceChildren();
     for (const category of categories) {
       container.insertAdjacentHTML(
         "beforeend",

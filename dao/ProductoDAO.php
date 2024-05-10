@@ -39,6 +39,7 @@ class DaoProductos extends DB
             $prod->__set("estado", $fila['estado']);
 
             $this->productos[] = $prod;
+            $this->productosJSON[] = $prod->toArray();
         }
     }
 
@@ -255,25 +256,39 @@ class DaoProductos extends DB
         }
 
         if ($categoria != "") {
-            $consulta .= " AND id_categoria LIKE :categoria";
-            $param[":categoria"] = "%" . $categoria . "%";
+            $consulta .= " AND id_categoria = :categoria";
+            $param[":categoria"] = $categoria;
         }
 
-        if ($disponibilidad != "") {
-            $consulta .= " AND estado LIKE :disponibilidad";
-            $param[":disponibilidad"] = "%" . $disponibilidad . "%";
+        if ($disponibilidad != "" && $disponibilidad != "Todos los productos") {
+            $consulta .= " AND estado = :disponibilidad";
+            $param[":disponibilidad"] = $disponibilidad;
         }
 
-        // if ($usuario != "") {
-        //     $consulta .= " AND id_usuario LIKE :usuario";
-        //     $param[":usuario"] = "%" . $usuario . "%";
-        // }
+        // Añadir ordenamiento si se proporciona
+        switch ($orden) {
+            case 'nuevos':
+                $consulta .= " ORDER BY fecha_subida DESC";
+                break;
+            case 'viejos':
+                $consulta .= " ORDER BY fecha_subida ASC";
+                break;
+            case 'baratos':
+                $consulta .= " ORDER BY precio ASC";
+                break;
+            case 'caros':
+                $consulta .= " ORDER BY precio DESC";
+                break;
+            default:
+                // No se proporcionó un orden específico, no se añade nada
+                break;
+        }
 
-        // Realiza la consulta;
+        // Realiza la consulta
         $this->ConsultaDatos($consulta, $param);
 
         foreach ($this->filas as $fila) {
-            // Creamos una nueva situación
+            // Creamos un nuevo producto
             $prod = new Producto();
 
             // Asignamos las propiedades correspondientes al nuevo objeto
@@ -285,12 +300,11 @@ class DaoProductos extends DB
             $prod->__set("precio", $fila['precio']);
             $prod->__set("estado", $fila['estado']);
 
-            // Se inserta el objeto que acabamos de crear en el Array de objetos tiendas
+            // Se inserta el objeto en el array de productos
             $this->productos[] = $prod;
             $this->productosJSON[] = $prod->toArray();
         }
     }
-
     public function hallarPaginas($numRegistros)
     {
         $consulta = "SELECT COUNT(*) as total FROM producto";

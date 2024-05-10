@@ -15,7 +15,7 @@ foreach ($daoProductos->productosJSON as $key => $prod) {
         echo "<div class='row'>";
     }
 
-    echo "<div class='col-sm-12 col-md-6 col-lg-6 col-xl-3 p-2 product__box'>";
+    echo "<div class='col-sm-12 col-md-6 col-lg-6 col-xl-3 p-2 product__box'> ";
     if (strtoupper($prod["estado"]) == "STOCK") {
         echo "<div class='label__stock rounded'>DISPONIBLE</div>";
     } else if (strtoupper($prod["estado"]) == "RESERVA") {
