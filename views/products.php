@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ed-ES">
 
 <head>
     <?php require_once "../views/head.php"; ?>
@@ -112,8 +112,7 @@
 
             <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-3 mx-auto mt-2 text-center">
                 <br>
-                <input type="submit" name='Filtrar' value='Filtrar'
-                    class="btn btn_purple--dark text-white px-5 fw-bold">
+                <input type="submit" name='Filtrar' value='Filtrar' class="btn btn_purple--dark text-white px-5 fw-bold">
             </div>
         </form>
     </div>
@@ -155,7 +154,7 @@
                     foreach ($daoFotosProductos->fotosPro as $key => $fotoPro) {
                         if ($imgIndex < 2) {
                             $conte = $fotoPro->__get("foto");
-                            echo "<img src='data:image/jpg;base64,$conte' class='img-fluid product-image' id='product-image-" . $prod["id"] . "-" . $imgIndex . "' style='display:" . ($imgIndex == 0 ? "block" : "none") . "'>";
+                            echo "<img src='data:image/jpg;base64,$conte' class='img-fluid product-image' alt='Imagen " . $prod["id"] . "'' id='product-image-" . $prod["id"] . "-" . $imgIndex . "' style='display:" . ($imgIndex == 0 ? "block" : "none") . "'>";
                             $imgIndex++;
                         }
                     }
