@@ -163,8 +163,12 @@
 
         if (($fila)  && ($user !== "") && ($pass !== "")) {
             // Si el intento es correcto, coge las variables de sesión y redirige al index
-            $_SESSION['usuario'] = $user;
-            echo "<script>window.location.replace('/funkoplanet/index.php');</script>";
+            $_SESSION['usuario'] = array(
+                'username' => $user,
+                'rol' => $fila['tipo'] // Agrega el rol a la sesión
+            );
+
+         echo "<script>window.location.replace('/funkoplanet/index.php');</script>";
         } else {
             echo "<script>showIncorrectoModal();</script>";
         }
