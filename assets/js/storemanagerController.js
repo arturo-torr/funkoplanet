@@ -18,9 +18,26 @@ class StoreManagerController {
   onLoad = () => {
     this.onAddCategory();
     this.onAddEvent();
-    this[VIEW].showAdminMenu();
+    this.checkUserRole();
     this[VIEW].changeImagesInNewProducts();
     // this[VIEW].bindAdminMenu(this.handleNewCategoryForm);
+  };
+
+  checkUserRole = () => {
+    fetch("/funkoplanet/web/usuarioactual.php")
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("No se pudo obtener la información del usuario");
+        }
+        return response.json();
+      })
+      .then((usuario) => {
+        if (usuario && usuario.rol && usuario.rol === "A") {
+          // Si el usuario es administrador, mostrar el menú de administración
+          this[VIEW].showAdminMenu();
+        }
+      })
+      .catch((error) => {});
   };
 
   // Función que se ejecuta al cargar la página
@@ -125,7 +142,6 @@ class StoreManagerController {
 
   // Manejador que redirige hacia la vista php con el id de la categoría
   handleCategoryList = (id) => {
-    console.log(id);
     window.location.href = `/funkoplanet/web/controlador_categorias.php?parametro=categoryClicked&id=${id}`;
   };
 

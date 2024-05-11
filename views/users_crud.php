@@ -65,7 +65,7 @@
                                 $user->__set("id", $clave);
                                 $user->__set("username", $usernames[$clave]);
                                 $user->__set("email", $emails[$clave]);
-                                $user->__set("password", $passwords[$clave]);
+                                $user->__set("password", password_hash($passwords[$clave], PASSWORD_BCRYPT));
                                 $user->__set("tipo", $tipos[$clave]);
                                 $user->__set("monedero", $monederos[$clave]);
                                 $user->__set("foto", $foto);
@@ -106,7 +106,7 @@
                             // Asignamos las propiedades correspondientes al nuevo objeto;
                             $user->__set("username", $username);
                             $user->__set("email", $email);
-                            $user->__set("password", $password);
+                            $user->__set("password", password_hash($password, PASSWORD_BCRYPT));
                             $user->__set("tipo", $tipo);
                             $user->__set("monedero", $monedero);
                             $user->__set("foto", $foto);

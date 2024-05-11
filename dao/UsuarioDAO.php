@@ -231,10 +231,18 @@ class DaoUsuarios extends DB
         }
     }
 
-    public function login($user, $pass)
+    public function obtenerPass($user)
     {
-        $consulta = "SELECT * FROM usuarios WHERE username = :usuario AND password = :password";
-        $param = array(":usuario" => $user, ":password" => $pass);
+        $consulta = "SELECT password FROM usuarios WHERE username = :username";
+        $param = array(":username" => $user);
+        $this->ConsultaDatos($consulta, $param);
+        return $this->filas[0] ?? null;
+    }
+
+    public function login($user)
+    {
+        $consulta = "SELECT * FROM usuarios WHERE username = :usuario";
+        $param = array(":usuario" => $user);
         $this->ConsultaDatos($consulta, $param);
         return $this->filas[0] ?? null;
     }
