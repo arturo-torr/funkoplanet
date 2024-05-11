@@ -9,34 +9,14 @@
 
 <body>
     <?php
-    function bloqueado($user, $loginDAO)
-    {
-        $intentos = $loginDAO->obtenerUltimosIntentos($user);
-        $bloqueado = -1;
-        $tiempoBloqueo = 300; // 5 minutos
-
-        if ($loginDAO->tresDenegaciones($intentos) && $loginDAO->menorTiempoInt($intentos, $tiempoBloqueo)) {
-            $bloqueado = time() + $tiempoBloqueo;
-        }
-
-        return $bloqueado;
-    }
-
-    function intentoLogin($user, $pass, $usuarioDAO, $loginDAO)
-    {
-        $fila = $usuarioDAO->login($user, $pass);
-        $acceso = ($fila) ? "C" : "D";
-        $loginDAO->insertarIntento($user, sha1($pass), $acceso);
-        return $fila;
-    }
-
     require_once "../views/header.php";
     require_once '../includes/libreriaPDO.php';
     require_once '../dao/UsuarioDAO.php';
     require_once '../dao/LoginDAO.php';
+
     $db = "funkoplanet";
-    $loginDAO = new DaoLogin($db);
-    $usuarioDAO = new DaoUsuarios($db);
+    $daoLogin = new DaoLogin($db);
+    $daoUsuarios = new DaoUsuarios($db);
     ?>
     <div class="container">
         <div class="row justify-content-center">
@@ -97,32 +77,100 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="bloqueadoModal" tabindex="-1" role="dialog" aria-labelledby="bloqueadoModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="bloqueadoModalLabel">Usuario Bloqueado</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    El usuario <?php echo $user; ?> está bloqueado hasta las <?php echo $hora; ?> de <?php echo $dia; ?>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="incorrectoModal" tabindex="-1" aria-labelledby="incorrectoModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg_purple text-white">
+                    <h1 class="modal-title fs-5 fw-bold" id="incorrectoModalLabel">Usuario o contraseña incorrectos</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    El usuario o contraseña que ha introducido son incorrectos. Por favor, inténtelo de nuevo.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn_purple text-white fw-bold"
+                        data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <?php
+    require_once "../views/scripts.php";
+    ?>
+    <script>
+    function showBloqueadoModal(user, hora, dia) {
+        var modal = document.getElementById('bloqueadoModal');
+        modal.querySelector('.modal-body').innerHTML = "El usuario " + user + " está bloqueado hasta las " + hora +
+            " de " + dia;
+        modal.classList.add('show');
+
+    }
+
+    function showIncorrectoModal() {
+        let myModal = new bootstrap.Modal(document.getElementById('incorrectoModal'));
+        myModal.show();
+    }
+    </script>
+
+    <?php
+    function intentoLogin($user, $pass)
+    {
+        global $daoUsuarios;
+        global $daoLogin;
+        $filaPass = $daoUsuarios->obtenerPass($user);
+        $fila = "";
+
+        if (password_verify("$pass", $filaPass['password'])) {
+            $fila = $daoUsuarios->login($user);
+            $acceso = "C";
+        } else {
+            $acceso = "D";
+        }
+        $daoLogin->insertarIntento($user, $pass, $acceso);
+        return $fila;
+    }
+    // Si se ha pulsado en enviar
     if (isset($_POST['Enviar'])) {
         $user = $_POST['username'];
         $pass = $_POST['password'];
 
-        $bloqueado = bloqueado($user, $loginDAO);
+        $fila = intentoLogin($user, $pass);
 
-        if ($bloqueado == -1) {
-            $fila = intentoLogin($user, $pass, $usuarioDAO, $loginDAO);
-
-            if ($fila) {
-                $_SESSION['usuario'] = $user;
-                echo "<script>window.location.replace('/funkoplanet/index.php');</script>";
-            } else {
-                echo "<br> Usuario o clave incorrecto </b>";
-            }
+        if (($fila)  && ($user !== "") && ($pass !== "")) {
+            // Si el intento es correcto, coge las variables de sesión y redirige al index
+            $_SESSION['usuario'] = $user;
+            echo "<script>window.location.replace('/funkoplanet/index.php');</script>";
         } else {
-            $hora = date("H:i:s", $bloqueado);
-            $dia = date("d/m/Y", $bloqueado);
-            echo "El usuario $user está bloqueado hasta las $hora de $dia";
+            echo "<script>showIncorrectoModal();</script>";
         }
     }
-
-
-    require_once "../views/scripts.php";
     ?>
+
 </body>
 
 </html>
