@@ -1,7 +1,25 @@
 <?php
 
-require_once '../includes/libreriaPDO.php';
-require_once '../models/FotoPro.php';
+$ruta1_libPDO = 'includes/libreriaPDO.php';
+$ruta1_FotoPro = 'models/FotoPro.php';
+$ruta2_libPDO = '../includes/libreriaPDO.php';
+$ruta2_FotoPro = '../models/FotoPro.php';
+
+if (file_exists($ruta1_libPDO)) {
+    require_once $ruta1_libPDO;
+}
+
+if (file_exists($ruta1_FotoPro)) {
+    require_once $ruta1_FotoPro;
+}
+
+if (file_exists($ruta2_libPDO)) {
+    require_once $ruta2_libPDO;
+}
+
+if (file_exists($ruta2_FotoPro)) {
+    require_once $ruta2_FotoPro;
+}
 
 class DaoFotosProductos extends DB
 {

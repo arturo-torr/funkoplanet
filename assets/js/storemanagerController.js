@@ -23,32 +23,8 @@ class StoreManagerController {
     // this[VIEW].bindAdminMenu(this.handleNewCategoryForm);
   };
 
-  checkUserRole = () => {
-    fetch("/funkoplanet/web/usuarioactual.php")
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("No se pudo obtener la información del usuario");
-        }
-        return response.json();
-      })
-      .then((usuario) => {
-        if (usuario && usuario.rol && usuario.rol === "A") {
-          // Si el usuario es administrador, mostrar el menú de administración
-          this[VIEW].showAdminMenu();
-        }
-      })
-      .catch((error) => {});
-  };
-
   // Función que se ejecuta al cargar la página
-  onInit = () => {
-    this.handleNuevosProductos().catch((error) => {
-      console.error("Error:", error);
-    });
-    this.handleCategoriesInCentralZone().catch((error) => {
-      console.error("Error:", error);
-    });
-  };
+  onInit = () => {};
 
   // Manejador de inicio
   handleInit = () => {
@@ -65,6 +41,7 @@ class StoreManagerController {
       .catch((error) => {
         console.error("Error:", error);
       });
+    this[VIEW].bindCategoryList(this.handleCategoryList);
   };
 
   // Mostrado de eventos en navegación
@@ -78,71 +55,26 @@ class StoreManagerController {
       });
   };
 
-  // Manejador para los últimos productos subidos en la página
-  handleNuevosProductos = () => {
-    if (this[VIEW].nuevosProductos) {
-      return new Promise((resolve, reject) => {
-        fetch("/funkoplanet/web/controlador_productos.php", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-          },
-          body: "parametro=nuevosProductos",
-        })
-          .then((response) => {
-            if (!response.ok) {
-              throw new Error("Error al obtener los productos");
-            }
-            return response.text();
-          })
-          .then((html) => {
-            this[VIEW].nuevosProductos.innerHTML = html;
-            this[VIEW].changeImagesInNewProducts();
-            resolve();
-          })
-          .catch((error) => {
-            reject(error);
-          });
+  // Comprueba el rol que tiene el usuario
+  checkUserRole = () => {
+    fetch("/funkoplanet/web/usuarioactual.php")
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("No se pudo obtener la información del usuario");
+        }
+        return response.json();
+      })
+      .then((usuario) => {
+        if (usuario && usuario.rol && usuario.rol === "A") {
+          // Si el usuario es administrador, mostrar el menú de administración
+          this[VIEW].showAdminMenu();
+        }
       });
-    } else {
-      return Promise.resolve(); // Devuelve una promesa resuelta si centralzone no está definido
-    }
-  };
-
-  // Manejador que devuelve una promesa que permite cargar las categorías en la zona central de la página
-  handleCategoriesInCentralZone = () => {
-    if (this[VIEW].centralzone) {
-      return new Promise((resolve, reject) => {
-        fetch("/funkoplanet/web/controlador_categorias.php", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-          },
-          body: "parametro=categoriesCentral",
-        })
-          .then((response) => {
-            if (!response.ok) {
-              throw new Error("Error al obtener las categorías");
-            }
-            return response.text();
-          })
-          .then((html) => {
-            this[VIEW].centralzone.innerHTML = html;
-            this[VIEW].bindCategoryList(this.handleCategoryList);
-            resolve();
-          })
-          .catch((error) => {
-            reject(error);
-          });
-      });
-    } else {
-      return Promise.resolve(); // Devuelve una promesa resuelta si centralzone no está definido
-    }
   };
 
   // Manejador que redirige hacia la vista php con el id de la categoría
   handleCategoryList = (id) => {
-    window.location.href = `/funkoplanet/web/controlador_categorias.php?parametro=categoryClicked&id=${id}`;
+    window.location.href = `/funkoplanet/web/controlador_categorias.php?paramCategorias=categoryClicked&id=${id}`;
   };
 
   // Manejador que devuelve una promesa permitiendo cargar las categorías en la barra de navegación
@@ -153,7 +85,7 @@ class StoreManagerController {
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
         },
-        body: `parametro=${"categoriesMenu"}`,
+        body: `paramCategorias=${"categoriesMenu"}`,
       })
         .then((response) => {
           if (!response.ok) {

@@ -161,13 +161,15 @@ class StoreManagerView {
   bindCategoryList(handler) {
     // Obtiene el elemento y aquellos que dentro se compongan con el tag <a>
     const categoryList = document.getElementById("categories-list");
-    const links = categoryList.querySelectorAll("a");
-    // Los recorre y recupera el id de la categoría con el atributo personalizado dataset.category
-    for (const link of links) {
-      link.addEventListener("click", (event) => {
-        const { category } = event.currentTarget.dataset;
-        handler(category);
-      });
+    if (categoryList) {
+      const links = categoryList.querySelectorAll("a");
+      // Los recorre y recupera el id de la categoría con el atributo personalizado dataset.category
+      for (const link of links) {
+        link.addEventListener("click", (event) => {
+          const { category } = event.currentTarget.dataset;
+          handler(category);
+        });
+      }
     }
   }
 

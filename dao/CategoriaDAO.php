@@ -1,7 +1,24 @@
 <?php
+$ruta1_libreriaPDO = 'includes/libreriaPDO.php';
+$ruta1_Categoria = 'models/Categoria.php';
+$ruta2_libreriaPDO = '../includes/libreriaPDO.php';
+$ruta2_Categoria = '../models/Categoria.php';
 
-require_once '../includes/libreriaPDO.php';
-require_once '../models/Categoria.php';
+if (file_exists($ruta1_libreriaPDO)) {
+    require_once $ruta1_libreriaPDO;
+}
+
+if (file_exists($ruta1_Categoria)) {
+    require_once $ruta1_Categoria;
+}
+
+if (file_exists($ruta2_libreriaPDO)) {
+    require_once $ruta2_libreriaPDO;
+}
+
+if (file_exists($ruta2_Categoria)) {
+    require_once $ruta2_Categoria;
+}
 
 class DaoCategorias extends DB
 {
