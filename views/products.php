@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ed-ES">
+<html lang="es-ES">
 
 <head>
     <?php require_once "../views/head.php"; ?>
@@ -112,20 +112,23 @@
 
             <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-3 mx-auto mt-2 text-center">
                 <br>
-                <input type="submit" name='Filtrar' value='Filtrar' class="btn btn_purple--dark text-white px-5 fw-bold">
+                <input type="submit" name='Filtrar' value='Filtrar'
+                    class="btn btn_purple--dark text-white px-5 fw-bold">
             </div>
         </form>
     </div>
 
-    <div class='container-fluid mx-auto w-75'>
-        <h1 class='purple mt-2 text-center'><?php echo ($cat ? $cat->__get("nombre") : "Todas las categorías"); ?></h1>
-        <hr class='purple_line mb-2'>
-        <div class="row">
+    <section id="products">
+        <div class='container-fluid mx-auto w-75'>
+            <h1 class='purple mt-2 text-center'><?php echo ($cat ? $cat->__get("nombre") : "Todas las categorías"); ?>
+            </h1>
+            <hr class='purple_line mb-2'>
+            <div class="row">
 
-            <div class="col-sm-0 col-md-0 col-lg-1 col-xl-1"></div>
-            <!-- Contenido principal -->
-            <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 text-center">
-                <?php
+                <div class="col-sm-0 col-md-0 col-lg-1 col-xl-1"></div>
+                <!-- Contenido principal -->
+                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 text-center">
+                    <?php
                 if (count($daoProductos->productosJSON) == 0) {
                     echo "<p class='fw-bold'>No se han encontrado productos. ¿Por qué no pruebas con otra categoría o filtro?</p>";
                 }
@@ -190,9 +193,10 @@
                 // Cierre de contenedor principal
                 echo " </div>";
                 ?>
+                </div>
             </div>
         </div>
-    </div>
+    </section>
 
     <?php
     require_once "../views/scripts.php";

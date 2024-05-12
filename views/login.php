@@ -31,15 +31,11 @@
                                 <label for="email" class="form-label">Usuario</label>
                                 <div class="input-group">
                                     <span class="input-group-text">
-                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                            class="icon icon-tabler icon-tabler-user-square" width="30" height="30"
-                                            viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none"
-                                            stroke-linecap="round" stroke-linejoin="round">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user-square" width="30" height="30" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                             <path d="M9 10a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" />
                                             <path d="M6 21v-1a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v1" />
-                                            <path
-                                                d="M3 5a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v14a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-14z" />
+                                            <path d="M3 5a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v14a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-14z" />
                                         </svg>
                                     </span>
                                     <input type="text" class="form-control" id="username" name="username">
@@ -49,10 +45,7 @@
                                 <label for="password" class="form-label">Contraseña</label>
                                 <div class="input-group">
                                     <span class="input-group-text">
-                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                            class="icon icon-tabler icon-tabler-password" width="30" height="30"
-                                            viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none"
-                                            stroke-linecap="round" stroke-linejoin="round">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-password" width="30" height="30" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                             <path d="M12 10v4" />
                                             <path d="M10 13l4 -2" />
@@ -79,8 +72,7 @@
     </div>
 
     <!-- Modal -->
-    <div class="modal fade" id="incorrectoModal" tabindex="-1" aria-labelledby="incorrectoModalLabel"
-        aria-hidden="true">
+    <div class="modal fade" id="incorrectoModal" tabindex="-1" aria-labelledby="incorrectoModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header bg_purple text-white">
@@ -91,8 +83,7 @@
                     El usuario o contraseña que ha introducido son incorrectos. Por favor, inténtelo de nuevo.
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn_purple text-white fw-bold"
-                        data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn_purple text-white fw-bold" data-bs-dismiss="modal">Cerrar</button>
                 </div>
             </div>
         </div>
@@ -102,10 +93,10 @@
     require_once "../views/scripts.php";
     ?>
     <script>
-    function showIncorrectoModal() {
-        let myModal = new bootstrap.Modal(document.getElementById('incorrectoModal'));
-        myModal.show();
-    }
+        function showIncorrectoModal() {
+            let myModal = new bootstrap.Modal(document.getElementById('incorrectoModal'));
+            myModal.show();
+        }
     </script>
 
     <?php
@@ -113,16 +104,20 @@
     {
         global $daoUsuarios;
         global $daoLogin;
-        $filaPass = $daoUsuarios->obtenerPass($user);
         $fila = "";
 
-        if (password_verify("$pass", $filaPass['password'])) {
-            $fila = $daoUsuarios->login($user);
-            $acceso = "C";
-        } else {
-            $acceso = "D";
+        if (($user) && ($pass)) {
+            $filaPass = $daoUsuarios->obtenerPass($user);
+
+            if (password_verify("$pass", $filaPass['password'])) {
+                $fila = $daoUsuarios->login($user);
+                $acceso = "C";
+            } else {
+                $acceso = "D";
+            }
+            $daoLogin->insertarIntento($user, $pass, $acceso);
         }
-        $daoLogin->insertarIntento($user, $pass, $acceso);
+
         return $fila;
     }
     // Si se ha pulsado en enviar

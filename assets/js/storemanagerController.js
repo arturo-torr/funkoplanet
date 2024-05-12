@@ -16,9 +16,10 @@ class StoreManagerController {
 
   // Funciones que solo se ejecutan una sola vez
   onLoad = () => {
+    this.checkUserRole();
     this.onAddCategory();
     this.onAddEvent();
-    this.checkUserRole();
+    this[VIEW].bindProducts(this.handleProduct);
     this[VIEW].changeImagesInNewProducts();
     // this[VIEW].bindAdminMenu(this.handleNewCategoryForm);
   };
@@ -69,6 +70,9 @@ class StoreManagerController {
           // Si el usuario es administrador, mostrar el menú de administración
           this[VIEW].showAdminMenu();
         }
+      })
+      .catch((error) => {
+        console.error("Error:", error); // Manejar el error
       });
   };
 
@@ -77,6 +81,10 @@ class StoreManagerController {
     window.location.href = `/funkoplanet/web/controlador_categorias.php?paramCategorias=categoryClicked&id=${id}`;
   };
 
+  // Maneajdor que redigige hacia la vista php con el id del producto
+  handleProduct = (id) => {
+    window.location.href = `/funkoplanet/web/controlador_productos.php?parametro=productClicked&id=${id}`;
+  };
   // Manejador que devuelve una promesa permitiendo cargar las categorías en la barra de navegación
   handleCategoriesInMenu = () => {
     return new Promise((resolve, reject) => {

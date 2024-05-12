@@ -91,6 +91,8 @@ class DaoFotosProductos extends DB
 
             $this->fotosPro[] = $fotoPro;
         }
+
+        return $this->fotosPro;
     }
 
 

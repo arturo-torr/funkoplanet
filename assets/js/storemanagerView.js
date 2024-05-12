@@ -185,6 +185,32 @@ class StoreManagerView {
       });
     }
   }
+
+  // Función manejadora para los productos que tengamos
+  bindProducts(handler) {
+    const newProducts = document.getElementById("nuevos_productos");
+    const products = document.getElementById("products");
+    if (newProducts) {
+      const links = newProducts.querySelectorAll("a");
+      // Los recorre y recupera el id de la categoría con el atributo personalizado dataset.category
+      for (const link of links) {
+        link.addEventListener("click", (event) => {
+          const { product } = event.currentTarget.dataset;
+          handler(product);
+        });
+      }
+    }
+    if (products) {
+      const links = products.querySelectorAll("a");
+      // Los recorre y recupera el id de la categoría con el atributo personalizado dataset.category
+      for (const link of links) {
+        link.addEventListener("click", (event) => {
+          const { product } = event.currentTarget.dataset;
+          handler(product);
+        });
+      }
+    }
+  }
 }
 
 export default StoreManagerView;
