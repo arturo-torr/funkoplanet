@@ -1,7 +1,26 @@
 <?php
 
-require_once '../includes/libreriaPDO.php';
-require_once '../models/Producto.php';
+// Comprobaciones de rutas según donde es llamado el fichero
+$ruta1_libPDO = 'includes/libreriaPDO.php';
+$ruta1_producto = 'models/Producto.php';
+$ruta2_libPDO = '../includes/libreriaPDO.php';
+$ruta2_producto = '../models/Producto.php';
+
+if (file_exists($ruta1_libPDO)) {
+    require_once $ruta1_libPDO;
+}
+
+if (file_exists($ruta1_producto)) {
+    require_once $ruta1_producto;
+}
+
+if (file_exists($ruta2_libPDO)) {
+    require_once $ruta2_libPDO;
+}
+
+if (file_exists($ruta2_producto)) {
+    require_once $ruta2_producto;
+}
 
 class DaoProductos extends DB
 {

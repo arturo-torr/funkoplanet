@@ -47,6 +47,8 @@
                     if (!isset($_SESSION['usuario'])) {
                         echo "<li><a class='dropdown-item fw-bold' href='/funkoplanet/views/login.php'>Iniciar sesión</a>
                         </li>";
+                        echo "<li><a class='dropdown-item fw-bold' href='/funkoplanet/views/registro.php'>Registrarse</a>
+                        </li>";
                     } else {
                         echo "<li><a class='dropdown-item fw-bold' href='/funkoplanet/views/login.php'>Mi cuenta - " . $_SESSION['usuario']['username'] . "</a>
                         </li>";

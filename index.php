@@ -13,9 +13,17 @@
     ?>
     <main>
 
-        <section id="nuevos_productos">
+        <section id="nuevos_productos" data-aos='fade-up' data-aos-duration='1000'>
+            <?php
+            $parametro = "nuevosProductos";
+            require_once "web/controlador_productos.php";
+            ?>
         </section>
-        <section id="central_zone">
+        <section id="central_zone" data-aos='fade-up' data-aos-duration='1000'>
+            <?php
+            $paramCategorias = "categoriesCentral";
+            require_once "web/controlador_categorias.php";
+            ?>
         </section>
     </main>
     <?php
