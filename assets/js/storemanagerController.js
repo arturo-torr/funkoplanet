@@ -20,8 +20,29 @@ class StoreManagerController {
     this.onAddCategory();
     this.onAddEvent();
     this[VIEW].bindProducts(this.handleProduct);
+    this[VIEW].bindIncrementButton(this.handleIncrement);
+    this[VIEW].bindDecrementButton(this.handleDecrement);
     this[VIEW].changeImagesInNewProducts();
     // this[VIEW].bindAdminMenu(this.handleNewCategoryForm);
+  };
+
+  // Maneja el botón de incremento de cantidad de producto
+  handleIncrement = () => {
+    let cantidadSpan = document.getElementById("cantidad");
+    let cantidad = parseFloat(cantidadSpan.innerText);
+    cantidad++;
+    cantidadSpan.innerHTML = cantidad;
+  };
+
+  // Maneja el botón de decremento de cantidad de producto
+  handleDecrement = () => {
+    let cantidadSpan = document.getElementById("cantidad");
+    let cantidad = parseFloat(cantidadSpan.innerText);
+
+    if (cantidad > 1) {
+      cantidad--;
+      cantidadSpan.innerHTML = cantidad;
+    }
   };
 
   // Función que se ejecuta al cargar la página

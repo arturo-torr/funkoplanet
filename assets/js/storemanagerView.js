@@ -211,6 +211,18 @@ class StoreManagerView {
       }
     }
   }
+
+  // Manejador para cuando se clickea en botón de incremento
+  bindIncrementButton(handler) {
+    const button = document.getElementById("btn_incremento");
+    button.addEventListener("click", () => handler());
+  }
+
+  // Manejador para cuando se clickea en botón de decremento
+  bindDecrementButton(handler) {
+    const button = document.getElementById("btn_decremento");
+    button.addEventListener("click", () => handler());
+  }
 }
 
 export default StoreManagerView;
