@@ -36,10 +36,10 @@
         <div class='container-fluid mx-auto w-75 text-center'>
             <h1 class='purple mt-2 text-center'><?php echo $prod->__get("nombre") ?></h1>
             <hr class='purple_line mb-2'>
-            <div class="row">
-                <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6">
+            <div class="row align-items-center">
+                <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6 p-1 mt-2">
                     <div class="container-fluid d-flex justify-content-center text-center">
-                        <div id="mainImage" class='border rounded border_purple p-1 mx-1'>
+                        <div id="mainImage" class='border rounded border_purple p-1 mx-1 w-100'>
                             <?php
                             if (!empty($daoFotosProductos->fotosPro)) {
                                 $conte = $daoFotosProductos->fotosPro[0]->__get("foto");
@@ -59,29 +59,62 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6">
                     <div class='container-fluid'>
-                        <h5><?php echo $prod->__get("descripcion") ?></h5>
-                        <?php
-                        $conte = $cat->__get("foto");
-                        echo "<img src='data:image/jpg;base64,$conte' class='img-fluid w-50'>";
-                        ?>
+                        <div class="row align-items-center">
+                            <div class="col-12 align-items-center">
+                                <?php
+                                $conte = $cat->__get("foto");
+                                echo "<img src='data:image/jpg;base64,$conte' alt='Imagen " . $cat->__get("nombre") . "' class='img-fluid rounded img_individualproduct my-3'>";
+                                ?>
+                                <p><?php echo $prod->__get("descripcion") ?></p>
+                                <hr class="w-50 text-center mx-auto">
+                                <?php
+                                if (strtoupper($prod->__get("estado")) == "STOCK") {
+                                    echo "<span class='label_individual--stock rounded'>DISPONIBLE</span>";
+                                } else if (strtoupper($prod->__get("estado")) == "RESERVA") {
+                                    echo "<span class='label_individual--reserva rounded'>RESERVA</span>";
+                                } else if (strtoupper($prod->__get("estado")) == "AGOTADO") {
+                                    echo "<span class='label_individual--agotado rounded'>AGOTADO</span>";
+                                }
+                                ?>
+                                <span class="individual_price"><?php echo $prod->__get("precio") ?>€</span>
+                            </div>
+                        </div>
+
+                        <div class="row align-items-center ">
+                            <span class="my-2">Seleccione la cantidad deseada:</span>
+                            <div class="col-12">
+                                <button id="btn_decremento" class='btn btn_purple px-3 fw-bold text-white mt-1'>-</button>
+                                <span id="cantidad" class="px-3 mt-1">1</span>
+                                <button id="btn_incremento" class='btn btn_purple px-3 fw-bold text-white mt-1'>+</button>
+                                <?php
+                                if (strtoupper($prod->__get("estado")) == "STOCK") {
+                                    echo "<button class='btn btn_purple fw-bold text-white no_decoration mx-2 mt-1'>AÑADIR AL CARRITO</button>";
+                                } else if (strtoupper($prod->__get("estado")) == "RESERVA") {
+                                    echo "<button class='btn btn_purple fw-bold text-white no_decoration mx-2 mt-1'>RESERVAR PRODUCTO</button>";
+                                } else if (strtoupper($prod->__get("estado")) == "AGOTADO") {
+                                    echo "<button class='btn btn_purple fw-bold text-white no_decoration mx-2 mt-1 disabled' role='button' aria-disabled='true'>AÑADIR AL CARRITO</button>";
+                                }
+                                ?>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
+
         </div>
     </section>
-
-    <?php
-    require_once "../views/scripts.php";
-    ?>
-
     <script>
         function changeMainImage(imageData) {
             document.getElementById('mainImage').innerHTML = "<img src='data:image/jpg;base64," + imageData +
                 "' class='img-fluid w-50'>";
         }
     </script>
+    <?php
+    require_once "../views/scripts.php";
+    ?>
 </body>
 
 </html>
