@@ -1,3 +1,5 @@
+import { categoriesCrudValidation } from "./validation.js";
+
 const EXECUTE_HANDLER = Symbol("executeHandler");
 
 class StoreManagerView {
@@ -215,13 +217,18 @@ class StoreManagerView {
   // Manejador para cuando se clickea en botón de incremento
   bindIncrementButton(handler) {
     const button = document.getElementById("btn_incremento");
-    button.addEventListener("click", () => handler());
+    if (button) button.addEventListener("click", () => handler());
   }
 
   // Manejador para cuando se clickea en botón de decremento
   bindDecrementButton(handler) {
     const button = document.getElementById("btn_decremento");
-    button.addEventListener("click", () => handler());
+    if (button) button.addEventListener("click", () => handler());
+  }
+
+  // // Manejadores que requieren de la validación del formulario
+  bindCategoriesCrud(handler) {
+    categoriesCrudValidation(handler);
   }
 }
 

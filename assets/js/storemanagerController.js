@@ -22,8 +22,60 @@ class StoreManagerController {
     this[VIEW].bindProducts(this.handleProduct);
     this[VIEW].bindIncrementButton(this.handleIncrement);
     this[VIEW].bindDecrementButton(this.handleDecrement);
+    this[VIEW].bindCategoriesCrud(this.handleCategoriesCrud);
     this[VIEW].changeImagesInNewProducts();
     // this[VIEW].bindAdminMenu(this.handleNewCategoryForm);
+  };
+
+  // Manejador que recibe los datos de la validación del formulario cuando son correctos
+  handleCategoriesCrud = (
+    button,
+    selects,
+    nombre = "",
+    descripcion = "",
+    foto = ""
+  ) => {
+    if (button === "Buscar") {
+      // Objeto literal para los datos
+      const data = {
+        nombreNuevo: nombre,
+        Buscar: "Buscar",
+      };
+
+      // Convertir los datos a una cadena de consulta
+      const params = new URLSearchParams(data);
+
+      // URL donde se enviarán los datos
+      const url = "/funkoplanet/views/categories_crud.php";
+
+      // Agregar los parámetros de búsqueda a la URL de redirección
+      const redirectUrl = url + "?" + params.toString() + "#busqueda";
+
+      // Redirigir a la página con los parámetros de búsqueda
+      window.location.href = redirectUrl;
+    }
+
+    if (button === "Actualizar") {
+      // Objeto literal para los datos
+      const data = {
+        Selec: selects,
+        Nombres: nombre,
+        Descripciones: descripcion,
+        Fotos: foto,
+        Actualizar: "Actualizar",
+      };
+      // Convertir los datos a una cadena de consulta
+      const params = new URLSearchParams(data);
+
+      // URL donde se enviarán los datos
+      const url = "/funkoplanet/views/categories_crud.php";
+
+      // Agregar los parámetros de búsqueda a la URL de redirección
+      const redirectUrl = url + "?" + params.toString();
+
+      // Redirigir a la página con los parámetros de búsqueda
+      window.location.href = redirectUrl;
+    }
   };
 
   // Maneja el botón de incremento de cantidad de producto
@@ -106,6 +158,7 @@ class StoreManagerController {
   handleProduct = (id) => {
     window.location.href = `/funkoplanet/web/controlador_productos.php?parametro=productClicked&id=${id}`;
   };
+
   // Manejador que devuelve una promesa permitiendo cargar las categorías en la barra de navegación
   handleCategoriesInMenu = () => {
     return new Promise((resolve, reject) => {

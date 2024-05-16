@@ -76,6 +76,7 @@
                             $nombres = $_POST['Nombres'];
                             $descripciones = $_POST['Descripciones'];
 
+                            var_dump($nombres);
                             // Se recorre con un ForEach para cada uno de los mascotas seleccionados
                             foreach ($selec as $clave => $valor) {
                                 // Almacenamos en array la fecha de nacimiento para ese Id

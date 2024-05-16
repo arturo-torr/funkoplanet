@@ -17,7 +17,7 @@
         <div class="row">
             <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-10 mx-auto table-responsive">
                 <form name="fCategorias" method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>"
-                    enctype="multipart/form-data">
+                    enctype="multipart/form-data" novalidate>
                     <fieldset>
                         <legend class='purple'>Administración de Categorías</legend>
 
@@ -26,6 +26,7 @@
                         <input type='submit' class='btn btn_purple text-white fw-bold' name='Actualizar'
                             value='Actualizar'>
                         <input type='submit' class='btn btn_purple text-white fw-bold' name='Borrar' value='Borrar'>
+                        <input type='reset' class='btn btn_purple text-white fw-bold' name='Cancelar' value='Cancelar'>
 
 
                         <?php
@@ -38,10 +39,13 @@
                         }
 
                         // Si se ha seleccionado algún elemento y se ha pulsado en actualizar
-                        if (isset($_POST['Actualizar']) && (isset($_POST['Selec']))) {
-                            $selec = $_POST['Selec'];
-                            $nombres = $_POST['Nombres'];
-                            $descripciones = $_POST['Descripciones'];
+                        if (isset($_GET['Actualizar']) && (isset($_GET['Selec']))) {
+                            $selec = $_GET['Selec'];
+                            $nombres = $_GET['Nombres'];
+                            $descripciones = $_GET['Descripciones'];
+
+                            var_dump($nombres);
+
 
                             // Se recorre con un ForEach para cada uno de los mascotas seleccionados
                             foreach ($selec as $clave => $valor) {
@@ -130,9 +134,21 @@
                             // Se crea la fila de inserción
                             echo "<tr class='align-middle text-center bg-light'>";
                             echo "<td>*</td>
-                            <td><input type='text' class='form-control' name='nombreNuevo'></td>";
-                            echo "<td><input type='text' class='form-control' name='descripcionNueva'></td>
-                            <td><img class='img-fluid' width=100></img><input type='file' class='form-control-sm' name='fotoNueva'></td>";
+                            <td>
+                                <input type='text' class='form-control' id='nombreNuevo' name='nombreNuevo'>
+                                <div class='invalid-feedback'>Debes introducir el nombre de la categoría obligatoriamente.</div>
+                                <div class='valid-feedback'></div>
+                            </td>";
+                            echo "<td>
+                                <input type='text' class='form-control' id='descripcionNueva' name='descripcionNueva'>
+                                <div class='invalid-feedback'>Debes introducir la descripción de la categoría obligatoriamente.</div>
+                                <div class='valid-feedback'></div>
+                            </td>
+                            <td>
+                                <img class='img-fluid' width=100></img><input type='file' class='form-control-sm' id='fotoNueva' name='fotoNueva'>
+                                <div class='invalid-feedback'>El fichero debe ser jpg/png.</div>
+                                <div class='valid-feedback'></div>
+                            </td>";
 
                             // FIN DE FILA DE INSERCIÓN
 
@@ -144,20 +160,23 @@
                                 <label class='btn btn-outline-danger' for='" . $cate->__get("id") . "'>Seleccionar</label></td>";
                                 $nombre = $cate->__get("nombre");
                                 echo "<td>
-                                <input type='text' class='form-control' name='Nombres[" . $cate->__get("id") . "]' value='$nombre'>
-                            </td>
-                            ";
+                                    <input type='text' class='form-control' id='" . $cate->__get("id") . "' name='Nombres[" . $cate->__get("id") . "]' value='$nombre' required>
+                                    <div class='invalid-feedback'>Debes introducir el nombre de la categoría obligatoriamente.</div>
+                                    <div class='valid-feedback'></div>
+                                </td>";
 
                                 $descripcion = $cate->__get("descripcion");
-                                echo "
-                            <td>
-                                <input type='text' class='form-control' name='Descripciones[" . $cate->__get("id") . "]' value='$descripcion'>
-                            </td>";
+                                echo "<td>
+                                    <input type='text' class='form-control' id='" . $cate->__get("id") . "' name='Descripciones[" . $cate->__get("id") . "]' value='$descripcion'>
+                                    <div class='invalid-feedback'>Debes introducir una descripción obligatoriabmente.</div>
+                                    <div class='valid-feedback'></div>
+                                </td>";
                                 $conte = $cate->__get("foto");
                                 echo "<td>
-                               <img src='data:image/jpg;base64,$conte' class='img-fluid' width=100 height=100 alt='Cat:" . $cate->__get("id") . "'>";
-                                echo "<input type='file' class='form-control-sm' name='Fotos[" . $cate->__get("id") . "]'";
-                                echo "</td>";
+                                        <img src='data:image/jpg;base64,$conte' class='img-fluid' width=100 height=100 alt='Cat:" . $cate->__get("id") . "'>";
+                                echo "<input type='file' class='form-control-sm' id='" . $cate->__get("id") . "' name='Fotos[" . $cate->__get("id") . "]'>";
+                                echo "<div class='invalid-feedback'>El fichero debe ser jpg/png.</div>
+                                <div class='valid-feedback'></div></td>";
                                 echo "</tr>";
                             }
 
@@ -209,12 +228,11 @@
 </html>
 <?php
 // Si se da clcik en buscar
-if (isset($_POST['Buscar'])) {
-    $nombre = $_POST['nombreNuevo'];
-    $descripcion = $_POST['descripcionNueva'];
+if (isset($_GET['Buscar'])) {
+    $nombre = $_GET['nombreNuevo'];
 
     $daoCategorias->buscar($nombre);
-    echo "<div class='container-fluid'><div class='row'>";
+    echo "<div class='container-fluid' id='busqueda'><div class='row'>";
     echo "<div class='col-12 col-sm-12 col-md-12 col-lg-12 col-xl-10 mx-auto table-responsive'>";
     echo "<fieldset><legend class='purple'>Resultados de la búsqueda</legend>";
     echo "<table class='mt-2 table bg_purple table-bordered border_purple text-center'>
