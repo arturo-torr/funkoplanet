@@ -16,15 +16,13 @@
     <div class="container-fluid mt-2">
         <div class="row">
             <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-10 mx-auto table-responsive">
-                <form name="fCategorias" method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>"
-                    enctype="multipart/form-data" novalidate>
+                <form name="fCategorias" method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>" enctype="multipart/form-data" novalidate>
                     <fieldset>
                         <legend class='purple'>Administración de Categorías</legend>
 
                         <input type='submit' class='btn btn_purple text-white fw-bold' name='Insertar' value='Insertar'>
                         <input type='submit' class='btn btn_purple text-white fw-bold' name='Buscar' value='Buscar'>
-                        <input type='submit' class='btn btn_purple text-white fw-bold' name='Actualizar'
-                            value='Actualizar'>
+                        <input type='submit' class='btn btn_purple text-white fw-bold' name='Actualizar' value='Actualizar'>
                         <input type='submit' class='btn btn_purple text-white fw-bold' name='Borrar' value='Borrar'>
                         <input type='reset' class='btn btn_purple text-white fw-bold' name='Cancelar' value='Cancelar'>
 
@@ -39,13 +37,10 @@
                         }
 
                         // Si se ha seleccionado algún elemento y se ha pulsado en actualizar
-                        if (isset($_GET['Actualizar']) && (isset($_GET['Selec']))) {
-                            $selec = $_GET['Selec'];
-                            $nombres = $_GET['Nombres'];
-                            $descripciones = $_GET['Descripciones'];
-
-                            var_dump($nombres);
-
+                        if (isset($_POST['Actualizar']) && (isset($_POST['Selec']))) {
+                            $selec = $_POST['Selec'];
+                            $nombres = $_POST['Nombres'];
+                            $descripciones = $_POST['Descripciones'];
 
                             // Se recorre con un ForEach para cada uno de los mascotas seleccionados
                             foreach ($selec as $clave => $valor) {
@@ -227,9 +222,9 @@
 
 </html>
 <?php
-// Si se da clcik en buscar
-if (isset($_GET['Buscar'])) {
-    $nombre = $_GET['nombreNuevo'];
+// Si se da click en buscar
+if (isset($_POST['Buscar'])) {
+    $nombre = $_POST['nombreNuevo'];
 
     $daoCategorias->buscar($nombre);
     echo "<div class='container-fluid' id='busqueda'><div class='row'>";
