@@ -22,60 +22,60 @@ class StoreManagerController {
     this[VIEW].bindProducts(this.handleProduct);
     this[VIEW].bindIncrementButton(this.handleIncrement);
     this[VIEW].bindDecrementButton(this.handleDecrement);
-    this[VIEW].bindCategoriesCrud(this.handleCategoriesCrud);
+    this[VIEW].bindCompraButton(this.handleCompra);
+    this[VIEW].bindCarrito(this.handleCarrito);
+    //this[VIEW].bindCategoriesCrud(this.handleCategoriesCrud);
     this[VIEW].changeImagesInNewProducts();
     // this[VIEW].bindAdminMenu(this.handleNewCategoryForm);
   };
 
-  // Manejador que recibe los datos de la validación del formulario cuando son correctos
-  handleCategoriesCrud = (
-    button,
-    selects,
-    nombre = "",
-    descripcion = "",
-    foto = ""
-  ) => {
-    if (button === "Buscar") {
-      // Objeto literal para los datos
-      const data = {
-        nombreNuevo: nombre,
-        Buscar: "Buscar",
-      };
+  // Manejador que abre el carrito de la compra con los productos de la sesión
+  handleCarrito = () => {
+    // Segundo fetch para actualizar el offCanvas
+    fetch("/funkoplanet/views/mostrar_carrito.php")
+      .then((response) => response.text())
+      .then((html) => {
+        // Actualizar el offCanvas con el HTML recibido
+        let offcanvas = document.getElementById("offCanvasCarrito");
+        let body = document.querySelector(".offcanvas-body");
+        body.innerHTML = html;
+        let offCanvasCarrito = new bootstrap.Offcanvas(offcanvas); // Usa el elemento directamente
+        offCanvasCarrito.show();
+      })
+      .catch((error) => {
+        console.error("Error al actualizar el offCanvas:", error);
+      });
+  };
 
-      // Convertir los datos a una cadena de consulta
-      const params = new URLSearchParams(data);
+  // Manejador que recibe
+  handleCompra = (idProducto, cantidad) => {
+    cantidad = Number(cantidad);
 
-      // URL donde se enviarán los datos
-      const url = "/funkoplanet/views/categories_crud.php";
-
-      // Agregar los parámetros de búsqueda a la URL de redirección
-      const redirectUrl = url + "?" + params.toString() + "#busqueda";
-
-      // Redirigir a la página con los parámetros de búsqueda
-      window.location.href = redirectUrl;
-    }
-
-    if (button === "Actualizar") {
-      // Objeto literal para los datos
-      const data = {
-        Selec: selects,
-        Nombres: nombre,
-        Descripciones: descripcion,
-        Fotos: foto,
-        Actualizar: "Actualizar",
-      };
-      // Convertir los datos a una cadena de consulta
-      const params = new URLSearchParams(data);
-
-      // URL donde se enviarán los datos
-      const url = "/funkoplanet/views/categories_crud.php";
-
-      // Agregar los parámetros de búsqueda a la URL de redirección
-      const redirectUrl = url + "?" + params.toString();
-
-      // Redirigir a la página con los parámetros de búsqueda
-      window.location.href = redirectUrl;
-    }
+    fetch("/funkoplanet/web/procesar_carrito.php", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        idProducto: idProducto,
+        cantidad: cantidad,
+      }),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          return response.json().then((err) => {
+            throw err;
+          });
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log("Producto agregado al carrito:", data);
+        this.handleCarrito();
+      })
+      .catch((error) => {
+        console.error("Error al agregar producto al carrito:", error);
+      });
   };
 
   // Maneja el botón de incremento de cantidad de producto

@@ -1,4 +1,4 @@
-import { categoriesCrudValidation } from "./validation.js";
+//import { categoriesCrudValidation } from "./validation.js";
 
 const EXECUTE_HANDLER = Symbol("executeHandler");
 
@@ -224,6 +224,24 @@ class StoreManagerView {
   bindDecrementButton(handler) {
     const button = document.getElementById("btn_decremento");
     if (button) button.addEventListener("click", () => handler());
+  }
+
+  // Manejador para cuando se clickea en botón de comprar producto
+  bindCompraButton(handler) {
+    const button = document.getElementById("btn_comprar");
+    if (button) {
+      let cantidad = document.getElementById("cantidad");
+      button.addEventListener("click", (event) => {
+        const { product } = event.currentTarget.dataset;
+        handler(product, cantidad.textContent);
+      });
+    }
+  }
+
+  // Manejador para cuando se clickea SVG de carrito
+  bindCarrito(handler) {
+    const icon = document.getElementById("carrito");
+    if (carrito) icon.addEventListener("click", () => handler());
   }
 
   // // Manejadores que requieren de la validación del formulario
