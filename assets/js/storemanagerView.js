@@ -268,6 +268,18 @@ class StoreManagerView {
       document.getElementById("numero_items_carrito").textContent = cantidad;
     }
   }
+
+  // Actualiza el carrito cuando recibe nuevos items
+  actualizarCarrito() {
+    let num = document.getElementById("span_cantidades");
+    if (!num) {
+      document.getElementById("numero_items_carrito").textContent = 0;
+    } else {
+      localStorage.setItem("cantidades", num.textContent);
+      let cantidad = localStorage.getItem("cantidades");
+      document.getElementById("numero_items_carrito").textContent = cantidad;
+    }
+  }
 }
 
 export default StoreManagerView;

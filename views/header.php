@@ -9,7 +9,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <!-- Menús de navegación al centro -->
-            <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+            <ul class="navbar-nav mx-auto mb-2 mb-lg-0 col-xl-5 col-lg-7">
                 <li class="nav-item">
                     <a class="nav-link active text-white fw-bold" aria-current="page" href="/funkoplanet/index.php"
                         id="init">Inicio</a>
@@ -74,8 +74,10 @@
                             <circle cx="16" cy="16.5" r="6" fill="#4ae600" stroke="#4ae600" />
                             <text id='numero_items_carrito' x="16" y="17" font-size="8.5" stroke="black"
                                 font-family="Arial" dominant-baseline="middle" text-anchor="middle">
-                                <?php if (!isset($_SESSION['usuario'])) {echo "0";
-                                echo "<script>localStorage.removeItem('cantidades');</script>";} ?></text>
+                                <?php if (!isset($_SESSION['usuario'])) {
+                                    echo "0";
+                                    echo "<script>localStorage.removeItem('cantidades');</script>";
+                                } ?></text>
                         </svg>
                     </a>
                 </div>

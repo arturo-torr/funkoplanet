@@ -45,15 +45,7 @@ class StoreManagerController {
         let body = document.querySelector(".offcanvas-body");
         body.innerHTML = html;
         this[VIEW].offCanvasCarrito.show();
-        let num = document.getElementById("span_cantidades");
-        if (!num) {
-          document.getElementById("numero_items_carrito").textContent = 0;
-        } else {
-          localStorage.setItem("cantidades", num.textContent);
-          let cantidad = localStorage.getItem("cantidades");
-          document.getElementById("numero_items_carrito").textContent =
-            cantidad;
-        }
+        this[VIEW].actualizarCarrito();
       })
       .catch((error) => {
         console.error("Error al actualizar el offCanvas:", error);
