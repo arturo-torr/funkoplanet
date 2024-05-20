@@ -24,31 +24,37 @@ class StoreManagerController {
     this[VIEW].bindDecrementButton(this.handleDecrement);
     this[VIEW].bindCompraButton(this.handleCompra);
     this[VIEW].bindCarrito(this.handleCarrito);
+    this[VIEW].bindFinalizarCompra(this.handleFinalizar);
     //this[VIEW].bindCategoriesCrud(this.handleCategoriesCrud);
     this[VIEW].changeImagesInNewProducts();
     // this[VIEW].bindAdminMenu(this.handleNewCategoryForm);
+    this[VIEW].mostrarCantidad();
   };
 
   // Manejador que abre el carrito de la compra con los productos de la sesión
   handleCarrito = () => {
-    // Segundo fetch para actualizar el offCanvas
-    fetch("/funkoplanet/views/mostrar_carrito.php")
+    fetch("/funkoplanet/web/controlador_productos.php", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: `parametro=${"productoCarrito"}`,
+    })
       .then((response) => response.text())
       .then((html) => {
-        // Actualizar el offCanvas con el HTML recibido
-        let offcanvas = document.getElementById("offCanvasCarrito");
         let body = document.querySelector(".offcanvas-body");
         body.innerHTML = html;
-        let offCanvasCarrito = new bootstrap.Offcanvas(offcanvas); // Usa el elemento directamente
-        offCanvasCarrito.show();
+        this[VIEW].offCanvasCarrito.show();
+        this[VIEW].actualizarCarrito();
       })
       .catch((error) => {
         console.error("Error al actualizar el offCanvas:", error);
       });
   };
 
-  // Manejador que recibe
+  // Manejador que recibe el id de producto y la cantidad para actualizar el carrito
   handleCompra = (idProducto, cantidad) => {
+    // Pasa a numero la cantidad
     cantidad = Number(cantidad);
 
     fetch("/funkoplanet/web/procesar_carrito.php", {
@@ -70,7 +76,7 @@ class StoreManagerController {
         return response.json();
       })
       .then((data) => {
-        console.log("Producto agregado al carrito:", data);
+        // Llama al manejador de carrito para atualizarlo
         this.handleCarrito();
       })
       .catch((error) => {
@@ -80,21 +86,12 @@ class StoreManagerController {
 
   // Maneja el botón de incremento de cantidad de producto
   handleIncrement = () => {
-    let cantidadSpan = document.getElementById("cantidad");
-    let cantidad = parseFloat(cantidadSpan.innerText);
-    cantidad++;
-    cantidadSpan.innerHTML = cantidad;
+    this[VIEW].incrementarCantidad();
   };
 
   // Maneja el botón de decremento de cantidad de producto
   handleDecrement = () => {
-    let cantidadSpan = document.getElementById("cantidad");
-    let cantidad = parseFloat(cantidadSpan.innerText);
-
-    if (cantidad > 1) {
-      cantidad--;
-      cantidadSpan.innerHTML = cantidad;
-    }
+    this[VIEW].decrementarCantidad();
   };
 
   // Función que se ejecuta al cargar la página
@@ -145,7 +142,7 @@ class StoreManagerController {
         }
       })
       .catch((error) => {
-        console.error("Error:", error); // Manejar el error
+        console.error("Error:", error);
       });
   };
 
@@ -157,6 +154,11 @@ class StoreManagerController {
   // Maneajdor que redigige hacia la vista php con el id del producto
   handleProduct = (id) => {
     window.location.href = `/funkoplanet/web/controlador_productos.php?parametro=productClicked&id=${id}`;
+  };
+
+  handleFinalizar = () => {
+    window.location.href =
+      window.location.href = `/funkoplanet/web/controlador_productos.php?parametro=finalizarCompra`;
   };
 
   // Manejador que devuelve una promesa permitiendo cargar las categorías en la barra de navegación

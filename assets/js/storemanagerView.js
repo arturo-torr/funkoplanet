@@ -8,6 +8,9 @@ class StoreManagerView {
     this.centralzone = document.getElementById("central_zone");
     this.nuevosProductos = document.getElementById("nuevos_productos");
     this.menu = document.querySelector(".navbar");
+    this.offCanvasCarrito = new bootstrap.Offcanvas(
+      document.getElementById("offCanvasCarrito")
+    );
   }
 
   [EXECUTE_HANDLER](
@@ -214,6 +217,25 @@ class StoreManagerView {
     }
   }
 
+  // Aumenta la cantidad al clickear en el botón de incremento
+  incrementarCantidad() {
+    let cantidadSpan = document.getElementById("cantidad");
+    let cantidad = parseFloat(cantidadSpan.innerText);
+    cantidad++;
+    cantidadSpan.innerHTML = cantidad;
+  }
+
+  // Disminuye la cantidad al clickear en el botón de decremento
+  decrementarCantidad() {
+    let cantidadSpan = document.getElementById("cantidad");
+    let cantidad = parseFloat(cantidadSpan.innerText);
+
+    if (cantidad > 1) {
+      cantidad--;
+      cantidadSpan.innerHTML = cantidad;
+    }
+  }
+
   // Manejador para cuando se clickea en botón de incremento
   bindIncrementButton(handler) {
     const button = document.getElementById("btn_incremento");
@@ -244,9 +266,36 @@ class StoreManagerView {
     if (carrito) icon.addEventListener("click", () => handler());
   }
 
-  // // Manejadores que requieren de la validación del formulario
+  // Manejadores que requieren de la validación del formulario
   bindCategoriesCrud(handler) {
     categoriesCrudValidation(handler);
+  }
+
+  // Muestra en el carrito el número de items que tiene
+  mostrarCantidad() {
+    let cantidad = localStorage.getItem("cantidades");
+    if (!cantidad) {
+      document.getElementById("numero_items_carrito").textContent = 0;
+    } else {
+      document.getElementById("numero_items_carrito").textContent = cantidad;
+    }
+  }
+
+  // Actualiza el carrito cuando recibe nuevos items
+  actualizarCarrito() {
+    let num = document.getElementById("span_cantidades");
+    if (!num) {
+      document.getElementById("numero_items_carrito").textContent = 0;
+    } else {
+      localStorage.setItem("cantidades", num.textContent);
+      let cantidad = localStorage.getItem("cantidades");
+      document.getElementById("numero_items_carrito").textContent = cantidad;
+    }
+  }
+
+  bindFinalizarCompra() {
+    const button = document.getElementById("btn_finalizar");
+    if (button) button.addEventListener("click", () => handler());
   }
 }
 
