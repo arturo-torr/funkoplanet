@@ -73,7 +73,9 @@
                             <path d="M6 5l14 1l-1 7h-13" />
                             <circle cx="16" cy="16.5" r="6" fill="#4ae600" stroke="#4ae600" />
                             <text id='numero_items_carrito' x="16" y="17" font-size="8.5" stroke="black"
-                                font-family="Arial" dominant-baseline="middle" text-anchor="middle">0</text>
+                                font-family="Arial" dominant-baseline="middle" text-anchor="middle">
+                                <?php if (!isset($_SESSION['usuario'])) {echo "0";
+                                echo "<script>localStorage.removeItem('cantidades');</script>";} ?></text>
                         </svg>
                     </a>
                 </div>

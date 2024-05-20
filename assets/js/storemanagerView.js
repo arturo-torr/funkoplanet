@@ -217,6 +217,13 @@ class StoreManagerView {
     }
   }
 
+  incrementarCantidad() {
+    let cantidadSpan = document.getElementById("cantidad");
+    let cantidad = parseFloat(cantidadSpan.innerText);
+    cantidad++;
+    cantidadSpan.innerHTML = cantidad;
+  }
+
   // Manejador para cuando se clickea en botón de incremento
   bindIncrementButton(handler) {
     const button = document.getElementById("btn_incremento");
@@ -255,7 +262,11 @@ class StoreManagerView {
   // Muestra en el carrito el número de items que tiene
   mostrarCantidad() {
     let cantidad = localStorage.getItem("cantidades");
-    document.getElementById("numero_items_carrito").textContent = cantidad;
+    if (!cantidad) {
+      document.getElementById("numero_items_carrito").textContent = 0;
+    } else {
+      document.getElementById("numero_items_carrito").textContent = cantidad;
+    }
   }
 }
 
