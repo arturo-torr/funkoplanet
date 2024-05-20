@@ -321,25 +321,37 @@ class StoreManagerView {
 
   // Función que recibe los datos de una promesa php con las nuevas cantidades de un producto, calculando los totales y actualizando el text SVG del carrito
   actualizarPantallaFinalizacionCompra(data, idProducto) {
-    const fila = document.querySelector(`tr[data-id='${idProducto}']`);
-    const cantidadSpan = fila.querySelector(".cantidad");
-    const precioTd = fila.querySelector(".precio");
+    if (data.success) {
+      // Fila que corresponde al id del producto para mostrar los cambios
+      const fila = document.querySelector(`tr[data-id='${idProducto}']`);
 
-    // Actualizar cantidad
-    const nuevaCantidad = data.nuevaCantidad;
-    cantidadSpan.textContent = "x" + nuevaCantidad;
+      // Si la nueva cantidad es 0, recarga la página para eliminar el item de la pantalla de carrito
+      if (data.nuevaCantidad === 0) {
+        location.reload();
+      } else {
+        // Span de cantidad
+        const cantidadSpan = fila.querySelector(".cantidad");
+        // Td que tiene el precio
+        const precioTd = fila.querySelector(".precio");
 
-    // Actualizar precio
-    const nuevoPrecio = data.nuevoPrecio.toFixed(2) + "€";
-    precioTd.textContent = nuevoPrecio;
+        // Actualiza la cantidad correspondiente
+        const nuevaCantidad = data.nuevaCantidad;
+        cantidadSpan.textContent = "x" + nuevaCantidad;
 
-    // Actualizar total
-    document.getElementById("total").textContent =
-      "Total: " + data.total.toFixed(2) + "€";
+        // Actualizar el precio correspondiente
+        const nuevoPrecio = data.nuevoPrecio.toFixed(2) + "€";
+        precioTd.textContent = nuevoPrecio;
 
-    localStorage.setItem("cantidades", data.totalCantidades);
-    let cantidad = localStorage.getItem("cantidades");
-    document.getElementById("numero_items_carrito").textContent = cantidad;
+        // Actualiza el total de la pantalla de finalización de compra
+        document.getElementById("total").textContent =
+          "Total: " + data.total.toFixed(2) + "€";
+      }
+
+      // Actualiza local storage para el text SVG del carrito
+      localStorage.setItem("cantidades", data.totalCantidades);
+      let cantidad = localStorage.getItem("cantidades");
+      document.getElementById("numero_items_carrito").textContent = cantidad;
+    }
   }
 }
 
