@@ -8,9 +8,9 @@ try {
         // Obtener los datos del producto del cuerpo de la solicitud
         $data = json_decode(file_get_contents('php://input'), true);
 
-        // Verificar si el usuario está autenticado
+        // Comprueba si el usuario está autenticado
         if (!isset($_SESSION['usuario'])) {
-            http_response_code(401); // No autorizado
+            http_response_code(401);
             echo json_encode(['error' => 'El usuario no está autenticado.']);
             exit;
         }
@@ -19,37 +19,34 @@ try {
         $idProducto = $data['idProducto'];
         $cantidad = $data['cantidad'];
 
-        // Agregar el producto al carrito de compras en la sesión
         if (!isset($_SESSION['carrito'])) {
             $_SESSION['carrito'] = [];
         }
 
         $productoEncontrado = false;
-        // Buscar el producto en el carrito y actualizar su cantidad
+        // Busca si el producto se encuentra en el carrito
         foreach ($_SESSION['carrito'] as $index => $producto) {
+            // Si lo encuentra, actualiza la cantidad y pone la vriable a true
             if ($producto['idProducto'] === $idProducto) {
-                // Producto encontrado, actualizar la cantidad
                 $_SESSION['carrito'][$index]['cantidad'] += $cantidad;
                 $productoEncontrado = true;
-                break; // Salir del bucle una vez que se haya encontrado el producto
+                break;
             }
         }
 
+        // Si el producto no estaba anteriormente lo añade al carrito
         if (!$productoEncontrado) {
-            // Si el producto no está en el carrito, agregarlo
             $_SESSION['carrito'][] = [
                 'idProducto' => $idProducto,
                 'cantidad' => $cantidad
             ];
         }
-
-        // Devolver una respuesta de éxito
         echo json_encode(['success' => true]);
     } else {
-        http_response_code(405); // Método no permitido
+        http_response_code(405);
         echo json_encode(['error' => 'Método no permitido']);
     }
 } catch (Exception $e) {
-    http_response_code(500); // Error interno del servidor
+    http_response_code(500);
     echo json_encode(['error' => $e->getMessage()]);
 }

@@ -3,7 +3,7 @@ session_start();
 
 header('Content-Type: application/json');
 
-// Verificar si existe un carrito en la sesión
+// Comprobar si existe un carrito en la sesión
 if (!isset($_SESSION['carrito']) || empty($_SESSION['carrito'])) {
     echo "<p class='fw-bold'>¡Ooops! Parece que todavía no tienes nada en el carrito.</p>";
     exit;
@@ -42,6 +42,6 @@ echo "<div class='col-auto text-end'><span class='fw-bold'>Total: " . number_for
 echo "<span id='span_cantidades' style='display: none'>$totalCantidades</span>";
 echo "<hr>";
 echo "<div class='d-flex justify-content-center'>";
-echo "<button class='btn btn_purple text-white fw-bold' id='btn_pago'>Finalizar compra</button>";
+echo "<button class='btn btn_purple text-white fw-bold' id='btn_finalizar'>Finalizar compra</button>";
 echo "</div>";
 echo "</div>";

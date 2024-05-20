@@ -217,11 +217,23 @@ class StoreManagerView {
     }
   }
 
+  // Aumenta la cantidad al clickear en el botón de incremento
   incrementarCantidad() {
     let cantidadSpan = document.getElementById("cantidad");
     let cantidad = parseFloat(cantidadSpan.innerText);
     cantidad++;
     cantidadSpan.innerHTML = cantidad;
+  }
+
+  // Disminuye la cantidad al clickear en el botón de decremento
+  decrementarCantidad() {
+    let cantidadSpan = document.getElementById("cantidad");
+    let cantidad = parseFloat(cantidadSpan.innerText);
+
+    if (cantidad > 1) {
+      cantidad--;
+      cantidadSpan.innerHTML = cantidad;
+    }
   }
 
   // Manejador para cuando se clickea en botón de incremento
@@ -279,6 +291,11 @@ class StoreManagerView {
       let cantidad = localStorage.getItem("cantidades");
       document.getElementById("numero_items_carrito").textContent = cantidad;
     }
+  }
+
+  bindFinalizarCompra() {
+    const button = document.getElementById("btn_finalizar");
+    if (button) button.addEventListener("click", () => handler());
   }
 }
 
