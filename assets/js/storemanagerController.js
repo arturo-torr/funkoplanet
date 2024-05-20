@@ -24,11 +24,33 @@ class StoreManagerController {
     this[VIEW].bindDecrementButton(this.handleDecrement);
     this[VIEW].bindCompraButton(this.handleCompra);
     this[VIEW].bindCarrito(this.handleCarrito);
-    this[VIEW].bindFinalizarCompra(this.handleFinalizar);
-    //this[VIEW].bindCategoriesCrud(this.handleCategoriesCrud);
+    this[VIEW].bindIncrementoFinalizarCompra(this.handleCantidadesFinCompra);
+    this[VIEW].bindDecrementoFinalizarCompra(this.handleCantidadesFinCompra);
     this[VIEW].changeImagesInNewProducts();
-    // this[VIEW].bindAdminMenu(this.handleNewCategoryForm);
     this[VIEW].mostrarCantidad();
+  };
+
+  // Manejador que se da cuando se ha realizado click en botones de incrementar o decrementar en pantalla de finalización de compra
+  handleCantidadesFinCompra = (idProducto, cambio) => {
+    fetch("actualizar_carrito.php", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        idProducto: idProducto,
+        cambio: cambio,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          this[VIEW].actualizarPantallaFinalizacionCompra(data, idProducto);
+        } else {
+          console.error("Error al actualizar el carrito");
+        }
+      })
+      .catch((error) => console.error("Error:", error));
   };
 
   // Manejador que abre el carrito de la compra con los productos de la sesión
@@ -46,6 +68,7 @@ class StoreManagerController {
         body.innerHTML = html;
         this[VIEW].offCanvasCarrito.show();
         this[VIEW].actualizarCarrito();
+        this[VIEW].bindFinalizarCompra(this.handleFinalizar);
       })
       .catch((error) => {
         console.error("Error al actualizar el offCanvas:", error);
@@ -76,7 +99,7 @@ class StoreManagerController {
         return response.json();
       })
       .then((data) => {
-        // Llama al manejador de carrito para atualizarlo
+        // Llama al manejador de carrito para actualizarlo
         this.handleCarrito();
       })
       .catch((error) => {
@@ -156,9 +179,9 @@ class StoreManagerController {
     window.location.href = `/funkoplanet/web/controlador_productos.php?parametro=productClicked&id=${id}`;
   };
 
+  // Manejador qeu redirige hacia la vista php para finalizar la compra con los items del carrito
   handleFinalizar = () => {
-    window.location.href =
-      window.location.href = `/funkoplanet/web/controlador_productos.php?parametro=finalizarCompra`;
+    window.location.href = `/funkoplanet/web/controlador_productos.php?parametro=finalizarCompra`;
   };
 
   // Manejador que devuelve una promesa permitiendo cargar las categorías en la barra de navegación
