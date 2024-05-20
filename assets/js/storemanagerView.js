@@ -293,9 +293,53 @@ class StoreManagerView {
     }
   }
 
-  bindFinalizarCompra() {
+  // Manejador que se da cuando se realiza click en el botón dentro del carrito
+  bindFinalizarCompra(handler) {
     const button = document.getElementById("btn_finalizar");
     if (button) button.addEventListener("click", () => handler());
+  }
+
+  // Enlazador que se da cuando se clickea en el botón de incremento al finalizar la compra
+  bindIncrementoFinalizarCompra(handler) {
+    document.querySelectorAll(".btn_incremento").forEach((button) => {
+      button.addEventListener("click", function () {
+        const idProducto = this.getAttribute("data-id");
+        handler(idProducto, 1);
+      });
+    });
+  }
+
+  // Enlazador que se da cuando se clickea en el botón de decremento al finalizar la compra
+  bindDecrementoFinalizarCompra(handler) {
+    document.querySelectorAll(".btn_decremento").forEach((button) => {
+      button.addEventListener("click", function () {
+        const idProducto = this.getAttribute("data-id");
+        handler(idProducto, -1);
+      });
+    });
+  }
+
+  // Función que recibe los datos de una promesa php con las nuevas cantidades de un producto, calculando los totales y actualizando el text SVG del carrito
+  actualizarPantallaFinalizacionCompra(data, idProducto) {
+    const fila = document.querySelector(`tr[data-id='${idProducto}']`);
+    const cantidadSpan = fila.querySelector(".cantidad");
+    const precioTd = fila.querySelector(".precio");
+
+    // Actualizar cantidad
+    const nuevaCantidad = data.nuevaCantidad;
+    cantidadSpan.textContent = "x" + nuevaCantidad;
+
+    // Actualizar precio
+    const nuevoPrecio = data.nuevoPrecio.toFixed(2) + "€";
+    precioTd.textContent = nuevoPrecio;
+
+    // Actualizar total
+    document.getElementById("total").textContent =
+      "Total: " + data.total.toFixed(2) + "€";
+
+    localStorage.setItem("cantidades", data.totalCantidades);
+    let cantidad = localStorage.getItem("cantidades");
+    document.getElementById("numero_items_carrito").textContent = cantidad;
   }
 }
 
