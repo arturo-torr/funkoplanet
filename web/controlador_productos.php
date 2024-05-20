@@ -45,6 +45,9 @@ switch ($parametro) {
         header("Location: /funkoplanet/views/individualproduct.php?product=$id");
         exit();
         break;
+    case 'productoCarrito':
+        require_once '../views/mostrar_carrito.php';
+        break;
     default:
         # code...
         break;

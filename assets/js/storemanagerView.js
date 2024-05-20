@@ -8,6 +8,9 @@ class StoreManagerView {
     this.centralzone = document.getElementById("central_zone");
     this.nuevosProductos = document.getElementById("nuevos_productos");
     this.menu = document.querySelector(".navbar");
+    this.offCanvasCarrito = new bootstrap.Offcanvas(
+      document.getElementById("offCanvasCarrito")
+    );
   }
 
   [EXECUTE_HANDLER](
@@ -244,9 +247,15 @@ class StoreManagerView {
     if (carrito) icon.addEventListener("click", () => handler());
   }
 
-  // // Manejadores que requieren de la validación del formulario
+  // Manejadores que requieren de la validación del formulario
   bindCategoriesCrud(handler) {
     categoriesCrudValidation(handler);
+  }
+
+  // Muestra en el carrito el número de items que tiene
+  mostrarCantidad() {
+    let cantidad = localStorage.getItem("cantidades");
+    document.getElementById("numero_items_carrito").textContent = cantidad;
   }
 }
 

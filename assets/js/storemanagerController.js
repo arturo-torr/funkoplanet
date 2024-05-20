@@ -27,20 +27,28 @@ class StoreManagerController {
     //this[VIEW].bindCategoriesCrud(this.handleCategoriesCrud);
     this[VIEW].changeImagesInNewProducts();
     // this[VIEW].bindAdminMenu(this.handleNewCategoryForm);
+    this[VIEW].mostrarCantidad();
   };
 
   // Manejador que abre el carrito de la compra con los productos de la sesión
   handleCarrito = () => {
-    // Segundo fetch para actualizar el offCanvas
-    fetch("/funkoplanet/views/mostrar_carrito.php")
+    // Fetch para actualizar el offCanvas, llamando al controlador de productos
+    fetch("/funkoplanet/web/controlador_productos.php", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: `parametro=${"productoCarrito"}`,
+    })
       .then((response) => response.text())
       .then((html) => {
-        // Actualizar el offCanvas con el HTML recibido
-        let offcanvas = document.getElementById("offCanvasCarrito");
         let body = document.querySelector(".offcanvas-body");
         body.innerHTML = html;
-        let offCanvasCarrito = new bootstrap.Offcanvas(offcanvas); // Usa el elemento directamente
-        offCanvasCarrito.show();
+        this[VIEW].offCanvasCarrito.show();
+        let num = document.getElementById("span_cantidades");
+        localStorage.setItem("cantidades", num.textContent);
+        let cantidad = localStorage.getItem("cantidades");
+        document.getElementById("numero_items_carrito").textContent = cantidad;
       })
       .catch((error) => {
         console.error("Error al actualizar el offCanvas:", error);
