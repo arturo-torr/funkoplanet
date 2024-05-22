@@ -30,97 +30,6 @@ class StoreManagerController {
     this[VIEW].mostrarCantidad();
   };
 
-  // Manejador que se da cuando se ha realizado click en botones de incrementar o decrementar en pantalla de finalización de compra
-  handleCantidadesFinCompra = (idProducto, cambio) => {
-    fetch("actualizar_carrito.php", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        idProducto: idProducto,
-        cambio: cambio,
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.success) {
-          this[VIEW].actualizarPantallaFinalizacionCompra(data, idProducto);
-        } else {
-          console.error("Error al actualizar el carrito");
-        }
-      })
-      .catch((error) => console.error("Error:", error));
-  };
-
-  // Manejador que abre el carrito de la compra con los productos de la sesión
-  handleCarrito = () => {
-    fetch("/funkoplanet/web/controlador_productos.php", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      body: `parametro=${"productoCarrito"}`,
-    })
-      .then((response) => response.text())
-      .then((html) => {
-        let body = document.querySelector(".offcanvas-body");
-        body.innerHTML = html;
-        this[VIEW].offCanvasCarrito.show();
-        this[VIEW].actualizarCarrito();
-        this[VIEW].bindFinalizarCompra(this.handleFinalizar);
-      })
-      .catch((error) => {
-        console.error("Error al actualizar el offCanvas:", error);
-      });
-  };
-
-  // Manejador que recibe el id de producto y la cantidad para actualizar el carrito
-  handleCompra = (idProducto, cantidad) => {
-    // Pasa a numero la cantidad
-    cantidad = Number(cantidad);
-
-    fetch("/funkoplanet/web/procesar_carrito.php", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        idProducto: idProducto,
-        cantidad: cantidad,
-      }),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          return response.json().then((err) => {
-            throw err;
-          });
-        }
-        return response.json();
-      })
-      .then((data) => {
-        // Llama al manejador de carrito para actualizarlo
-        this.handleCarrito();
-      })
-      .catch((error) => {
-        if (error.necesitaAutenticacion) {
-          this[VIEW].necesarioLoginModal();
-        } else {
-          console.error("Error no esperado: ", error);
-        }
-      });
-  };
-
-  // Maneja el botón de incremento de cantidad de producto
-  handleIncrement = () => {
-    this[VIEW].incrementarCantidad();
-  };
-
-  // Maneja el botón de decremento de cantidad de producto
-  handleDecrement = () => {
-    this[VIEW].decrementarCantidad();
-  };
-
   // Función que se ejecuta al cargar la página
   onInit = () => {};
 
@@ -249,6 +158,99 @@ class StoreManagerController {
           reject(error);
         });
     });
+  };
+
+  // Manejador que se da cuando se ha realizado click en botones de incrementar o decrementar en pantalla de finalización de compra
+  handleCantidadesFinCompra = (idProducto, cambio) => {
+    fetch("actualizar_carrito.php", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        idProducto: idProducto,
+        cambio: cambio,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          this[VIEW].actualizarPantallaFinalizacionCompra(data, idProducto);
+        } else {
+          console.error("Error al actualizar el carrito");
+        }
+      })
+      .catch((error) => console.error("Error:", error));
+  };
+
+  // Manejador que abre el carrito de la compra con los productos de la sesión
+  handleCarrito = () => {
+    fetch("/funkoplanet/web/controlador_productos.php", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: `parametro=${"productoCarrito"}`,
+    })
+      .then((response) => response.text())
+      .then((html) => {
+        let body = document.querySelector(".offcanvas-body");
+        body.innerHTML = html;
+        this[VIEW].offCanvasCarrito.show();
+        this[VIEW].actualizarCarrito();
+        this[VIEW].bindFinalizarCompra(this.handleFinalizar);
+      })
+      .catch((error) => {
+        console.error("Error al actualizar el offCanvas:", error);
+      });
+  };
+
+  // Manejador que recibe el id de producto y la cantidad para actualizar el carrito
+  handleCompra = (idProducto, cantidad) => {
+    // Pasa a numero la cantidad
+    cantidad = Number(cantidad);
+
+    fetch("/funkoplanet/web/procesar_carrito.php", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      // El cuerpo de la solicitud es el ID del producto y la cantidad solicitada
+      body: JSON.stringify({
+        idProducto: idProducto,
+        cantidad: cantidad,
+      }),
+    })
+      .then((response) => {
+        // Si no es ok lanza error para poder mostrar posteriormente el modal o el error
+        if (!response.ok) {
+          return response.json().then((err) => {
+            throw err;
+          });
+        }
+        return response.json();
+      })
+      .then((data) => {
+        // Llama al manejador de carrito para actualizarlo
+        this.handleCarrito();
+      })
+      .catch((error) => {
+        if (error.necesitaAutenticacion) {
+          this[VIEW].necesarioLoginModal();
+        } else {
+          console.error("Error no esperado: ", error);
+        }
+      });
+  };
+
+  // Maneja el botón de incremento de cantidad de producto
+  handleIncrement = () => {
+    this[VIEW].incrementarCantidad();
+  };
+
+  // Maneja el botón de decremento de cantidad de producto
+  handleDecrement = () => {
+    this[VIEW].decrementarCantidad();
   };
 }
 

@@ -123,6 +123,12 @@
     border-color: #6F006A;
 }
 
+#cantidad {
+    font-size: 1.35em;
+    color: purple;
+    font-weight: bold;
+}
+
 /** --- COLOR PREFERENCES --- **/
 .purple {
     color: #6F006A;
