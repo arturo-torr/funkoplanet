@@ -23,15 +23,13 @@
     <div class="container-fluid mt-2">
         <div class="row">
             <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-10 mx-auto table-responsive">
-                <form name="fProductos" method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>"
-                    enctype="multipart/form-data">
+                <form name="fProductos" method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>" enctype="multipart/form-data">
                     <fieldset>
                         <legend class='purple'>Administración de Productos</legend>
 
                         <input type='submit' class='btn btn_purple text-white fw-bold' name='Insertar' value='Insertar'>
                         <input type='submit' class='btn btn_purple text-white fw-bold' name='Buscar' value='Buscar'>
-                        <input type='submit' class='btn btn_purple text-white fw-bold' name='Actualizar'
-                            value='Actualizar'>
+                        <input type='submit' class='btn btn_purple text-white fw-bold' name='Actualizar' value='Actualizar'>
                         <input type='submit' class='btn btn_purple text-white fw-bold' name='Borrar' value='Borrar'>
 
 
@@ -309,7 +307,7 @@
                     ?>
 
 
-                    <fieldset>
+                    <fieldset class="my-3">
                         <legend class="purple">Administración de imágenes de Productos</legend>
 
                         <label class="form-label" for="productos">Seleccione el producto que desee:</label>
@@ -388,19 +386,17 @@
                         echo "</fieldset>";
                         echo "</table>";
                         echo "</div>";
-                        echo "<input type='file' class='form-control-sm mx-1' name='NuevaF[]' multiple='multiple'>";
-                        echo "<input type='submit' class='btn btn-danger text-white fw-bold mx-1' name='Eliminar' value='Eliminar'>";
-                        echo "<input type='submit' class='btn btn_purple text-white fw-bold mx-1' name='Guardar' value='Añadir Imágenes'>";
+                        echo "<input type='file' class='form-control-sm mx-1 my-3' name='NuevaF[]' multiple='multiple'>";
+                        echo "<input type='submit' class='btn btn-danger text-white fw-bold mx-1 my-3' name='Eliminar' value='Eliminar'>";
+                        echo "<input type='submit' class='btn btn_purple text-white fw-bold mx-1 my-3' name='Guardar' value='Añadir Imágenes'>";
                     }
                     ?>
                 </form>
             </div>
         </div>
     </div>
-
-
-
     <?php
+    require_once "../views/footer.php";
     require_once "../views/scripts.php";
     ?>
 </body>

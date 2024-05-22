@@ -27,6 +27,7 @@
         </section>
     </main>
     <?php
+    require_once "./views/footer.php";
     require_once "./views/scripts.php";
     ?>
 </body>

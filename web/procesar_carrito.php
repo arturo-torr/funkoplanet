@@ -11,7 +11,7 @@ try {
         // Comprueba si el usuario está autenticado
         if (!isset($_SESSION['usuario'])) {
             http_response_code(401);
-            echo json_encode(['error' => 'El usuario no está autenticado.']);
+            echo json_encode(['necesitaAutenticacion' => 'El usuario no está autenticado.']);
             exit;
         }
 

@@ -24,6 +24,10 @@
         $idProducto = $_GET['product'];
     }
 
+    if (!$idProducto) {
+        header('Location: index.php');
+    }
+
     $prod = new Producto();
     $prod = $daoProductos->obtener($idProducto);
     $cat = new Categoria();
@@ -32,10 +36,8 @@
 
     ?>
 
-    <section id="individual_product" data-aos='fade-up' data-aos-duration='1000'>
+    <section id="individual_product" data-aos='fade-up' data-aos-duration='1000' class="my-4">
         <div class='container-fluid mx-auto w-75 text-center'>
-            <h1 class='purple mt-2 text-center'><?php echo $prod->__get("nombre") ?></h1>
-            <hr class='purple_line mb-2'>
             <div class="row align-items-center">
                 <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6 p-1 mt-2">
                     <div class="container-fluid d-flex justify-content-center text-center">
@@ -43,7 +45,7 @@
                             <?php
                             if (!empty($daoFotosProductos->fotosPro)) {
                                 $conte = $daoFotosProductos->fotosPro[0]->__get("foto");
-                                echo "<img src='data:image/jpg;base64,$conte' class='img-fluid w-50'>";
+                                echo "<img src='data:image/jpg;base64,$conte' class='img-fluid w-75'>";
                             }
                             ?>
                         </div>
@@ -53,7 +55,7 @@
                             <?php
                             foreach ($daoFotosProductos->fotosPro as $key => $fotoPro) {
                                 $conte = $fotoPro->__get("foto");
-                                echo "<div class='border rounded border_purple p-1 mx-1' onmouseover='changeMainImage(\"$conte\")'><img src='data:image/jpg;base64,$conte' class='img-fluid w-50'></div>";
+                                echo "<div class='border rounded border_purple p-1 mx-1 w-100 ' onmouseover='changeMainImage(\"$conte\")'><img src='data:image/jpg;base64,$conte' class='img-fluid w-50'></div>";
                             }
                             ?>
                         </div>
@@ -62,14 +64,15 @@
 
                 <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6">
                     <div class='container-fluid'>
-                        <div class="row align-items-center">
-                            <div class="col-12 align-items-center">
+                        <div class="row">
+                            <div class="col-12">
                                 <?php
                                 $conte = $cat->__get("foto");
                                 echo "<img src='data:image/jpg;base64,$conte' alt='Imagen " . $cat->__get("nombre") . "' class='img-fluid rounded img_individualproduct my-3'>";
                                 ?>
+                                <h1 class='purple mt-2 text-center'><?php echo $prod->__get("nombre") ?></h1>
                                 <p><?php echo $prod->__get("descripcion") ?></p>
-                                <hr class="w-50 text-center mx-auto">
+                                <hr class="w-75 text-center mx-auto">
                                 <?php
                                 if (strtoupper($prod->__get("estado")) == "STOCK") {
                                     echo "<span class='label_individual--stock rounded'>DISPONIBLE</span>";
@@ -83,14 +86,12 @@
                             </div>
                         </div>
 
-                        <div class="row align-items-center ">
+                        <div class="row ">
                             <span class="my-2">Seleccione la cantidad deseada:</span>
                             <div class="col-12">
-                                <button id="btn_decremento"
-                                    class='btn btn_purple px-3 fw-bold text-white mt-1'>-</button>
-                                <span id="cantidad" class="px-3 mt-1">1</span>
-                                <button id="btn_incremento"
-                                    class='btn btn_purple px-3 fw-bold text-white mt-1'>+</button>
+                                <button id="btn_decremento" class='btn btn_purple px-3 fw-bold text-white'>-</button>
+                                <span id="cantidad" class="btn px-3">1</span>
+                                <button id="btn_incremento" class='btn btn_purple px-3 fw-bold text-white'>+</button>
                                 <?php
                                 if (strtoupper($prod->__get("estado")) == "STOCK") {
                                     echo "<button class='btn btn_purple fw-bold text-white no_decoration mx-2 mt-1' id='btn_comprar' data-product='" . $prod->__get("id") . "'>AÑADIR AL CARRITO</button>";
@@ -107,6 +108,7 @@
             </div>
         </div>
     </section>
+
     <!-- Modal -->
     <div class="modal fade" id="modal_usuario" tabindex="-1" aria-labelledby="incorrectoModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -119,20 +121,20 @@
                     Para comprar un producto es necesario estar logueado. Por favor, inicie sesión o regístrese.
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn_purple text-white fw-bold"
-                        data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn_purple text-white fw-bold" data-bs-dismiss="modal">Cerrar</button>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-    function changeMainImage(imageData) {
-        document.getElementById('mainImage').innerHTML = "<img src='data:image/jpg;base64," + imageData +
-            "' class='img-fluid w-50'>";
-    }
+        function changeMainImage(imageData) {
+            document.getElementById('mainImage').innerHTML = "<img src='data:image/jpg;base64," + imageData +
+                "' class='img-fluid w-75'>";
+        }
     </script>
     <?php
+    require_once "../views/footer.php";
     require_once "../views/scripts.php";
     ?>
 </body>
