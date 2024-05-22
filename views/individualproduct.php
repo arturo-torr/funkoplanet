@@ -107,6 +107,7 @@
             </div>
         </div>
     </section>
+
     <!-- Modal -->
     <div class="modal fade" id="modal_usuario" tabindex="-1" aria-labelledby="incorrectoModalLabel" aria-hidden="true">
         <div class="modal-dialog">

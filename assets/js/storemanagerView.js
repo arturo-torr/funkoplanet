@@ -353,6 +353,12 @@ class StoreManagerView {
       document.getElementById("numero_items_carrito").textContent = cantidad;
     }
   }
+
+  // Modal que se muestra cuando el usuario intenta comprar un producto sin estar logueado
+  necesarioLoginModal() {
+    let modal = new bootstrap.Modal(document.getElementById("modal_usuario"));
+    modal.show();
+  }
 }
 
 export default StoreManagerView;

@@ -103,7 +103,11 @@ class StoreManagerController {
         this.handleCarrito();
       })
       .catch((error) => {
-        console.error("Error al agregar producto al carrito:", error);
+        if (error.necesitaAutenticacion) {
+          this[VIEW].necesarioLoginModal();
+        } else {
+          console.error("Error no esperado: ", error);
+        }
       });
   };
 
