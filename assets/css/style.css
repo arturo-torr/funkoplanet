@@ -129,6 +129,20 @@
     font-weight: bold;
 }
 
+/** --- FOOTER --- **/
+.brand:hover {
+    transform: scale(1.05);
+    transition: 200ms;
+    cursor: pointer;
+    stroke: chartreuse;
+    fill: #560955;
+
+}
+
+.ul-p-50 {
+    padding-left: 10vw;
+}
+
 /** --- COLOR PREFERENCES --- **/
 .purple {
     color: #6F006A;

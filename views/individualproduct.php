@@ -36,7 +36,7 @@
 
     ?>
 
-    <section id="individual_product" data-aos='fade-up' data-aos-duration='1000'>
+    <section id="individual_product" data-aos='fade-up' data-aos-duration='1000' class="my-4">
         <div class='container-fluid mx-auto w-75 text-center'>
             <div class="row align-items-center">
                 <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6 p-1 mt-2">
@@ -134,6 +134,7 @@
         }
     </script>
     <?php
+    require_once "../views/footer.php";
     require_once "../views/scripts.php";
     ?>
 </body>

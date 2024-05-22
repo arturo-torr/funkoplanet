@@ -16,13 +16,15 @@
     <div class="container-fluid mt-2">
         <div class="row">
             <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-10 mx-auto table-responsive">
-                <form name="fCategorias" method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>" enctype="multipart/form-data" novalidate>
+                <form name="fCategorias" method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>"
+                    enctype="multipart/form-data" novalidate>
                     <fieldset>
                         <legend class='purple'>Administración de Categorías</legend>
 
                         <input type='submit' class='btn btn_purple text-white fw-bold' name='Insertar' value='Insertar'>
                         <input type='submit' class='btn btn_purple text-white fw-bold' name='Buscar' value='Buscar'>
-                        <input type='submit' class='btn btn_purple text-white fw-bold' name='Actualizar' value='Actualizar'>
+                        <input type='submit' class='btn btn_purple text-white fw-bold' name='Actualizar'
+                            value='Actualizar'>
                         <input type='submit' class='btn btn_purple text-white fw-bold' name='Borrar' value='Borrar'>
                         <input type='reset' class='btn btn_purple text-white fw-bold' name='Cancelar' value='Cancelar'>
 
@@ -216,6 +218,7 @@
 
 
     <?php
+    require_once "../views/footer.php";
     require_once "../views/scripts.php";
     ?>
 </body>

@@ -22,7 +22,7 @@
     $daoFotosProductos = new DaoFotosProductos($db);
     ?>
     <main>
-        <section>
+        <section class="my-5">
             <?php
             // Comprobar si existe un carrito en la sesión
             if (!isset($_SESSION['carrito']) || empty($_SESSION['carrito'])) {
@@ -80,6 +80,7 @@
         </section>
     </main>
     <?php
+    require_once "../views/footer.php";
     require_once "../views/scripts.php";
     ?>
 </body>

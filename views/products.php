@@ -112,8 +112,7 @@
 
             <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-3 mx-auto mt-2 text-center">
                 <br>
-                <input type="submit" name='Filtrar' value='Filtrar'
-                    class="btn btn_purple--dark text-white px-5 fw-bold">
+                <input type="submit" name='Filtrar' value='Filtrar' class="btn btn_purple--dark text-white px-5 fw-bold">
             </div>
         </form>
     </div>
@@ -129,76 +128,77 @@
                 <!-- Contenido principal -->
                 <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 text-center">
                     <?php
-                if (count($daoProductos->productosJSON) == 0) {
-                    echo "<p class='fw-bold'>No se han encontrado productos. ¿Por qué no pruebas con otra categoría o filtro?</p>";
-                }
-                foreach ($daoProductos->productosJSON as $key => $prod) {
-                    // Se lista por el id del producto para obtener posteriormente sus imágenes
-                    $daoFotosProductos->listarPorId($prod["id"]);
-                    // Abre un nuevo div de fila si es el primer producto o si ya se han mostrado 3 productos
-                    if ($cont == 0 || $cont % 4 == 0) {
-                        echo "<div class='row'>";
+                    if (count($daoProductos->productosJSON) == 0) {
+                        echo "<p class='fw-bold'>No se han encontrado productos. ¿Por qué no pruebas con otra categoría o filtro?</p>";
                     }
+                    foreach ($daoProductos->productosJSON as $key => $prod) {
+                        // Se lista por el id del producto para obtener posteriormente sus imágenes
+                        $daoFotosProductos->listarPorId($prod["id"]);
+                        // Abre un nuevo div de fila si es el primer producto o si ya se han mostrado 3 productos
+                        if ($cont == 0 || $cont % 4 == 0) {
+                            echo "<div class='row'>";
+                        }
 
-                    echo "<div class='col-sm-12 col-md-6 col-lg-3 col-xl-3 p-2 product__box' data-aos='fade-up'
+                        echo "<div class='col-sm-12 col-md-6 col-lg-3 col-xl-3 p-2 product__box' data-aos='fade-up'
                     data-aos-duration='1000'>";
-                    if (strtoupper($prod["estado"]) == "STOCK") {
-                        echo "<div class='label__stock rounded'>DISPONIBLE</div>";
-                    } else if (strtoupper($prod["estado"]) == "RESERVA") {
-                        echo "<div class='label__reserva rounded'>RESERVA</div>";
-                    } else if (strtoupper($prod["estado"]) == "AGOTADO") {
-                        echo "<div class='label__agotado rounded'>AGOTADO</div>";
-                    }
-                    echo "<a class='no_decoration' data-product='" . $prod["id"] . "' href='#'>
+                        if (strtoupper($prod["estado"]) == "STOCK") {
+                            echo "<div class='label__stock rounded'>DISPONIBLE</div>";
+                        } else if (strtoupper($prod["estado"]) == "RESERVA") {
+                            echo "<div class='label__reserva rounded'>RESERVA</div>";
+                        } else if (strtoupper($prod["estado"]) == "AGOTADO") {
+                            echo "<div class='label__agotado rounded'>AGOTADO</div>";
+                        }
+                        echo "<a class='no_decoration' data-product='" . $prod["id"] . "' href='#'>
                             <div class='p-3 bg-white'>";
 
-                    // Manejo de imágenes con bucle, el estilo en línea solo muestra una imagen, que es la primera que obtiene de la bbdd 
-                    $imgIndex = 0;
-                    foreach ($daoFotosProductos->fotosPro as $key => $fotoPro) {
-                        if ($imgIndex < 2) {
-                            $conte = $fotoPro->__get("foto");
-                            echo "<img src='data:image/jpg;base64,$conte' class='img-fluid product-image' alt='Imagen " . $prod["id"] . "'' id='product-image-" . $prod["id"] . "-" . $imgIndex . "' style='display:" . ($imgIndex == 0 ? "block" : "none") . "'>";
-                            $imgIndex++;
+                        // Manejo de imágenes con bucle, el estilo en línea solo muestra una imagen, que es la primera que obtiene de la bbdd 
+                        $imgIndex = 0;
+                        foreach ($daoFotosProductos->fotosPro as $key => $fotoPro) {
+                            if ($imgIndex < 2) {
+                                $conte = $fotoPro->__get("foto");
+                                echo "<img src='data:image/jpg;base64,$conte' class='img-fluid product-image' alt='Imagen " . $prod["id"] . "'' id='product-image-" . $prod["id"] . "-" . $imgIndex . "' style='display:" . ($imgIndex == 0 ? "block" : "none") . "'>";
+                                $imgIndex++;
+                            }
                         }
-                    }
 
-                    // Definición de producto
-                    echo "<h3 class='product__name'>" . $prod["nombre"] . "</h3>
+                        // Definición de producto
+                        echo "<h3 class='product__name'>" . $prod["nombre"] . "</h3>
                         <span class='purple product__price--noeffect fw-bold'>" . $prod["precio"] . "€</span>
                         <br>";
 
-                    if (strtoupper($prod["estado"]) == "STOCK") {
-                        echo "<button class='btn btn_purple fw-bold text-white no_decoration mt-2' data-product='" . $prod["id"] . "'>COMPRAR</button>";
-                    } else if (strtoupper($prod["estado"]) == "RESERVA") {
-                        echo "<button class='btn btn_purple fw-bold text-white no_decoration mt-2' data-product='" . $prod["id"] . "'>RESERVAR</button>";
-                    } else if (strtoupper($prod["estado"]) == "AGOTADO") {
-                        echo "<button class='btn btn_purple fw-bold text-white no_decoration mt-2 disabled' role='button' aria-disabled='true' data-product='" . $prod["id"] . "'>COMPRAR</button>";
-                    }
-                    echo "</div>
+                        if (strtoupper($prod["estado"]) == "STOCK") {
+                            echo "<button class='btn btn_purple fw-bold text-white no_decoration mt-2' data-product='" . $prod["id"] . "'>COMPRAR</button>";
+                        } else if (strtoupper($prod["estado"]) == "RESERVA") {
+                            echo "<button class='btn btn_purple fw-bold text-white no_decoration mt-2' data-product='" . $prod["id"] . "'>RESERVAR</button>";
+                        } else if (strtoupper($prod["estado"]) == "AGOTADO") {
+                            echo "<button class='btn btn_purple fw-bold text-white no_decoration mt-2 disabled' role='button' aria-disabled='true' data-product='" . $prod["id"] . "'>COMPRAR</button>";
+                        }
+                        echo "</div>
                         </a>
                     </div>";
 
-                    $cont++;
+                        $cont++;
 
-                    // Cierra la fila si se han mostrado 3 productos
-                    if ($cont % 4 == 0) {
+                        // Cierra la fila si se han mostrado 3 productos
+                        if ($cont % 4 == 0) {
+                            echo "</div>"; // Cierre de la fila
+                        }
+                    }
+                    // Cierra la fila final si no se han mostrado 3 productos
+                    if ($cont % 4 != 0) {
                         echo "</div>"; // Cierre de la fila
                     }
-                }
-                // Cierra la fila final si no se han mostrado 3 productos
-                if ($cont % 4 != 0) {
-                    echo "</div>"; // Cierre de la fila
-                }
 
-                // Cierre de contenedor principal
-                echo " </div>";
-                ?>
+                    // Cierre de contenedor principal
+                    echo " </div>";
+                    ?>
                 </div>
             </div>
         </div>
     </section>
 
     <?php
+    require_once "../views/footer.php";
     require_once "../views/scripts.php";
     ?>
 </body>
