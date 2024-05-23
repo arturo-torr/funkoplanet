@@ -24,6 +24,7 @@ class StoreManagerController {
     this[VIEW].bindIncrementButton(this.handleIncrement);
     this[VIEW].bindDecrementButton(this.handleDecrement);
     this[VIEW].bindCompraButton(this.handleCompra);
+    this[VIEW].bindReservaButton(this.handleCompra);
     this[VIEW].bindCarrito(this.handleCarrito);
     this[VIEW].bindIncrementoFinalizarCompra(this.handleCantidadesFinCompra);
     this[VIEW].bindDecrementoFinalizarCompra(this.handleCantidadesFinCompra);

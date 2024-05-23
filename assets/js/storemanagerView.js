@@ -268,6 +268,18 @@ class StoreManagerView {
     }
   }
 
+  // Manejador para cuando se clcikea en botón de reservar producto
+  bindReservaButton(handler) {
+    const button = document.getElementById("btn_reservar");
+    if (button) {
+      let cantidad = document.getElementById("cantidad");
+      button.addEventListener("click", (event) => {
+        const { product } = event.currentTarget.dataset;
+        handler(product, cantidad.textContent);
+      });
+    }
+  }
+
   // Manejador para cuando se clickea SVG de carrito
   bindCarrito(handler) {
     const icon = document.getElementById("carrito");

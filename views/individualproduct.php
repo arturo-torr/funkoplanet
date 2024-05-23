@@ -89,14 +89,16 @@
                             <div class="row ">
                                 <span class="my-2">Seleccione la cantidad deseada:</span>
                                 <div class="col-12">
-                                    <button id="btn_decremento" class='btn btn_purple px-3 fw-bold text-white'>-</button>
+                                    <button id="btn_decremento"
+                                        class='btn btn_purple px-3 fw-bold text-white'>-</button>
                                     <span id="cantidad" class="btn px-3">1</span>
-                                    <button id="btn_incremento" class='btn btn_purple px-3 fw-bold text-white'>+</button>
+                                    <button id="btn_incremento"
+                                        class='btn btn_purple px-3 fw-bold text-white'>+</button>
                                     <?php
                                     if (strtoupper($prod->__get("estado")) == "STOCK") {
                                         echo "<button class='btn btn_purple fw-bold text-white no_decoration mx-2 mt-1' id='btn_comprar' data-product='" . $prod->__get("id") . "'>AÑADIR AL CARRITO</button>";
                                     } else if (strtoupper($prod->__get("estado")) == "RESERVA") {
-                                        echo "<button class='btn btn_purple fw-bold text-white no_decoration mx-2 mt-1'>RESERVAR PRODUCTO</button>";
+                                        echo "<button class='btn btn_purple fw-bold text-white no_decoration mx-2 mt-1' id='btn_reservar' data-product='" . $prod->__get("id") . "'>RESERVAR PRODUCTO</button>";
                                     } else if (strtoupper($prod->__get("estado")) == "AGOTADO") {
                                         echo "<button class='btn btn_purple fw-bold text-white no_decoration mx-2 mt-1 disabled' role='button' aria-disabled='true'>AÑADIR AL CARRITO</button>";
                                     }
@@ -110,7 +112,8 @@
         </section>
 
         <!-- Modal -->
-        <div class="modal fade" id="modal_usuario" tabindex="-1" aria-labelledby="incorrectoModalLabel" aria-hidden="true">
+        <div class="modal fade" id="modal_usuario" tabindex="-1" aria-labelledby="incorrectoModalLabel"
+            aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header bg_purple text-white">
@@ -121,17 +124,18 @@
                         Para comprar un producto es necesario estar logueado. Por favor, inicie sesión o regístrese.
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn_purple text-white fw-bold" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn btn_purple text-white fw-bold"
+                            data-bs-dismiss="modal">Cerrar</button>
                     </div>
                 </div>
             </div>
         </div>
     </main>
     <script>
-        function changeMainImage(imageData) {
-            document.getElementById('mainImage').innerHTML = "<img src='data:image/jpg;base64," + imageData +
-                "' class='img-fluid w-75'>";
-        }
+    function changeMainImage(imageData) {
+        document.getElementById('mainImage').innerHTML = "<img src='data:image/jpg;base64," + imageData +
+            "' class='img-fluid w-75'>";
+    }
     </script>
     <?php
     require_once "../views/footer.php";

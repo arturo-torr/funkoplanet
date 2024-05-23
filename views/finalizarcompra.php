@@ -21,11 +21,14 @@
     $daoFotosProductos = new DaoFotosProductos($db);
     ?>
     <main>
-        <section class="my-5">
+        <section class="my-5 p-3">
             <?php
             // Comprueba si no existe un carrito o el carrito está vacío
             if (!isset($_SESSION['carrito']) || empty($_SESSION['carrito'])) {
+                echo "<div class='text-center'>";
                 echo "<p class='fw-bold'>¡Ooops! Parece que todavía no tienes nada en el carrito.</p>";
+                echo "<img src='/funkoplanet/assets/img/funkocarrito.png' class='img-fluid w-25' alt='Carrito-Funko'>";
+                echo "</div>";
             } else {
                 $total = 0;
                 $totalCantidades = 0;
@@ -75,6 +78,7 @@
                 echo "</div>";
             }
             ?>
+
         </section>
     </main>
     <?php

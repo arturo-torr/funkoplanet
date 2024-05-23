@@ -152,6 +152,7 @@
 }
 
 /** --- FOOTER --- **/
+
 .brand:hover {
     transform: scale(1.05);
     transition: 200ms;

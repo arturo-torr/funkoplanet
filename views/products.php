@@ -131,7 +131,10 @@
                     <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 text-center">
                         <?php
                         if (count($daoProductos->productosJSON) == 0) {
+                            echo "<div class='text-center'>";
                             echo "<p class='fw-bold'>No se han encontrado productos. ¿Por qué no pruebas con otra categoría o filtro?</p>";
+                            echo "<img src='/funkoplanet/assets/img/not_found.png' class='img-fluid w-25' alt='NoProducts'>";
+                            echo "</div>";
                         }
                         foreach ($daoProductos->productosJSON as $key => $prod) {
                             // Se lista por el id del producto para obtener posteriormente sus imágenes
