@@ -12,7 +12,7 @@
     require_once "./views/header.php";
     ?>
     <main>
-        <section id="carousel_section">
+        <section id="carousel_section" class="my-3">
             <div id="carousel" class="carousel slide" data-bs-ride="carousel">
                 <div class="carousel-inner">
                     <div class="carousel-indicators">
@@ -44,17 +44,64 @@
             </div>
         </section>
 
-        <section id="nuevos_productos" data-aos='fade-up' data-aos-duration='1000'>
+        <section id="nuevos_productos" class="my-3" data-aos='fade-up' data-aos-duration='500'>
             <?php
             $parametro = "nuevosProductos";
             require_once "web/controlador_productos.php";
             ?>
         </section>
-        <section id="central_zone" data-aos='fade-up' data-aos-duration='1000'>
+        <section id="central_zone" class="my-3" data-aos='fade-up' data-aos-duration='500'>
             <?php
             $paramCategorias = "categoriesCentral";
             require_once "web/controlador_categorias.php";
             ?>
+        </section>
+        <section id="beneficios" class="my-3" data-aos='fade-up' data-aos-duration='500'>
+            <div class='container-fluid mx-auto w-75'>
+                <h1 class='purple my-2 text-center'>Beneficios de FunkoPlanet</h1>
+                <hr class="purple_line my-2">
+                <div class="row">
+                    <div class="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                        <div class="card border-0">
+                            <img src="./assets/img/cohete.gif" class="w-50 mx-auto" alt="Card-Cohete">
+                            <div class="card-body">
+                                <h5 class="card-title text-center">Rapidez</h5>
+                                <p class="card-text text-center">Todos nuestros envíos salen del almacen el mismo día
+                                    que lo has
+                                    pedido si es antes de las 18.00h. </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                        <div class="card border-0">
+                            <img src="./assets/img/globo.gif" class="w-50 mx-auto" alt="Card-Descuentos">
+                            <div class="card-body">
+                                <h5 class="card-title text-center">Descuentos</h5>
+                                <p class="card-text text-center">¿Es tu cumpleaños? ¡Estás de suerte! Con FunkoPlanet
+                                    contarás con divertidos descuentos.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                        <div class="card border-0">
+                            <img src="./assets/img/ayuda.gif" class="w-50 mx-auto" alt="Card-Ayuda">
+                            <div class="card-body">
+                                <h5 class="card-title text-center">Ayuda</h5>
+                                <p class="card-text text-center">¿No sabes qué Funko elegir? ¡Nosotros te ayudamos!</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                        <div class="card border-0">
+                            <img src="./assets/img/planeta-verde.gif" class="w-50 mx-auto" alt="Card-Sostenible">
+                            <div class="card-body">
+                                <h5 class="card-title text-center">Sostenibilidad</h5>
+                                <p class="card-text text-center">FunkoPlanet solo utiliza embalajes de cartón 100%
+                                    reciclado para sus envíos. ¡Cuidemos el planeta!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
         </section>
     </main>
     <?php

@@ -1,7 +1,7 @@
 <?php
-echo "<div class='container-fluid mx-auto text-center w-75'>
-<h1 class='purple mt-2'>¡Últimas novedades!</h1>
-<hr class='purple_line mb-2'>";
+echo "<div class='container-fluid mx-auto text-center w-75 my-2'>
+<h1 class='purple mt-2 my-2'>¡Últimas novedades!</h1>
+<hr class='purple_line mb-2 my-2'>";
 
 $cont = 0;
 // Recorre los productos
