@@ -89,7 +89,7 @@ class StoreManagerView {
     li.insertAdjacentHTML(
       "beforeend",
       `<a
-          class="nav-link dropdown-toggle text-white fw-bold no_decoration"
+          class="nav-link dropdown-toggle fw-bold"
           href="#"
           id="navAdministration"
           role="button"
@@ -178,6 +178,14 @@ class StoreManagerView {
     }
   }
 
+  // Manejador que se da cuando se realiza click en el menú item de reservas
+  bindReservas(handler) {
+    const navReservas = document.getElementById("navReservas");
+    navReservas.addEventListener("click", () => handler("Reserva"));
+    const footerReservas = document.getElementById("footer_reservas");
+    footerReservas.addEventListener("click", () => handler("Reserva"));
+  }
+
   // Función que permite mostrar en el menú de navegación un ítem dropdown con las categorías
   bindCategoryListInMenu(handler) {
     const navCats = document.getElementById("categories-list-menu");
@@ -251,6 +259,18 @@ class StoreManagerView {
   // Manejador para cuando se clickea en botón de comprar producto
   bindCompraButton(handler) {
     const button = document.getElementById("btn_comprar");
+    if (button) {
+      let cantidad = document.getElementById("cantidad");
+      button.addEventListener("click", (event) => {
+        const { product } = event.currentTarget.dataset;
+        handler(product, cantidad.textContent);
+      });
+    }
+  }
+
+  // Manejador para cuando se clcikea en botón de reservar producto
+  bindReservaButton(handler) {
+    const button = document.getElementById("btn_reservar");
     if (button) {
       let cantidad = document.getElementById("cantidad");
       button.addEventListener("click", (event) => {

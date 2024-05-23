@@ -5,11 +5,33 @@
 /** --- HEADER --- **/
 .navbar {
     background-color: #6F006A !important;
+    transition: top 0.3s;
 }
 
 .navbar__logo {
     width: 100%;
     max-width: 200px;
+}
+
+.navbar-hidden {
+    top: -100px;
+}
+
+.nav-link.dropdown-toggle:focus {
+    color: chartreuse;
+}
+
+/** --- INDEX --- **/
+
+.carousel-inner {
+    width: 100%;
+    height: 40vw !important;
+}
+
+.carousel-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 /** --- CATEGORIAS --- **/
@@ -130,6 +152,7 @@
 }
 
 /** --- FOOTER --- **/
+
 .brand:hover {
     transform: scale(1.05);
     transition: 200ms;
@@ -137,6 +160,14 @@
     stroke: chartreuse;
     fill: #560955;
 
+}
+
+.footer__item, .nav-link {
+    color: white;
+}
+
+.footer__item:hover, .nav-link:hover {
+    color: chartreuse !important;
 }
 
 .ul-p-50 {

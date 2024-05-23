@@ -5,7 +5,10 @@ header('Content-Type: application/json');
 
 // Comprobar si existe un carrito en la sesión
 if (!isset($_SESSION['carrito']) || empty($_SESSION['carrito'])) {
+    echo "<div class='text-center'>";
     echo "<p class='fw-bold'>¡Ooops! Parece que todavía no tienes nada en el carrito.</p>";
+    echo "<img src='/funkoplanet/assets/img/funkocarrito.png' class='img-fluid w-75' alt='Carrito-Funko'>";
+    echo "</div>";
     exit;
 }
 

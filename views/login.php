@@ -19,68 +19,70 @@
     $daoUsuarios = new DaoUsuarios($db);
     ?>
 
-    <section class="my-5">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-md-6">
-                    <div class="card my-5">
-                        <div class="card-header bg_purple">
-                            <h5 class="card-title text-center text-white fw-bold">¡Bienvenido a FunkoPlanet</h5>
-                        </div>
-                        <div class="card-body">
-                            <form name="fLogin" method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>">
-                                <div class="mb-3 form-group">
-                                    <label for="email" class="form-label">Usuario</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user-square" width="30" height="30" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                <path d="M9 10a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" />
-                                                <path d="M6 21v-1a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v1" />
-                                                <path d="M3 5a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v14a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-14z" />
-                                            </svg>
-                                        </span>
-                                        <input type="text" class="form-control" id="username" name="username">
+    <main>
+        <section class="py-5">
+            <div class="container-fluid">
+                <div class="row justify-content-center">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                        <div class="card my-4">
+                            <div class="card-header bg_purple">
+                                <h5 class="card-title text-center text-white fw-bold">¡Bienvenido a FunkoPlanet</h5>
+                            </div>
+                            <div class="card-body">
+                                <form name="fLogin" method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>">
+                                    <div class="mb-3 form-group">
+                                        <label for="email" class="form-label">Usuario</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user-square" width="30" height="30" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                    <path d="M9 10a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" />
+                                                    <path d="M6 21v-1a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v1" />
+                                                    <path d="M3 5a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v14a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-14z" />
+                                                </svg>
+                                            </span>
+                                            <input type="text" class="form-control" id="username" name="username">
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="mb-3 form-group">
-                                    <label for="password" class="form-label">Contraseña</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-password" width="30" height="30" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                <path d="M12 10v4" />
-                                                <path d="M10 13l4 -2" />
-                                                <path d="M10 11l4 2" />
-                                                <path d="M5 10v4" />
-                                                <path d="M3 13l4 -2" />
-                                                <path d="M3 11l4 2" />
-                                                <path d="M19 10v4" />
-                                                <path d="M17 13l4 -2" />
-                                                <path d="M17 11l4 2" />
-                                            </svg>
-                                        </span>
-                                        <input type="password" class="form-control" id="password" name="password">
+                                    <div class="mb-3 form-group">
+                                        <label for="password" class="form-label">Contraseña</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-password" width="30" height="30" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                    <path d="M12 10v4" />
+                                                    <path d="M10 13l4 -2" />
+                                                    <path d="M10 11l4 2" />
+                                                    <path d="M5 10v4" />
+                                                    <path d="M3 13l4 -2" />
+                                                    <path d="M3 11l4 2" />
+                                                    <path d="M19 10v4" />
+                                                    <path d="M17 13l4 -2" />
+                                                    <path d="M17 11l4 2" />
+                                                </svg>
+                                            </span>
+                                            <input type="password" class="form-control" id="password" name="password">
+                                        </div>
                                     </div>
-                                </div>
-                                <!-- Botón de inicio de sesión -->
-                                <button type="submit" name='Enviar' class="btn btn_purple text-white fw-bold">Iniciar
-                                    sesión</button>
-                            </form>
+                                    <!-- Botón de inicio de sesión -->
+                                    <button type="submit" name='Enviar' class="btn btn_purple text-white fw-bold">Iniciar
+                                        sesión</button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-
-    </section>
+        </section>
+    </main>
 
     <!-- Modal -->
     <div class="modal fade" id="incorrectoModal" tabindex="-1" aria-labelledby="incorrectoModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header bg_purple text-white">
-                    <h1 class="modal-title fs-5 fw-bold" id="incorrectoModalLabel">Usuario o contraseña incorrectos</h1>
+                    <h1 class="modal-title fs-5 fw-bold" id="incorrectoModalLabel">Usuario o contraseña incorrectos
+                    </h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">

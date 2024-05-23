@@ -1,7 +1,7 @@
 <?php
-echo "<div id='categories-list' class='row mx-auto w-75 text-center'>
-<h1 class='purple mt-2'>Categorías</h1>
-<hr class='purple_line'>";
+echo "<div id='categories-list' class='row mx-auto w-75 text-center my-2'>
+<h1 class='purple mt-2 my-2'>Categorías</h1>
+<hr class='purple_line my-2'>";
 
 
 foreach ($daoCategorias->categorias as $key => $value) {

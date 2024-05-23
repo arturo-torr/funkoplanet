@@ -20,9 +20,11 @@ class StoreManagerController {
     this.onAddCategory();
     this.onAddEvent();
     this[VIEW].bindProducts(this.handleProduct);
+    this[VIEW].bindReservas(this.handleReservas);
     this[VIEW].bindIncrementButton(this.handleIncrement);
     this[VIEW].bindDecrementButton(this.handleDecrement);
     this[VIEW].bindCompraButton(this.handleCompra);
+    this[VIEW].bindReservaButton(this.handleCompra);
     this[VIEW].bindCarrito(this.handleCarrito);
     this[VIEW].bindIncrementoFinalizarCompra(this.handleCantidadesFinCompra);
     this[VIEW].bindDecrementoFinalizarCompra(this.handleCantidadesFinCompra);
@@ -90,6 +92,11 @@ class StoreManagerController {
   // Maneajdor que redigige hacia la vista php con el id del producto
   handleProduct = (id) => {
     window.location.href = `/funkoplanet/web/controlador_productos.php?parametro=productClicked&id=${id}`;
+  };
+
+  // Manejaador que redirige hacia la vista php con las reservas
+  handleReservas = (label) => {
+    window.location.href = `/funkoplanet/views/products.php?category=&disponibilidad=${label}&orden=nuevos&Filtrar=Filtrar`;
   };
 
   // Manejador qeu redirige hacia la vista php para finalizar la compra con los items del carrito
