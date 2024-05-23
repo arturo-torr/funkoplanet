@@ -17,6 +17,10 @@
     top: -100px;
 }
 
+.nav-link.dropdown-toggle:focus {
+    color: chartreuse;
+}
+
 /** --- INDEX --- **/
 
 .carousel-inner {

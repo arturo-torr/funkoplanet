@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <header>
     <nav id="navbar" class="navbar navbar-expand-lg bg-light fixed-top">
         <div class="container-fluid">
@@ -8,7 +9,7 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <!-- Menús de navegación al centro -->
-                <ul class="navbar-nav mx-auto mb-2 mb-lg-0 col-xl-5 col-lg-7">
+                <ul class="navbar-nav">
                     <li class="nav-item">
                         <a class="nav-link fw-bold" aria-current="page" href="/funkoplanet/index.php" id="init">Inicio</a>
                     </li>
@@ -22,13 +23,16 @@
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle show text-white fw-bold" href="#" id="navEvents" role="button" data-bs-toggle="dropdown" aria-expanded="true">Eventos</a>
+                        <a class="nav-link dropdown-toggle show fw-bold" href="#" id="navEvents" role="button" data-bs-toggle="dropdown" aria-expanded="true">Eventos</a>
                         <ul class="dropdown-menu" data-bs-popper="static">
                         </ul>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white fw-bold" href="#" id="navReservas" role="button">Reservas</a>
+                    </li>
                 </ul>
                 <!-- SVGs a la derecha -->
-                <div class="d-flex">
+                <div class="d-flex ms-auto">
                     <div class="nav-item dropdown">
                         <a class="nav-link" href="#" id="navbarDropdownUser" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user-circle text-white brand" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -40,7 +44,6 @@
                         </a>
                         <ul class="dropdown-menu dropdown-menu-start dropdown-menu-lg-end" aria-labelledby="navbarDropdownUser">
                             <?php
-                            session_start();
                             if (!isset($_SESSION['usuario'])) {
                                 echo "<li><a class='dropdown-item fw-bold' href='/funkoplanet/views/login.php'>Iniciar sesión</a></li>";
                                 echo "<li><a class='dropdown-item fw-bold' href='/funkoplanet/views/registro.php'>Registrarse</a></li>";
