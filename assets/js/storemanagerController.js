@@ -30,8 +30,11 @@ class StoreManagerController {
     this[VIEW].bindDecrementoFinalizarCompra(this.handleCantidadesFinCompra);
     this[VIEW].changeImagesInNewProducts();
     this[VIEW].mostrarCantidad();
+    this[VIEW].bindButtonPago();
+    this[VIEW].bindValidacionPago(this.handlePago);
   };
 
+  handlePago = () => {};
   // Función que se ejecuta al cargar la página
   onInit = () => {};
 
