@@ -29,58 +29,60 @@ function defaultCheckElement(event) {
 function validacionPago(handler) {
   const form = document.forms.fPago;
 
-  form.setAttribute("novalidate", true);
-  form.addEventListener("submit", function (event) {
-    event.preventDefault();
-    event.stopPropagation();
-    let isValid = true;
-    let firstInvalidElement = null;
+  if (form) {
+    form.setAttribute("novalidate", true);
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
+      event.stopPropagation();
+      let isValid = true;
+      let firstInvalidElement = null;
 
-    this.cvc.value = this.cvc.value.trim();
-    if (!this.cvc.checkValidity()) {
-      isValid = false;
-      showFeedBack(this.cvc, false);
-      firstInvalidElement = this.cvc;
-    } else {
-      showFeedBack(this.cvc, true);
-    }
+      this.cvc.value = this.cvc.value.trim();
+      if (!this.cvc.checkValidity()) {
+        isValid = false;
+        showFeedBack(this.cvc, false);
+        firstInvalidElement = this.cvc;
+      } else {
+        showFeedBack(this.cvc, true);
+      }
 
-    this.cardDate.value = this.cardDate.value.trim();
-    if (!this.cardDate.checkValidity()) {
-      isValid = false;
-      showFeedBack(this.cardDate, false);
-      firstInvalidElement = this.cardDate;
-    } else {
-      showFeedBack(this.cardDate, true);
-    }
+      this.cardDate.value = this.cardDate.value.trim();
+      if (!this.cardDate.checkValidity()) {
+        isValid = false;
+        showFeedBack(this.cardDate, false);
+        firstInvalidElement = this.cardDate;
+      } else {
+        showFeedBack(this.cardDate, true);
+      }
 
-    this.creditCard.value = this.creditCard.value.trim();
-    if (!this.creditCard.checkValidity()) {
-      isValid = false;
-      showFeedBack(this.creditCard, false);
-      firstInvalidElement = this.creditCard;
-    } else {
-      showFeedBack(this.creditCard, true);
-    }
+      this.creditCard.value = this.creditCard.value.trim();
+      if (!this.creditCard.checkValidity()) {
+        isValid = false;
+        showFeedBack(this.creditCard, false);
+        firstInvalidElement = this.creditCard;
+      } else {
+        showFeedBack(this.creditCard, true);
+      }
 
-    this.titular.value = this.titular.value.trim();
-    if (!this.titular.checkValidity()) {
-      isValid = false;
-      showFeedBack(this.titular, false);
-      firstInvalidElement = this.titular;
-    } else {
-      showFeedBack(this.titular, true);
-    }
+      this.titular.value = this.titular.value.trim();
+      if (!this.titular.checkValidity()) {
+        isValid = false;
+        showFeedBack(this.titular, false);
+        firstInvalidElement = this.titular;
+      } else {
+        showFeedBack(this.titular, true);
+      }
 
-    if (!isValid) {
-      firstInvalidElement.focus();
-    } else {
-      console.log("valido");
-    }
+      if (!isValid) {
+        firstInvalidElement.focus();
+      } else {
+        handler();
+      }
 
-    event.preventDefault();
-    event.stopPropagation();
-  });
+      event.preventDefault();
+      event.stopPropagation();
+    });
+  }
 }
 
 // function categoriesCrudValidation(handler) {

@@ -380,6 +380,11 @@ class StoreManagerView {
     modal.show();
   }
 
+  pedidoRealizadoModal() {
+    let modal = new bootstrap.Modal(document.getElementById("pedidoRealizado"));
+    modal.show();
+  }
+
   // Manejador que permite en la pantalla de finalización de compra pasar de una parte del acordeón a la otra
   bindButtonPago() {
     let button = document.getElementById("btn_pago");
@@ -395,6 +400,16 @@ class StoreManagerView {
             }
           );
         }
+      });
+    }
+  }
+
+  // Manejador que enlaza el botoón de finalización de compra con el controlador
+  bindButtonFinalizarCompra(handler) {
+    let button = document.getElementById("btn_realizar_compra");
+    if (button) {
+      button.addEventListener("click", function () {
+        handler();
       });
     }
   }

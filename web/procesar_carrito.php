@@ -38,7 +38,7 @@ try {
         if (!$productoEncontrado) {
             $_SESSION['carrito'][] = [
                 'idProducto' => $idProducto,
-                'cantidad' => $cantidad
+                'cantidad' => $cantidad,
             ];
         }
         echo json_encode(['success' => true]);

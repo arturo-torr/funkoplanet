@@ -85,7 +85,7 @@
                                         <span id="span_cantidades"
                                             style="display: none"><?php echo $totalCantidades; ?></span>
                                         <hr>
-                                        <div class="d-flex justify-content-center">
+                                        <div class="d-flex justify-content-center my-2">
                                             <button class="btn btn_purple text-white fw-bold" id="btn_pago">Pasar a
                                                 pago</button>
                                         </div>
@@ -150,8 +150,10 @@
                                         </div>
                                     </div>
                                 </div>
-                                <button type="submit" class="btn btn_purple text-white fw-bold">Realizar
-                                    reserva</button>
+                                <div class="d-flex justify-content-center my-2">
+                                    <button class="btn btn_purple text-white fw-bold" id="btn_realizar_compra">Confirmar
+                                        compra</button>
+                                </div>
                             </form>
 
                         </div>
@@ -164,6 +166,27 @@
         </section>
         </div>
     </main>
+    <!-- Modal -->
+    <div class="modal fade" id="pedidoRealizado" tabindex="-1" aria-labelledby="pedidoRealizadoLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg_purple text-white">
+                    <h1 class="modal-title fs-5 fw-bold" id="pedidoRealizadoLabel">¡Pedido realizado con éxito!
+                    </h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    ¡Gracias por su pedido <?php echo $_SESSION['usuario']['username'] ?>! Podrás verlo a través de Mi
+                    cuenta -> Mis pedidos.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn_purple text-white fw-bold"
+                        data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <?php
     require_once "../views/footer.php";
     require_once "../views/scripts.php";
