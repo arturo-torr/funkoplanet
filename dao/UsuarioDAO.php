@@ -105,6 +105,42 @@ class DaoUsuarios extends DB
         return $user;
     }
 
+    // Función que permite obtener un elemento a partir de un nombre de usuario
+    public function obtenerPorUsername($username)
+    {
+        // Consulta para evitar inyectado de SQL
+        $consulta = "SELECT * FROM usuarios WHERE username=:username";
+        $param = array(":username" => $username);
+
+        // Se realiza para vaciar el array de las mascotas entre consulta y consulta
+        $this->usuarios = array();
+
+        $this->ConsultaDatos($consulta, $param);
+
+        // Cómo solo puede devolver una fila, hacemos la comprobación
+        if (count($this->filas) == 1) {
+            // Asignamos en una variable el array de filas en la posición 0, que es la única que hay
+            $fila = $this->filas[0];
+
+            // Creamos una nueva situación
+            $user = new Usuario();
+
+            // Asignamos las propiedades correspondientes al nuevo objeto
+            $user->__set("id", $fila['id']);
+            $user->__set("username", $fila['username']);
+            $user->__set("email", $fila['email']);
+            $user->__set("password", $fila['password']);
+            $user->__set("tipo", $fila['tipo']);
+            $user->__set("monedero", $fila['monedero']);
+            $user->__set("foto", $fila['foto']);
+        } else {
+            echo "<b>El Id introducido no corresponde con una usuario.</b>";
+        }
+
+        // Devolvemos el objeto
+        return $user;
+    }
+
     // Método que permite eliminar una situación dado un ID
     public function borrar($id)
     {

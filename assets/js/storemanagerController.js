@@ -30,6 +30,32 @@ class StoreManagerController {
     this[VIEW].bindDecrementoFinalizarCompra(this.handleCantidadesFinCompra);
     this[VIEW].changeImagesInNewProducts();
     this[VIEW].mostrarCantidad();
+    this[VIEW].bindButtonPago();
+    this[VIEW].bindValidacionPago(this.handleDatosValidos);
+  };
+
+  // Manejador que se llama cuando los datos del formulario de pago son válidos
+  handleDatosValidos = () => {
+    this.handleFinalizarCompra();
+  };
+
+  // Manejador que llama al php necesario para procesar la compra
+  handleFinalizarCompra = () => {
+    fetch("/funkoplanet/web/procesar_compra.php")
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("No se pudo procesar la compra");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        localStorage.removeItem("cantidades");
+        this[VIEW].pedidoRealizadoModal();
+        window.location.href = `/funkoplanet/index.php`;
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
   };
 
   // Función que se ejecuta al cargar la página

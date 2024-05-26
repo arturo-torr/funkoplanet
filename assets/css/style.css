@@ -174,6 +174,25 @@
     padding-left: 10vw;
 }
 
+/** --- FINALIZAR COMPRA --- **/
+
+.accordion-button:not(.collapsed) {
+    background-color: #6F006A;
+    font-weight: bold;
+    color: white;
+}
+
+.accordion-button:focus, .form-control:focus {
+    box-shadow: none;
+    outline: none;
+    border: 1px solid #6F006A;
+}
+
+.accordion-button::after {
+    color: #fff !important;
+}
+
+
 /** --- COLOR PREFERENCES --- **/
 .purple {
     color: #6F006A;

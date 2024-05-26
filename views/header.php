@@ -97,7 +97,8 @@ el navbar y mostrarlo si se realiza scroll hacia  arriba -->
         var navbarHeight = navbar.offsetHeight;
 
         // Ajusta el margen superior del main para que no se solape con el navbar
-        main.style.marginTop = navbarHeight + 'px';
+        // Se ha añadido el -2 porque quedaba un ligero pixel al re scrollear hacia arriba en el carrusel
+        main.style.marginTop = navbarHeight - 2 + 'px';
 
         var lastScrollTop = 0;
         // Captura el scroll

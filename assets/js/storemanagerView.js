@@ -1,4 +1,4 @@
-//import { categoriesCrudValidation } from "./validation.js";
+import { validacionPago } from "./validation.js";
 
 const EXECUTE_HANDLER = Symbol("executeHandler");
 
@@ -378,6 +378,45 @@ class StoreManagerView {
   necesarioLoginModal() {
     let modal = new bootstrap.Modal(document.getElementById("modal_usuario"));
     modal.show();
+  }
+
+  pedidoRealizadoModal() {
+    let modal = new bootstrap.Modal(document.getElementById("pedidoRealizado"));
+    modal.show();
+  }
+
+  // Manejador que permite en la pantalla de finalización de compra pasar de una parte del acordeón a la otra
+  bindButtonPago() {
+    let button = document.getElementById("btn_pago");
+    if (button) {
+      button.addEventListener("click", function () {
+        let headerButton = document.getElementById("header_pago_button");
+        if (headerButton) {
+          headerButton.disabled = false;
+          let collapseTwo = new bootstrap.Collapse(
+            document.getElementById("collapseTwo"),
+            {
+              toggle: true,
+            }
+          );
+        }
+      });
+    }
+  }
+
+  // Manejador que enlaza el botoón de finalización de compra con el controlador
+  bindButtonFinalizarCompra(handler) {
+    let button = document.getElementById("btn_realizar_compra");
+    if (button) {
+      button.addEventListener("click", function () {
+        handler();
+      });
+    }
+  }
+
+  // VALIDACIONES
+  bindValidacionPago(handler) {
+    validacionPago(handler);
   }
 }
 
