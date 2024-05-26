@@ -390,13 +390,13 @@ class StoreManagerView {
     let footerCloseButton = document.getElementById("btn_cerrar_modal");
 
     // Función para redirigir
-    let redirectToIndex = () => {
+    let redirigir = () => {
       window.location.href = `/funkoplanet/index.php`;
     };
 
     // Cuando se clickea en cualquiera de las partes para cerrar, redirige al índice
-    closeButton.addEventListener("click", redirectToIndex);
-    footerCloseButton.addEventListener("click", redirectToIndex);
+    closeButton.addEventListener("click", redirigir);
+    footerCloseButton.addEventListener("click", redirigir);
   }
 
   // Manejador que permite en la pantalla de finalización de compra pasar de una parte del acordeón a la otra
@@ -425,6 +425,13 @@ class StoreManagerView {
       button.addEventListener("click", function () {
         handler();
       });
+    }
+  }
+
+  bindMisPedidos(handler) {
+    let enlace = document.getElementById("mis_pedidos");
+    if (enlace) {
+      enlace.addEventListener("click", () => handler());
     }
   }
 

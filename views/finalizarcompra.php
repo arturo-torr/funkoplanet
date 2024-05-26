@@ -178,8 +178,8 @@
                         aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    ¡Gracias por su pedido <?php echo $_SESSION['usuario']['username'] ?>! Podrás verlo a través de Mi
-                    cuenta -> Mis pedidos.
+                    ¡Gracias por tu pedido, <strong> <?php echo $_SESSION['usuario']['username'] ?></strong>! Podrás
+                    encontrarlo en el apartado de "Mis pedidos".
                 </div>
                 <div class="modal-footer">
                     <button type="button" id="btn_cerrar_modal" class="btn btn_purple text-white fw-bold"
