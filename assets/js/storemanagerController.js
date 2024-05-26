@@ -51,7 +51,6 @@ class StoreManagerController {
       .then((data) => {
         localStorage.removeItem("cantidades");
         this[VIEW].pedidoRealizadoModal();
-        window.location.href = `/funkoplanet/index.php`;
       })
       .catch((error) => {
         console.error("Error:", error);
