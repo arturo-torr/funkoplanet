@@ -380,9 +380,23 @@ class StoreManagerView {
     modal.show();
   }
 
+  // Muestra el modal cuando un pedido se ha completado correctamente
   pedidoRealizadoModal() {
     let modal = new bootstrap.Modal(document.getElementById("pedidoRealizado"));
     modal.show();
+
+    // Botones de cerrado del modal
+    let closeButton = document.getElementById("modal-close");
+    let footerCloseButton = document.getElementById("btn_cerrar_modal");
+
+    // Función para redirigir
+    let redirigir = () => {
+      window.location.href = `/funkoplanet/index.php`;
+    };
+
+    // Cuando se clickea en cualquiera de las partes para cerrar, redirige al índice
+    closeButton.addEventListener("click", redirigir);
+    footerCloseButton.addEventListener("click", redirigir);
   }
 
   // Manejador que permite en la pantalla de finalización de compra pasar de una parte del acordeón a la otra
@@ -411,6 +425,13 @@ class StoreManagerView {
       button.addEventListener("click", function () {
         handler();
       });
+    }
+  }
+
+  bindMisPedidos(handler) {
+    let enlace = document.getElementById("mis_pedidos");
+    if (enlace) {
+      enlace.addEventListener("click", () => handler());
     }
   }
 

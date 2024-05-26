@@ -21,6 +21,7 @@ class StoreManagerController {
     this.onAddEvent();
     this[VIEW].bindProducts(this.handleProduct);
     this[VIEW].bindReservas(this.handleReservas);
+    this[VIEW].bindMisPedidos(this.handleMisPedidos);
     this[VIEW].bindIncrementButton(this.handleIncrement);
     this[VIEW].bindDecrementButton(this.handleDecrement);
     this[VIEW].bindCompraButton(this.handleCompra);
@@ -49,9 +50,9 @@ class StoreManagerController {
         return response.json();
       })
       .then((data) => {
+        // Elimina de localStorage las cantidades para que se actualice a 0
         localStorage.removeItem("cantidades");
         this[VIEW].pedidoRealizadoModal();
-        window.location.href = `/funkoplanet/index.php`;
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -128,6 +129,11 @@ class StoreManagerController {
   // Manejador qeu redirige hacia la vista php para finalizar la compra con los items del carrito
   handleFinalizar = () => {
     window.location.href = `/funkoplanet/web/controlador_productos.php?parametro=finalizarCompra`;
+  };
+
+  // Manejador que redirige hacia la vista php para visualizar la interfaz de pedidos de un usuario
+  handleMisPedidos = () => {
+    window.location.href = `/funkoplanet/web/controlador_pedidos.php?parametro=misPedidos`;
   };
 
   // Manejador que devuelve una promesa permitiendo cargar las categorías en la barra de navegación

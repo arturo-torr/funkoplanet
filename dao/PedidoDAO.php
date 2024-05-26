@@ -54,4 +54,31 @@ class DaoPedidos extends DB
         // Devolvemos el objeto
         return $pedido;
     }
+
+    // Método que permite listar el contenido de la tabla
+    public function listar($idUsuario)
+    {
+        $consulta = "SELECT * FROM pedido WHERE id_usuario = :id_usuario";
+        $param = array();
+
+        // Se realiza para vaciar el array de las tiendas entre consulta y consulta
+        $this->pedidos = array();
+        $param[":id_usuario"] = $idUsuario;
+
+        // Realiza la consulta;
+        $this->ConsultaDatos($consulta, $param);
+
+        foreach ($this->filas as $fila) {
+            // Creamos una nueva situación
+            $pedido = new Pedido();
+
+            // Asignamos las propiedades correspondientes al nuevo objeto
+            $pedido->__set("id_pedido", $fila['id_pedido']);
+            $pedido->__set("id_usuario", $idUsuario);
+            $pedido->__set("fecha", $fila['fecha']);
+            $pedido->__set("total", $fila['total']);
+            // Se inserta el objeto que acabamos de crear en el Array de objetos tiendas
+            $this->pedidos[] = $pedido;
+        }
+    }
 }
