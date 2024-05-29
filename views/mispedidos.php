@@ -71,8 +71,8 @@
                     }
                 } else {
                     echo "<div class='text-center'>";
-                    echo "<p class='fw-bold'>¡Ooops! Todavía no has reservado ningún artículo. ¿Por qué no te animas?</p>";
-                    echo "<img src='/funkoplanet/assets/img/planta.png' class='img-fluid w-25 rodadora' alt='Planta-Rodadora'>";
+                    echo "<p class='fw-bold'>¡Ooops! Todavía no has hecho ningún pedido. ¿Por qué no te animas?</p>";
+                    echo "<img src='/funkoplanet/assets/img/funkocarrito.png' class='img-fluid w-25' alt='Carrito-Funko'>";
                     echo "</div>";
                 }
                 ?>

@@ -31,12 +31,25 @@
         <section class="py-5 my-2">
             <div class="container">
                 <?php
-
-                if (count($daoPedidos->pedidos) > 0) {
-                    foreach ($daoPedidos->pedidos as $pedido) {
+                $productosEnReserva = array();
+                function comprobarReservaExistente(&$productosEnReserva)
+                {
+                    global $daoDetPedidos;
+                    global $daoProductos;
+                    foreach ($daoDetPedidos->detpedidos as $detpedido) {
+                        $producto = $daoProductos->obtener($detpedido->__get("id_producto"));
+                        if ($producto->__get("estado") == "Reserva") {
+                            $productosEnReserva[] = $detpedido;
+                        }
+                    }
+                }
+                $daoDetPedidos->listarTodos();
+                comprobarReservaExistente($productosEnReserva);
+                if (count($productosEnReserva) > 0) {
+                    foreach ($productosEnReserva as $detpedido) {
                         echo "<div class='card mb-4'>";
                         echo "<div class='card-header bg_purple'>";
-                        echo "<h3 class='text-white'>Reserva en el pedido número <strong>" . $pedido->__get("id_pedido") . "</strong></h3>";
+                        echo "<h3 class='text-white'>Reserva en el pedido número <strong>" . $detpedido->__get("id_pedido") . "</strong></h3>";
                         echo "</div>";
                         echo "<div class='card-body'>";
                         echo "<div class='table-responsive'>";
@@ -48,25 +61,21 @@
                         echo "<th>Precio Unitario</th>";
                         echo "</tr>";
 
-                        $daoDetPedidos->listar($pedido->__get("id_pedido"));
-                        foreach ($daoDetPedidos->detpedidos as $detpedido) {
-                            $producto = $daoProductos->obtener($detpedido->__get("id_producto"));
-                            if ($producto->__get("estado") == "Reserva") {
-                                $daoFotosProductos->listarPorId($producto->__get("id"));
-                                $conte = $daoFotosProductos->fotosPro[0]->__get("foto");
-                                echo "<tr>";
-                                echo "<td><img src='data:image/jpg;base64,$conte' class='img-fluid' style='max-width: 100px;' alt='Producto'></td>";
-                                echo "<td>" . $producto->__get("nombre") . "</td>";
-                                echo "<td>" . $detpedido->__get("cantidad") . "</td>";
-                                echo "<td>" . $detpedido->__get("precio_unitario") . "€</td>";
-                                echo "</tr>";
-                            }
+
+                        $producto = $daoProductos->obtener($detpedido->__get("id_producto"));
+                        if ($producto->__get("estado") == "Reserva") {
+                            $daoFotosProductos->listarPorId($producto->__get("id"));
+                            $conte = $daoFotosProductos->fotosPro[0]->__get("foto");
+                            echo "<tr>";
+                            echo "<td><img src='data:image/jpg;base64,$conte' class='img-fluid' style='max-width: 100px;' alt='Producto'></td>";
+                            echo "<td>" . $producto->__get("nombre") . "</td>";
+                            echo "<td>" . $detpedido->__get("cantidad") . "</td>";
+                            echo "<td>" . $detpedido->__get("precio_unitario") . "€</td>";
+                            echo "</tr>";
                         }
 
+
                         echo "</table>";
-                        echo "</div>";
-                        echo "<div class='row'>";
-                        echo "<h4 class='text-center'>Total del pedido: " . $pedido->__get("total") . "€</h4>";
                         echo "</div>";
                         echo "</div>";
                         echo "</div>";
