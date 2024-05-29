@@ -16,7 +16,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     foreach ($_SESSION['carrito'] as $key => &$item) {
         // Si encuentra el producto actualiza su cantidad
         if ($item['idProducto'] == $idProducto) {
+            $producto = $daoProductos->obtener($idProducto);
             $item['cantidad'] += $cambio;
+
+            if ($item['cantidad'] > $producto->__get("uds_disponibles")) {
+                $item['cantidad'] -= $cambio;
+            }
 
             // Si la cantidad es menor o igual a 0, elimina el producto del carrito
             if ($item['cantidad'] <= 0) {
@@ -25,7 +30,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             // Si el producto no fue eliminado, calcula el nuevo precio
             if (isset($_SESSION['carrito'][$key])) {
-                $producto = $daoProductos->obtener($idProducto);
                 $nuevoPrecio = $producto->__get("precio") * $item['cantidad'];
             } else {
                 $nuevoPrecio = 0;

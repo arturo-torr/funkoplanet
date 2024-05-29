@@ -91,9 +91,9 @@
                                 <div class="col-12">
                                     <button id="btn_decremento"
                                         class='btn btn_purple px-3 fw-bold text-white'>-</button>
-                                    <span id="cantidad" class="btn px-3">1</span>
-                                    <button id="btn_incremento"
-                                        class='btn btn_purple px-3 fw-bold text-white'>+</button>
+                                    <span type='number' id="cantidad" class="btn px-3">1</span>
+                                    <button id="btn_incremento" class='btn btn_purple px-3 fw-bold text-white'
+                                        data-disponibles='<?php echo $prod->__get("uds_disponibles")?>'>+</button>
                                     <?php
                                     if (strtoupper($prod->__get("estado")) == "STOCK") {
                                         echo "<button class='btn btn_purple fw-bold text-white no_decoration mx-2 mt-1' id='btn_comprar' data-product='" . $prod->__get("id") . "'>AÑADIR AL CARRITO</button>";

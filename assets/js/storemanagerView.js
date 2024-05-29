@@ -228,8 +228,13 @@ class StoreManagerView {
   // Aumenta la cantidad al clickear en el botón de incremento
   incrementarCantidad() {
     let cantidadSpan = document.getElementById("cantidad");
+    let button = document.getElementById("btn_incremento");
+    let disponibles = button.getAttribute("data-disponibles");
     let cantidad = parseFloat(cantidadSpan.innerText);
-    cantidad++;
+    //cantidad++;
+    cantidad += 1;
+
+    cantidad > disponibles ? cantidad-- : 0;
     cantidadSpan.innerHTML = cantidad;
   }
 
