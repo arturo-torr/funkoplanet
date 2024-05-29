@@ -36,7 +36,7 @@
                     foreach ($daoPedidos->pedidos as $pedido) {
                         echo "<div class='card mb-4'>";
                         echo "<div class='card-header bg_purple'>";
-                        echo "<h3 class='text-white'>Pedido número <strong>" . $pedido->__get("id_pedido") . "</strong></h3>";
+                        echo "<h3 class='text-white'>Reserva en el pedido número <strong>" . $pedido->__get("id_pedido") . "</strong></h3>";
                         echo "</div>";
                         echo "<div class='card-body'>";
                         echo "<div class='table-responsive'>";
@@ -51,14 +51,16 @@
                         $daoDetPedidos->listar($pedido->__get("id_pedido"));
                         foreach ($daoDetPedidos->detpedidos as $detpedido) {
                             $producto = $daoProductos->obtener($detpedido->__get("id_producto"));
-                            $daoFotosProductos->listarPorId($producto->__get("id"));
-                            $conte = $daoFotosProductos->fotosPro[0]->__get("foto");
-                            echo "<tr>";
-                            echo "<td><img src='data:image/jpg;base64,$conte' class='img-fluid' style='max-width: 100px;' alt='Producto'></td>";
-                            echo "<td>" . $producto->__get("nombre") . "</td>";
-                            echo "<td>" . $detpedido->__get("cantidad") . "</td>";
-                            echo "<td>" . $detpedido->__get("precio_unitario") . "€</td>";
-                            echo "</tr>";
+                            if ($producto->__get("estado") == "Reserva") {
+                                $daoFotosProductos->listarPorId($producto->__get("id"));
+                                $conte = $daoFotosProductos->fotosPro[0]->__get("foto");
+                                echo "<tr>";
+                                echo "<td><img src='data:image/jpg;base64,$conte' class='img-fluid' style='max-width: 100px;' alt='Producto'></td>";
+                                echo "<td>" . $producto->__get("nombre") . "</td>";
+                                echo "<td>" . $detpedido->__get("cantidad") . "</td>";
+                                echo "<td>" . $detpedido->__get("precio_unitario") . "€</td>";
+                                echo "</tr>";
+                            }
                         }
 
                         echo "</table>";

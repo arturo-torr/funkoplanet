@@ -418,7 +418,7 @@ class StoreManagerView {
     }
   }
 
-  // Manejador que enlaza el botoón de finalización de compra con el controlador
+  // Enlazador con el botoón de finalización de compra con el controlador
   bindButtonFinalizarCompra(handler) {
     let button = document.getElementById("btn_realizar_compra");
     if (button) {
@@ -428,8 +428,17 @@ class StoreManagerView {
     }
   }
 
+  // Enlazador que redirige al apartado de mis pedidos
   bindMisPedidos(handler) {
     let enlace = document.getElementById("mis_pedidos");
+    if (enlace) {
+      enlace.addEventListener("click", () => handler());
+    }
+  }
+
+  // Enlazador que redirige al apartado de mis reservas
+  bindMisReservas(handler) {
+    let enlace = document.getElementById("mis_reservas");
     if (enlace) {
       enlace.addEventListener("click", () => handler());
     }

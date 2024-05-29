@@ -14,6 +14,10 @@ switch ($parametro) {
         header('Location: ../views/mispedidos.php');
         exit();
         break;
+    case 'misReservas':
+        header('Location: ../views/misreservas.php');
+        exit();
+        break;
     default:
         # code...
         break;

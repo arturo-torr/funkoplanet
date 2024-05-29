@@ -22,6 +22,7 @@ class StoreManagerController {
     this[VIEW].bindProducts(this.handleProduct);
     this[VIEW].bindReservas(this.handleReservas);
     this[VIEW].bindMisPedidos(this.handleMisPedidos);
+    this[VIEW].bindMisReservas(this.handleMisReservas);
     this[VIEW].bindIncrementButton(this.handleIncrement);
     this[VIEW].bindDecrementButton(this.handleDecrement);
     this[VIEW].bindCompraButton(this.handleCompra);
@@ -134,6 +135,11 @@ class StoreManagerController {
   // Manejador que redirige hacia la vista php para visualizar la interfaz de pedidos de un usuario
   handleMisPedidos = () => {
     window.location.href = `/funkoplanet/web/controlador_pedidos.php?parametro=misPedidos`;
+  };
+
+  // Manejador que redirige hacia la vista php para visualizar la interfaz de reservas de un usuario
+  handleMisReservas = () => {
+    window.location.href = `/funkoplanet/web/controlador_pedidos.php?parametro=misReservas`;
   };
 
   // Manejador que devuelve una promesa permitiendo cargar las categorías en la barra de navegación

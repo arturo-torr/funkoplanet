@@ -21,6 +21,11 @@
     color: chartreuse;
 }
 
+.li_img {
+    width: 100%;
+    max-width: 25px;
+}
+
 /** --- INDEX --- **/
 
 .carousel-inner {
@@ -190,6 +195,22 @@
 
 .accordion-button::after {
     color: #fff !important;
+}
+
+
+.rodadora {
+    position: relative;
+    animation: rodadora_animacion 7s ease forwards;
+}
+
+@keyframes rodadora_animacion {
+    0% {
+        transform: translateX(-280%) rotate(0deg);
+    }
+
+    100% {
+        transform: translateX(0%) rotate(1440deg);
+    }
 }
 
 

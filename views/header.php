@@ -59,8 +59,9 @@
                                 echo "<li><a class='dropdown-item fw-bold' href='/funkoplanet/views/login.php'>Iniciar sesión</a></li>";
                                 echo "<li><a class='dropdown-item fw-bold' href='/funkoplanet/views/registro.php'>Registrarse</a></li>";
                             } else {
-                                echo "<li><a class='dropdown-item fw-bold' id='mis_pedidos' href='#'>Mis pedidos</a></li>";
-                                echo "<li><a class='dropdown-item fw-bold' href='/funkoplanet/views/logout.php' id='logout'>Cerrar sesión</a></li>";
+                                echo "<li><a class='dropdown-item fw-bold d-flex align-items-center' id='mis_pedidos' href='#'><img src='/funkoplanet/assets/img/pedido.png' alt='Pedido-Img' class='li_img me-2'>Mis pedidos</a></li>";
+                                echo "<li'><a class='dropdown-item fw-bold d-flex align-items-center' id='mis_reservas' href='#'><img src='/funkoplanet/assets/img/reserva.png' alt='Reserva-Img' class='li_img me-2'>Mis reservas</a></li>";
+                                echo "<li><a class='dropdown-item fw-bold d-flex align-items-center' href='/funkoplanet/views/logout.php' id='logout'><img src='/funkoplanet/assets/img/logout.png' alt='Logout-Img' class='li_img me-2'>Cerrar sesión</a></li>";
                             }
                             ?>
                         </ul>
