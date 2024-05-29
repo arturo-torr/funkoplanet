@@ -14,20 +14,62 @@
     $daoUsuarios = new DaoUsuarios("funkoplanet");
     ?>
     <main>
-        <div class="container-fluid mt-2">
-            <div class="row">
-                <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-10 mx-auto table-responsive">
-                    <form name="fUsuarios" method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>" enctype="multipart/form-data">
-                        <fieldset>
-                            <legend class='purple'>Administración de Usuarios</legend>
+        <section class="py-2">
+            <div class="container-fluid mt-2">
+                <div class="row">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-10 mx-auto table-responsive">
+                        <form name="fUsuarios" method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>"
+                            enctype="multipart/form-data">
+                            <fieldset>
+                                <legend class='purple'>Administración de Usuarios</legend>
 
-                            <input type='submit' class='btn btn_purple text-white fw-bold' name='Insertar' value='Insertar'>
-                            <input type='submit' class='btn btn_purple text-white fw-bold' name='Buscar' value='Buscar'>
-                            <input type='submit' class='btn btn_purple text-white fw-bold' name='Actualizar' value='Actualizar'>
-                            <input type='submit' class='btn btn_purple text-white fw-bold' name='Borrar' value='Borrar'>
+                                <input type='submit' class='btn btn_purple text-white fw-bold' name='Insertar'
+                                    value='Insertar'>
+                                <input type='submit' class='btn btn_purple text-white fw-bold' name='Buscar'
+                                    value='Buscar'>
+                                <input type='submit' class='btn btn_purple text-white fw-bold' name='Actualizar'
+                                    value='Actualizar'>
+                                <input type='submit' class='btn btn_purple text-white fw-bold' name='Borrar'
+                                    value='Borrar'>
 
 
-                            <?php
+                                <?php
+
+                            $numReg = 5;
+
+                            if (isset($_POST['numReg'])) {
+                                $numReg = $_POST['numReg'];
+                            }
+
+                            if (isset($_GET['numReg'])) {
+                                $numReg = $_GET['numReg'];
+                            }
+
+                            $pagina = 1; // Empezamos por defecto mostrando la página 1
+                            if (isset($_GET['numPaginas'])) {
+                                $pagina = $_GET['numPaginas'];
+                            }
+
+                            $numPaginas = $daoUsuarios->hallarPaginas($numReg);
+
+                            $inicio = ($pagina - 1) * $numReg; // algoritmo para mostrar los registros necesarios
+
+                            // El Dao Lista todas las categorías
+                            $daoUsuarios->listarConLimite($inicio, $numReg);
+
+                            echo "<br><label class='form-label my-2' for='numReg'>Número de registros que desea visualizar: </label>";
+
+                            // permite recargar la página sin necesidad de tener un submit, usando javascript
+                            echo "<select name='numReg' class='form-select w-25' onChange='document.fUsuarios.submit()'>";
+                            for ($i = 1; $i < 11; $i++) {
+                                echo "<option value='$i' ";
+                                if ($i == $numReg) {
+                                    echo " selected";
+                                }
+                                echo ">$i</option>";
+                            }
+
+                            echo "</select>";
                             // Recupera la foto anterior que tenía la categoría
                             function FotoAnterior($id)
                             {
@@ -113,28 +155,6 @@
                                 $daoUsuarios->insertar($user);
                             }
 
-                            $numReg = 5;
-
-                            if (isset($_POST['numReg'])) {
-                                $numReg = $_POST['numReg'];
-                            }
-
-                            if (isset($_GET['numReg'])) {
-                                $numReg = $_GET['numReg'];
-                            }
-
-                            $pagina = 1; // Empezamos por defecto mostrando la página 1
-                            if (isset($_GET['numPaginas'])) {
-                                $pagina = $_GET['numPaginas'];
-                            }
-
-                            $numPaginas = $daoUsuarios->hallarPaginas($numReg);
-
-                            $inicio = ($pagina - 1) * $numReg; // algoritmo para mostrar los registros necesarios
-
-                            // El Dao Lista todas las categorías
-                            $daoUsuarios->listarConLimite($inicio, $numReg);
-
                             // Si es >= a 0, la lista
                             if (count($daoUsuarios->usuarios) >= 0) {
                                 echo "<table class='mt-2 table table-hover table-bordered border_purple text-center bg_purple'>";
@@ -191,22 +211,6 @@
                                 }
                                 echo "</table>";
 
-                                echo "<label class='form-label' for='numReg'>Num Registros: </label>";
-
-                                // permite recargar la página sin necesidad de tener un submit, usando javascript
-                                echo "<select name='numReg' onChange='document.fUsuarios.submit()'>";
-                                for ($i = 1; $i < 11; $i++) {
-                                    echo "<option value='$i' ";
-                                    if ($i == $numReg) {
-                                        echo " selected";
-                                    }
-                                    echo ">$i</option>";
-                                }
-
-                                echo "</select>";
-
-                                echo "<br>";
-
                                 echo "<ul class='pagination'>";
                                 // lleva un enlace al número de páginas y recoge el número de registros
                                 for ($i = 1; $i <= $numPaginas; $i++) {
@@ -223,12 +227,12 @@
                                 echo "</ul>";
                             }
                             ?>
-                        </fieldset>
-                    </form>
+                            </fieldset>
+                        </form>
+                    </div>
                 </div>
             </div>
-        </div>
-        <?php
+            <?php
         // Si se da clcik en buscar
         if (isset($_POST['Buscar'])) {
             $username = $_POST['usernameNuevo'];
@@ -262,7 +266,7 @@
             echo "</div></div></div>";
         }
         ?>
-
+        </section>
     </main>
 
     <?php

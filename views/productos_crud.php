@@ -22,23 +22,26 @@
     ?>
 
     <main>
-        <div class="container-fluid mt-2">
-            <div class="row">
-                <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-10 mx-auto table-responsive">
-                    <form name="fProductos" method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>"
-                        enctype="multipart/form-data">
-                        <fieldset>
-                            <legend class='purple'>Administración de Productos</legend>
+        <section class="py-2">
+            <div class="container-fluid mt-2">
+                <div class="row">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-10 mx-auto table-responsive">
+                        <form name="fProductos" method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>"
+                            enctype="multipart/form-data">
+                            <fieldset>
+                                <legend class='purple'>Administración de Productos</legend>
 
-                            <input type='submit' class='btn btn_purple text-white fw-bold' name='Insertar'
-                                value='Insertar'>
-                            <input type='submit' class='btn btn_purple text-white fw-bold' name='Buscar' value='Buscar'>
-                            <input type='submit' class='btn btn_purple text-white fw-bold' name='Actualizar'
-                                value='Actualizar'>
-                            <input type='submit' class='btn btn_purple text-white fw-bold' name='Borrar' value='Borrar'>
+                                <input type='submit' class='btn btn_purple text-white fw-bold' name='Insertar'
+                                    value='Insertar'>
+                                <input type='submit' class='btn btn_purple text-white fw-bold' name='Buscar'
+                                    value='Buscar'>
+                                <input type='submit' class='btn btn_purple text-white fw-bold' name='Actualizar'
+                                    value='Actualizar'>
+                                <input type='submit' class='btn btn_purple text-white fw-bold' name='Borrar'
+                                    value='Borrar'>
 
 
-                            <?php
+                                <?php
                             $numReg = 5;
 
                             if (isset($_POST['numReg'])) {
@@ -271,9 +274,9 @@
                                 echo "</ul>";
                             }
                             ?>
-                        </fieldset>
-                        <hr class='purple_line my-2'>
-                        <?php
+                            </fieldset>
+                            <hr class='purple_line my-2'>
+                            <?php
                         // Si se da clcik en buscar
                         if (isset($_POST['Buscar'])) {
                             $nombre = $_POST['nombreNuevo'];
@@ -312,13 +315,13 @@
                         ?>
 
 
-                        <fieldset class="my-3">
-                            <legend class="purple">Administración de imágenes de Productos</legend>
+                            <fieldset class="my-3">
+                                <legend class="purple">Administración de imágenes de Productos</legend>
 
-                            <label class="form-label" for="productos">Seleccione el producto que desee:</label>
-                            <select name="productos" class='form-select w-25'>
-                                <option value=""></option>
-                                <?php
+                                <label class="form-label" for="productos">Seleccione el producto que desee:</label>
+                                <select name="productos" class='form-select w-25'>
+                                    <option value=""></option>
+                                    <?php
                                 $daoProductos->listar();
                                 $id = "";
                                 if (isset($_POST['productos'])) {
@@ -334,14 +337,14 @@
                                     echo ">" . $prod->__get("nombre") . "</option>";
                                 }
                                 ?>
-                            </select>
+                                </select>
 
-                            <br>
-                            <input type='submit' class='btn btn_purple text-white fw-bold' name='Mostrar'
-                                value='Mostrar'>
+                                <br>
+                                <input type='submit' class='btn btn_purple text-white fw-bold' name='Mostrar'
+                                    value='Mostrar'>
 
-                        </fieldset>
-                        <?php
+                            </fieldset>
+                            <?php
                         if (isset($_POST['Guardar'])) {
                             if (!empty($_FILES['NuevaF']['name'][0])) {
                                 foreach ($_FILES['NuevaF']['tmp_name'] as $key => $tmp_name) {
@@ -397,10 +400,11 @@
                             echo "<input type='submit' class='btn btn_purple text-white fw-bold mx-1 my-3' name='Guardar' value='Añadir Imágenes'>";
                         }
                         ?>
-                    </form>
+                        </form>
+                    </div>
                 </div>
             </div>
-        </div>
+        </section>
     </main>
     <?php
         require_once "../views/footer.php";
