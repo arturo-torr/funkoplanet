@@ -31,6 +31,13 @@ foreach ($_SESSION['carrito'] as $index => $producto) {
     $prod = new Producto();
     $prod = $daoProductos->obtener($producto['idProducto']);
     $totalProductos += $prod->__get("precio") * $producto['cantidad'];
+
+    $cantidadNueva = $prod->__get("uds_disponibles") - $producto['cantidad'];
+    $prod->__set("uds_disponibles", $cantidadNueva);
+    if ($cantidadNueva == 0) {
+        $prod->__set("estado", "Agotado");
+    }
+    $daoProductos->actualizar($prod);
 }
 
 $totalProductos = number_format($totalProductos, 2);
