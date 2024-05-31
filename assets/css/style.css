@@ -187,7 +187,7 @@
     color: white;
 }
 
-.accordion-button:focus, .form-control:focus {
+.accordion-button:focus, .form-control:focus, .form-select:focus {
     box-shadow: none;
     outline: none;
     border: 1px solid #6F006A;

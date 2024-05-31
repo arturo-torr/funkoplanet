@@ -34,11 +34,36 @@ class StoreManagerController {
     this[VIEW].mostrarCantidad();
     this[VIEW].bindButtonPago();
     this[VIEW].bindValidacionPago(this.handleDatosValidos);
+    this[VIEW].bindValidacionRegistro(this.handleDatosRegistroValidos);
   };
 
   // Manejador que se llama cuando los datos del formulario de pago son válidos
   handleDatosValidos = () => {
     this.handleFinalizarCompra();
+  };
+
+  handleDatosRegistroValidos = (user, email, password) => {
+    const formData = new FormData();
+    formData.append("username", user);
+    formData.append("email", email);
+    formData.append("password", password);
+
+    fetch("../web/registrarusuario.php", {
+      method: "POST",
+      body: formData,
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        if (data.success) {
+          window.location.replace("/funkoplanet/index.php");
+        }
+      })
+      .catch((error) => console.error("Error:", error));
   };
 
   // Manejador que llama al php necesario para procesar la compra

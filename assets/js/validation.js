@@ -85,57 +85,88 @@ function validacionPago(handler) {
   }
 }
 
-// function categoriesCrudValidation(handler) {
-//   const form = document.forms.fCategorias;
-//   if (form) {
-//     form.setAttribute("novalidate", true);
-//     form.addEventListener("submit", function (event) {
-//       let isValid = true;
-//       let firstInvalidElement = null;
-//       const clickedButton = event.submitter;
+function validacionRegistro(handler) {
+  const form = document.forms.fRegistro;
 
-//       let checkboxes = this.querySelectorAll('input[type="checkbox"]');
-//       // Recorrer los checkboxes para encontrar los seleccionados
-//       let seleccionados = [];
-//       checkboxes.forEach(function (checkbox) {
-//         if (checkbox.checked) {
-//           seleccionados.push(checkbox);
-//         }
-//       });
-//       // Por ejemplo, comprobar si se ha seleccionado al menos uno
-//       if (seleccionados.length === 0) {
-//         alert("Debes seleccionar al menos una categoría.");
-//         isValid = false; // Esto evitará que el formulario se envíe
-//       }
+  if (form) {
+    form.setAttribute("novalidate", true);
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
+      event.stopPropagation();
+      let isValid = true;
+      let firstInvalidElement = null;
 
-//       // SI SE HA PULSADO EN BUSCAR
-//       if (clickedButton.name === "Buscar") {
-//         if (!isValid) {
-//           firstInvalidElement.focus();
-//         } else {
-//           // Manda al controlador los datos necesarios para la búsqueda, que es el nombre
-//           handler(clickedButton.name, "", this.nombreNuevo.value);
-//         }
-//       }
-//       event.preventDefault();
-//       event.stopPropagation();
-//     });
-//     form.addEventListener("reset", function (event) {
-//       for (const div of this.querySelectorAll(
-//         "div.valid-feedback, div.invalid-feedback"
-//       )) {
-//         div.classList.remove("d-block");
-//         div.classList.add("d-none");
-//       }
-//       for (const input of this.querySelectorAll("input")) {
-//         input.classList.remove("is-valid");
-//         input.classList.remove("is-invalid");
-//       }
-//       this.nombreNuevo.focus();
-//     });
-//     form.nombreNuevo.addEventListener("change", defaultCheckElement);
-//   }
-// }
+      this.username.value = this.username.value.trim();
+      this.email.value = this.email.value.trim();
+      this.password.value = this.password.value.trim();
+      this.password2.value = this.password2.value.trim();
 
-// export { categoriesCrudValidation };
-export { validacionPago };
+      if (!this.password.checkValidity()) {
+        isValid = false;
+        showFeedBack(this.password, false);
+        firstInvalidElement = this.password;
+      } else if (this.password.value !== this.password2.value) {
+        isValid = false;
+        showFeedBack(
+          this.password,
+          false,
+          "La contraseña y la confirmación deben ser iguales."
+        );
+        showFeedBack(this.password2, false);
+        firstInvalidElement = this.password;
+      } else {
+        showFeedBack(this.password, true);
+        showFeedBack(this.password2, true, " ");
+      }
+
+      fetch("../web/comprobaremailexistente.php", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: this.email.value,
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.success) {
+            showFeedBack(this.email, true);
+          } else {
+            isValid = false;
+            showFeedBack(this.email, false);
+            firstInvalidElement = this.email;
+          }
+        });
+
+      fetch("../web/comprobarusuarioexistente.php", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: this.username.value,
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.success) {
+            showFeedBack(this.username, true);
+          } else {
+            isValid = false;
+            showFeedBack(this.username, false);
+            firstInvalidElement = this.username;
+          }
+        })
+        .catch((error) => console.error("Error:", error));
+
+      if (isValid) {
+        handler(this.username.value, this.email.value, this.password.value);
+      }
+
+      event.preventDefault();
+      event.stopPropagation();
+    });
+  }
+}
+export { validacionPago, validacionRegistro };

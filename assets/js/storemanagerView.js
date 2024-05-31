@@ -1,4 +1,4 @@
-import { validacionPago } from "./validation.js";
+import { validacionPago, validacionRegistro } from "./validation.js";
 
 const EXECUTE_HANDLER = Symbol("executeHandler");
 
@@ -452,6 +452,10 @@ class StoreManagerView {
   // VALIDACIONES
   bindValidacionPago(handler) {
     validacionPago(handler);
+  }
+
+  bindValidacionRegistro(handler) {
+    validacionRegistro(handler);
   }
 }
 
