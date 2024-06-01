@@ -36,7 +36,7 @@
                     foreach ($daoPedidos->pedidos as $pedido) {
                         echo "<div class='card mb-4'>";
                         echo "<div class='card-header bg_purple'>";
-                        echo "<h3 class='text-white'>Pedido número <strong>" . $pedido->__get("id_pedido") . "</strong></h3>";
+                        echo "<h3 class='text-white my-1'>Pedido #<strong>" . $pedido->__get("id_pedido") . "</strong></h3>";
                         echo "</div>";
                         echo "<div class='card-body'>";
                         echo "<div class='table-responsive'>";

@@ -2,6 +2,7 @@
 
 require_once '../includes/libreriaPDO.php';
 require_once '../models/Pedido.php';
+require_once "../models/PedYDet.php";
 
 class DaoPedidos extends DB
 {
@@ -77,6 +78,50 @@ class DaoPedidos extends DB
             $pedido->__set("id_usuario", $idUsuario);
             $pedido->__set("fecha", $fila['fecha']);
             $pedido->__set("total", $fila['total']);
+            // Se inserta el objeto que acabamos de crear en el Array de objetos tiendas
+            $this->pedidos[] = $pedido;
+        }
+    }
+
+    public function listarPedidoyDetPedido($idUsuario)
+    {
+
+        $consulta = "SELECT 
+        ped.id_pedido, 
+        ped.fecha, 
+        det.cantidad, 
+        det.precio_unitario,
+        prod.id,
+        prod.estado
+    FROM 
+        pedido ped
+    INNER JOIN 
+        detpedido det ON ped.id_pedido = det.id_pedido
+    INNER JOIN 
+        producto prod ON det.id_producto = prod.id
+    WHERE 
+        ped.id_usuario = :id_usuario AND prod.estado = 'Reserva';";
+
+        $param = array();
+
+        // Se realiza para vaciar el array de las tiendas entre consulta y consulta
+        $this->pedidos = array();
+        $param[":id_usuario"] = $idUsuario;
+
+        // Realiza la consulta;
+        $this->ConsultaDatos($consulta, $param);
+
+        foreach ($this->filas as $fila) {
+            // Creamos una nueva situación
+            $pedido = new PedYDet();
+
+            // Asignamos las propiedades correspondientes al nuevo objeto
+            $pedido->__set("id_pedido", $fila['id_pedido']);
+            $pedido->__set("fecha", $fila['fecha']);
+            $pedido->__set("cantidad", $fila['cantidad']);
+            $pedido->__set("precio_unitario", $fila['precio_unitario']);
+            $pedido->__set("id_producto", $fila['id']);
+            $pedido->__set("estado", $fila['estado']);
             // Se inserta el objeto que acabamos de crear en el Array de objetos tiendas
             $this->pedidos[] = $pedido;
         }

@@ -42,6 +42,7 @@ class StoreManagerController {
     this.handleFinalizarCompra();
   };
 
+  // Manejador que recibe los datos ya validados del formulario de registro y lo procesa
   handleDatosRegistroValidos = (user, email, password) => {
     const formData = new FormData();
     formData.append("username", user);
