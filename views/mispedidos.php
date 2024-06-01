@@ -34,7 +34,8 @@
 
                 if (count($daoPedidos->pedidos) > 0) {
                     foreach ($daoPedidos->pedidos as $pedido) {
-                        echo "<div class='card mb-4'>";
+                        echo "<div class='card mb-4' data-aos='fade-right'
+                        data-aos-duration='1000'>";
                         echo "<div class='card-header bg_purple'>";
                         echo "<h3 class='text-white my-1'>Pedido #<strong>" . $pedido->__get("id_pedido") . "</strong></h3>";
                         echo "</div>";

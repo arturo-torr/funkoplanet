@@ -30,10 +30,10 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle show fw-bold" href="#" id="navEvents" role="button"
                             data-bs-toggle="dropdown" aria-expanded="true">Eventos</a>
-                        <ul class="dropdown-menu" data-bs-popper="static">
+                        <ul class="dropdown-menu" data-bs-popper="static" id="events-list-menu">
                         </ul>
                     </li>
-                    <li class="nav-item">
+                    <li class=" nav-item">
                         <a class="nav-link text-white fw-bold" href="#" id="navReservas" role="button">Reservas</a>
                     </li>
                 </ul>

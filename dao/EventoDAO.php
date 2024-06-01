@@ -71,7 +71,7 @@ class DaoEventos extends DB
     public function obtener($id)
     {
         // Consulta para evitar inyectado de SQL
-        $consulta = "SELECT * FROM evento WHERE id=:id";
+        $consulta = "SELECT * FROM evento WHERE id = :id";
         $param = array(":id" => $id);
 
         // Se realiza para vaciar el array de las mascotas entre consulta y consulta
@@ -96,7 +96,6 @@ class DaoEventos extends DB
         } else {
             echo "<b>El Id introducido no corresponde con una Evento.</b>";
         }
-
         // Devolvemos el objeto
         return $event;
     }

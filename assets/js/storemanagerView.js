@@ -75,7 +75,7 @@ class StoreManagerView {
     for (const event of events) {
       container.insertAdjacentHTML(
         "beforeend",
-        `<li class="hover-menu"><a data-category="${event.name}" class="dropdown-item fw-bold" href="#event-list">${event.name}</a></li>`
+        `<li class="hover-menu"><a data-evento="${event.id}" class="dropdown-item fw-bold" href="#">${event.name}</a></li>`
       );
     }
   }
@@ -186,7 +186,7 @@ class StoreManagerView {
     footerReservas.addEventListener("click", () => handler("Reserva"));
   }
 
-  // Función que permite mostrar en el menú de navegación un ítem dropdown con las categorías
+  // Función enlazadora que permite llamar al handler con la categoría
   bindCategoryListInMenu(handler) {
     const navCats = document.getElementById("categories-list-menu");
     const links = navCats.querySelectorAll("a");
@@ -195,6 +195,19 @@ class StoreManagerView {
       link.addEventListener("click", (event) => {
         const { category } = event.currentTarget.dataset;
         handler(category);
+      });
+    }
+  }
+
+  // Función enlazadora que permite llamar al handler con el evento
+  bindEventListInMenu(handler) {
+    const navEvents = document.getElementById("events-list-menu");
+    const links = navEvents.querySelectorAll("a");
+    // Los recorre y recupera el id de la categoría con el atributo personalizado dataset.category
+    for (const link of links) {
+      link.addEventListener("click", (event) => {
+        const { evento } = event.currentTarget.dataset;
+        handler(evento);
       });
     }
   }

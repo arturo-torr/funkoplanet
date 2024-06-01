@@ -33,7 +33,8 @@
                 <?php
                 $daoPedidos->listarPedidoyDetPedido($usuario->__get("id"));
                 if (count($daoPedidos->pedidos) > 0) {
-                    echo "<div class='card mb-4'>";
+                    echo "<div class='card mb-4' data-aos='fade-right'
+                    data-aos-duration='1000'>";
                     echo "<div class='card-header bg_purple'>";
                     echo "<h3 class='text-white my-1'>Historial de reservas</strong></h3>";
                     echo "</div>";
