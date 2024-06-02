@@ -20,19 +20,14 @@
             <div class="container-fluid mt-2">
                 <div class="row">
                     <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-10 mx-auto table-responsive">
-                        <form name="fEventos" method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>"
-                            enctype="multipart/form-data">
+                        <form name="fEventos" method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>" enctype="multipart/form-data">
                             <fieldset>
                                 <legend class='purple'>Administración de Eventos</legend>
 
-                                <input type='submit' class='btn btn_purple text-white fw-bold' name='Insertar'
-                                    value='Insertar'>
-                                <input type='submit' class='btn btn_purple text-white fw-bold' name='Buscar'
-                                    value='Buscar'>
-                                <input type='submit' class='btn btn_purple text-white fw-bold' name='Actualizar'
-                                    value='Actualizar'>
-                                <input type='submit' class='btn btn_purple text-white fw-bold' name='Borrar'
-                                    value='Borrar'>
+                                <input type='submit' class='btn btn_purple text-white fw-bold' name='Insertar' value='Insertar'>
+                                <input type='submit' class='btn btn_purple text-white fw-bold' name='Buscar' value='Buscar'>
+                                <input type='submit' class='btn btn_purple text-white fw-bold' name='Actualizar' value='Actualizar'>
+                                <input type='submit' class='btn btn_purple text-white fw-bold' name='Borrar' value='Borrar'>
 
 
                                 <?php
@@ -83,8 +78,6 @@
                                     $fechas = $_POST['Fechas'];
                                     $nombres = $_POST['Nombres'];
                                     $descripciones = $_POST['Descripciones'];
-
-                                    var_dump($nombres);
                                     // Se recorre con un ForEach para cada uno de los mascotas seleccionados
                                     foreach ($selec as $clave => $valor) {
                                         // Almacenamos en array la fecha de nacimiento para ese Id
