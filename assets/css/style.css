@@ -193,6 +193,10 @@
     border: 1px solid #6F006A;
 }
 
+.navbar-toggler:focus {
+    box-shadow: 0 0 0 0.15rem white;
+}
+
 .accordion-button::after {
     color: #fff !important;
 }

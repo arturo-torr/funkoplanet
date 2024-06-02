@@ -31,7 +31,7 @@ foreach ($daoProductos->productosJSON as $key => $prod) {
     foreach ($daoFotosProductos->fotosPro as $key => $fotoPro) {
         if ($imgIndex < 2) {
             $conte = $fotoPro->__get("foto");
-            echo "<img src='data:image/jpg;base64,$conte' class='img-fluid product-image' id='product-image-" . $prod["id"] . "-" . $imgIndex . "' style='display:" . ($imgIndex == 0 ? "block" : "none") . "'>";
+            echo "<img src='data:image/jpg;base64,$conte' alt='product-image-" . $prod["id"] . "-" . $imgIndex . "' class='img-fluid product-image' id='product-image-" . $prod["id"] . "-" . $imgIndex . "' style='display:" . ($imgIndex == 0 ? "block" : "none") . "'>";
             $imgIndex++;
         }
     }

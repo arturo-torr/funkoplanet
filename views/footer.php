@@ -15,7 +15,7 @@
     <div class="container-fluid bg_purple">
         <div class="row">
             <div class="col-12">
-                <h5 class="text-white text-center my-3">FunkoPlanet - 2024</h5>
+                <h1 class="text-white text-center my-3 fs-3">FunkoPlanet - 2024</h1>
                 <hr class="text-white w-50 mx-auto">
             </div>
         </div>

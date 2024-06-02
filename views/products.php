@@ -69,7 +69,8 @@
 
                 <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-3">
                     <label for="busqueda" class="form-label text-white">Búsqueda por texto:</label>
-                    <input type="text" class="form-control" name="busqueda" id="busqueda" value='<?php echo $busqueda ?>'>
+                    <input type="text" class="form-control" name="busqueda" id="busqueda"
+                        value='<?php echo $busqueda ?>'>
                 </div>
                 <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-3">
                     <label for="disponibilidad" class="form-label text-white">Disponibilidad:</label>
@@ -113,7 +114,8 @@
 
                 <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-3 mx-auto mt-2 text-center">
                     <br>
-                    <input type="submit" name='Filtrar' value='Filtrar' class="btn btn_purple--dark text-white px-5 fw-bold">
+                    <input type="submit" name='Filtrar' value='Filtrar'
+                        class="btn btn_purple--dark text-white px-5 fw-bold">
                 </div>
             </form>
         </div>
@@ -167,7 +169,7 @@
                             }
 
                             // Definición de producto
-                            echo "<h3 class='product__name'>" . $prod["nombre"] . "</h3>
+                            echo "<h1 class='product__name'>" . $prod["nombre"] . "</h1>
                         <span class='purple product__price--noeffect fw-bold'>" . $prod["precio"] . "€</span>
                         <br>";
 
