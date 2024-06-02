@@ -34,11 +34,40 @@ class StoreManagerController {
     this[VIEW].mostrarCantidad();
     this[VIEW].bindButtonPago();
     this[VIEW].bindValidacionPago(this.handleDatosValidos);
+    this[VIEW].bindValidacionRegistro(this.handleDatosRegistroValidos);
+    this[VIEW].sobreNosotrosModal();
+    this[VIEW].envioModal();
+    this[VIEW].politicaModal();
   };
 
   // Manejador que se llama cuando los datos del formulario de pago son válidos
   handleDatosValidos = () => {
     this.handleFinalizarCompra();
+  };
+
+  // Manejador que recibe los datos ya validados del formulario de registro y lo procesa
+  handleDatosRegistroValidos = (user, email, password) => {
+    const formData = new FormData();
+    formData.append("username", user);
+    formData.append("email", email);
+    formData.append("password", password);
+
+    fetch("../web/registrarusuario.php", {
+      method: "POST",
+      body: formData,
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        if (data.success) {
+          window.location.replace("/funkoplanet/index.php");
+        }
+      })
+      .catch((error) => console.error("Error:", error));
   };
 
   // Manejador que llama al php necesario para procesar la compra
@@ -86,6 +115,7 @@ class StoreManagerController {
     this.handleEventsInMenu()
       .then((eventos) => {
         this[VIEW].showEventsInMenu(eventos);
+        this[VIEW].bindEventListInMenu(this.handleEventList);
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -115,6 +145,11 @@ class StoreManagerController {
   // Manejador que redirige hacia la vista php con el id de la categoría
   handleCategoryList = (id) => {
     window.location.href = `/funkoplanet/web/controlador_categorias.php?paramCategorias=categoryClicked&id=${id}`;
+  };
+
+  // Manejador que redirige hacia la vista php con el id del evento
+  handleEventList = (id) => {
+    window.location.href = `/funkoplanet/web/controlador_eventos.php?parametro=eventClicked&id=${id}`;
   };
 
   // Maneajdor que redigige hacia la vista php con el id del producto
@@ -194,6 +229,7 @@ class StoreManagerController {
           const eventos = data.map((evento) => {
             let event = this[MODEL].createEvent(evento.nombre, "Evento");
             event.description = evento.descripcion;
+            event.id = evento.id;
             this[MODEL].addEvent(event);
             return event;
           });

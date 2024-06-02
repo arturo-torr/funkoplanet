@@ -26,7 +26,8 @@
                     <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
                         <div class="card my-4">
                             <div class="card-header bg_purple">
-                                <h5 class="card-title text-center text-white fw-bold">¡Bienvenido a FunkoPlanet</h5>
+                                <h5 class="card-title text-center text-white fw-bold my-2">¡Bienvenido a FunkoPlanet
+                                </h5>
                             </div>
                             <div class="card-body">
                                 <form name="fLogin" method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>">

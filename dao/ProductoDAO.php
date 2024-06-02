@@ -55,6 +55,7 @@ class DaoProductos extends DB
             $prod->__set("nombre", $fila['nombre']);
             $prod->__set("descripcion", $fila['descripcion']);
             $prod->__set("precio", $fila['precio']);
+            $prod->__set("uds_disponibles", $fila['uds_disponibles']);
             $prod->__set("estado", $fila['estado']);
 
             $this->productos[] = $prod;
@@ -85,6 +86,7 @@ class DaoProductos extends DB
             $prod->__set("nombre", $fila['nombre']);
             $prod->__set("descripcion", $fila['descripcion']);
             $prod->__set("precio", $fila['precio']);
+            $prod->__set("uds_disponibles", $fila['uds_disponibles']);
             $prod->__set("estado", $fila['estado']);
 
             $this->productos[] = $prod;
@@ -115,6 +117,7 @@ class DaoProductos extends DB
             $prod->__set("nombre", $fila['nombre']);
             $prod->__set("descripcion", $fila['descripcion']);
             $prod->__set("precio", $fila['precio']);
+            $prod->__set("uds_disponibles", $fila['uds_disponibles']);
             $prod->__set("estado", $fila['estado']);
             $prod->__set("fecha_subida", $fila['fecha_subida']);
 
@@ -150,6 +153,7 @@ class DaoProductos extends DB
             $prod->__set("nombre", $fila['nombre']);
             $prod->__set("descripcion", $fila['descripcion']);
             $prod->__set("precio", $fila['precio']);
+            $prod->__set("uds_disponibles", $fila['uds_disponibles']);
             $prod->__set("estado", $fila['estado']);
             $prod->__set("fecha_subida", $fila['fecha_subida']);
         } else {
@@ -177,7 +181,7 @@ class DaoProductos extends DB
     public function insertar($prod)
     {
         // Consulta para evitar inyección de SQL
-        $consulta = "INSERT INTO producto VALUES (:id, :idcategoria, :idusuario, :nombre, :descripcion, :precio, :estado, :fecha_subida)";
+        $consulta = "INSERT INTO producto VALUES (:id, :idcategoria, :idusuario, :nombre, :descripcion, :precio, :uds_disponibles, :estado, :fecha_subida)";
         $param = array();
 
         // Asignamos los valores del objeto que hemos recibido por parámetro
@@ -187,6 +191,7 @@ class DaoProductos extends DB
         $param[":nombre"] = $prod->__get("nombre");
         $param[":descripcion"] = $prod->__get("descripcion");
         $param[":precio"] = $prod->__get("precio");
+        $param[":uds_disponibles"] = $prod->__get("uds_disponibles");
         $param[":estado"] = $prod->__get("estado");
         $param[":fecha_subida"] = $prod->__get("fecha_subida");
         // Ejecutamos la consulta
@@ -197,7 +202,7 @@ class DaoProductos extends DB
     public function actualizar($prod)
     {
         // Cuando se realizan actualizaciones, se actualizan todos los campos, pero las claves primarias no se tocan
-        $consulta = "UPDATE producto SET id_categoria = :id_categoria, id_usuario = :id_usuario, nombre = :nombre, descripcion = :descripcion, precio = :precio, estado = :estado WHERE id = :id";
+        $consulta = "UPDATE producto SET id_categoria = :id_categoria, id_usuario = :id_usuario, nombre = :nombre, descripcion = :descripcion, precio = :precio, uds_disponibles = :uds_disponibles, estado = :estado WHERE id = :id";
         $param = array();
 
         // Asignamos los valores del objeto que hemos recibido por parámetro
@@ -207,6 +212,7 @@ class DaoProductos extends DB
         $param[":nombre"] = $prod->__get("nombre");
         $param[":descripcion"] = $prod->__get("descripcion");
         $param[":precio"] = $prod->__get("precio");
+        $param[":uds_disponibles"] = $prod->__get("uds_disponibles");
         $param[":estado"] = $prod->__get("estado");
 
         // Ejecutamos la consulta
@@ -255,6 +261,7 @@ class DaoProductos extends DB
             $prod->__set("nombre", $fila['nombre']);
             $prod->__set("descripcion", $fila['descripcion']);
             $prod->__set("precio", $fila['precio']);
+            $prod->__set("uds_disponibles", $fila['uds_disponibles']);
             $prod->__set("estado", $fila['estado']);
 
             // Se inserta el objeto que acabamos de crear en el Array de objetos tiendas
@@ -317,6 +324,7 @@ class DaoProductos extends DB
             $prod->__set("nombre", $fila['nombre']);
             $prod->__set("descripcion", $fila['descripcion']);
             $prod->__set("precio", $fila['precio']);
+            $prod->__set("uds_disponibles", $fila['uds_disponibles']);
             $prod->__set("estado", $fila['estado']);
 
             // Se inserta el objeto en el array de productos
@@ -361,6 +369,7 @@ class DaoProductos extends DB
             $prod->__set("descripcion", $fila['descripcion']);
             $prod->__set("precio", $fila['precio']);
             $prod->__set("estado", $fila['estado']);
+            $prod->__set("uds_disponibles", $fila['uds_disponibles']);
             $prod->__set("fecha_subida", $fila['fecha_subida']);
             // Se inserta el objeto que acabamos de crear en el Array de objetos prodgorías
             $this->productos[] = $prod;

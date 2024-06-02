@@ -1,4 +1,4 @@
-import { validacionPago } from "./validation.js";
+import { validacionPago, validacionRegistro } from "./validation.js";
 
 const EXECUTE_HANDLER = Symbol("executeHandler");
 
@@ -75,7 +75,7 @@ class StoreManagerView {
     for (const event of events) {
       container.insertAdjacentHTML(
         "beforeend",
-        `<li class="hover-menu"><a data-category="${event.name}" class="dropdown-item fw-bold" href="#event-list">${event.name}</a></li>`
+        `<li class="hover-menu"><a data-evento="${event.id}" class="dropdown-item fw-bold" href="#">${event.name}</a></li>`
       );
     }
   }
@@ -186,7 +186,7 @@ class StoreManagerView {
     footerReservas.addEventListener("click", () => handler("Reserva"));
   }
 
-  // Función que permite mostrar en el menú de navegación un ítem dropdown con las categorías
+  // Función enlazadora que permite llamar al handler con la categoría
   bindCategoryListInMenu(handler) {
     const navCats = document.getElementById("categories-list-menu");
     const links = navCats.querySelectorAll("a");
@@ -195,6 +195,19 @@ class StoreManagerView {
       link.addEventListener("click", (event) => {
         const { category } = event.currentTarget.dataset;
         handler(category);
+      });
+    }
+  }
+
+  // Función enlazadora que permite llamar al handler con el evento
+  bindEventListInMenu(handler) {
+    const navEvents = document.getElementById("events-list-menu");
+    const links = navEvents.querySelectorAll("a");
+    // Los recorre y recupera el id de la categoría con el atributo personalizado dataset.category
+    for (const link of links) {
+      link.addEventListener("click", (event) => {
+        const { evento } = event.currentTarget.dataset;
+        handler(evento);
       });
     }
   }
@@ -228,8 +241,13 @@ class StoreManagerView {
   // Aumenta la cantidad al clickear en el botón de incremento
   incrementarCantidad() {
     let cantidadSpan = document.getElementById("cantidad");
+    let button = document.getElementById("btn_incremento");
+    let disponibles = button.getAttribute("data-disponibles");
     let cantidad = parseFloat(cantidadSpan.innerText);
-    cantidad++;
+    //cantidad++;
+    cantidad += 1;
+
+    cantidad > disponibles ? cantidad-- : 0;
     cantidadSpan.innerHTML = cantidad;
   }
 
@@ -430,23 +448,47 @@ class StoreManagerView {
 
   // Enlazador que redirige al apartado de mis pedidos
   bindMisPedidos(handler) {
-    let enlace = document.getElementById("mis_pedidos");
-    if (enlace) {
-      enlace.addEventListener("click", () => handler());
+    let link = document.getElementById("mis_pedidos");
+    if (link) {
+      link.addEventListener("click", () => handler());
     }
   }
 
   // Enlazador que redirige al apartado de mis reservas
   bindMisReservas(handler) {
-    let enlace = document.getElementById("mis_reservas");
-    if (enlace) {
-      enlace.addEventListener("click", () => handler());
+    let link = document.getElementById("mis_reservas");
+    if (link) {
+      link.addEventListener("click", () => handler());
     }
+  }
+
+  sobreNosotrosModal() {
+    let link = document.getElementById("sobre_nosotros");
+    let modal = new bootstrap.Modal(
+      document.getElementById("sobreNosotrosModal")
+    );
+    link.addEventListener("click", () => modal.show());
+  }
+
+  envioModal() {
+    let link = document.getElementById("envio");
+    let modal = new bootstrap.Modal(document.getElementById("envioModal"));
+    link.addEventListener("click", () => modal.show());
+  }
+
+  politicaModal() {
+    let link = document.getElementById("politica");
+    let modal = new bootstrap.Modal(document.getElementById("politicaModal"));
+    link.addEventListener("click", () => modal.show());
   }
 
   // VALIDACIONES
   bindValidacionPago(handler) {
     validacionPago(handler);
+  }
+
+  bindValidacionRegistro(handler) {
+    validacionRegistro(handler);
   }
 }
 

@@ -187,10 +187,14 @@
     color: white;
 }
 
-.accordion-button:focus, .form-control:focus {
+.accordion-button:focus, .form-control:focus, .form-select:focus {
     box-shadow: none;
     outline: none;
     border: 1px solid #6F006A;
+}
+
+.navbar-toggler:focus {
+    box-shadow: 0 0 0 0.15rem white;
 }
 
 .accordion-button::after {

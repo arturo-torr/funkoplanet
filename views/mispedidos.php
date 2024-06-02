@@ -34,9 +34,10 @@
 
                 if (count($daoPedidos->pedidos) > 0) {
                     foreach ($daoPedidos->pedidos as $pedido) {
-                        echo "<div class='card mb-4'>";
+                        echo "<div class='card mb-4' data-aos='fade-right'
+                        data-aos-duration='1000'>";
                         echo "<div class='card-header bg_purple'>";
-                        echo "<h3 class='text-white'>Pedido número <strong>" . $pedido->__get("id_pedido") . "</strong></h3>";
+                        echo "<h3 class='text-white my-1'>Pedido #<strong>" . $pedido->__get("id_pedido") . "</strong></h3>";
                         echo "</div>";
                         echo "<div class='card-body'>";
                         echo "<div class='table-responsive'>";
@@ -71,8 +72,8 @@
                     }
                 } else {
                     echo "<div class='text-center'>";
-                    echo "<p class='fw-bold'>¡Ooops! Todavía no has reservado ningún artículo. ¿Por qué no te animas?</p>";
-                    echo "<img src='/funkoplanet/assets/img/planta.png' class='img-fluid w-25 rodadora' alt='Planta-Rodadora'>";
+                    echo "<p class='fw-bold'>¡Ooops! Todavía no has hecho ningún pedido. ¿Por qué no te animas?</p>";
+                    echo "<img src='/funkoplanet/assets/img/funkocarrito.png' class='img-fluid w-25' alt='Carrito-Funko'>";
                     echo "</div>";
                 }
                 ?>

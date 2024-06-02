@@ -35,7 +35,6 @@ class DaoUsuarios extends DB
             $user->__set("password", $fila['password']);
             $user->__set("tipo", $fila['tipo']);
             $user->__set("monedero", $fila['monedero']);
-            $user->__set("foto", $fila['foto']);
 
             $this->usuarios[] = $user;
         }
@@ -63,7 +62,6 @@ class DaoUsuarios extends DB
             $user->__set("password", $fila['password']);
             $user->__set("tipo", $fila['tipo']);
             $user->__set("monedero", $fila['monedero']);
-            $user->__set("foto", $fila['foto']);
 
             $this->usuarios[] = $user;
         }
@@ -96,7 +94,6 @@ class DaoUsuarios extends DB
             $user->__set("password", $fila['password']);
             $user->__set("tipo", $fila['tipo']);
             $user->__set("monedero", $fila['monedero']);
-            $user->__set("foto", $fila['foto']);
         } else {
             echo "<b>El Id introducido no corresponde con una usuario.</b>";
         }
@@ -132,9 +129,42 @@ class DaoUsuarios extends DB
             $user->__set("password", $fila['password']);
             $user->__set("tipo", $fila['tipo']);
             $user->__set("monedero", $fila['monedero']);
-            $user->__set("foto", $fila['foto']);
         } else {
-            echo "<b>El Id introducido no corresponde con una usuario.</b>";
+            return null;
+        }
+
+        // Devolvemos el objeto
+        return $user;
+    }
+
+    public function obtenerPorEmail($email)
+    {
+        // Consulta para evitar inyectado de SQL
+        $consulta = "SELECT * FROM usuarios WHERE email=:email";
+        $param = array(":email" => $email);
+
+        // Se realiza para vaciar el array de las mascotas entre consulta y consulta
+        $this->usuarios = array();
+
+        $this->ConsultaDatos($consulta, $param);
+
+        // Cómo solo puede devolver una fila, hacemos la comprobación
+        if (count($this->filas) == 1) {
+            // Asignamos en una variable el array de filas en la posición 0, que es la única que hay
+            $fila = $this->filas[0];
+
+            // Creamos una nueva situación
+            $user = new Usuario();
+
+            // Asignamos las propiedades correspondientes al nuevo objeto
+            $user->__set("id", $fila['id']);
+            $user->__set("username", $fila['username']);
+            $user->__set("email", $fila['email']);
+            $user->__set("password", $fila['password']);
+            $user->__set("tipo", $fila['tipo']);
+            $user->__set("monedero", $fila['monedero']);
+        } else {
+            return null;
         }
 
         // Devolvemos el objeto
@@ -155,29 +185,37 @@ class DaoUsuarios extends DB
     }
 
     // Método para insertar una situación que obtiene por parámetro
+    // Se ha introducido bloque try-catch para poder devolver true en registrarusuario.php
     public function insertar($user)
     {
-        // Consulta para evitar inyección de SQL
-        $consulta = "INSERT INTO usuarios VALUES (NULL, :username, :email, :password, :tipo, :foto, :monedero)";
-        $param = array();
+        try {
+            // Consulta para evitar inyección de SQL
+            $consulta = "INSERT INTO usuarios VALUES (NULL, :username, :email, :password, :tipo, :monedero)";
+            $param = array();
 
-        // Asignamos los valores del objeto que hemos recibido por parámetro
-        $param[":username"] = $user->__get("username");
-        $param[":email"] = $user->__get("email");
-        $param[":password"] = $user->__get("password");
-        $param[":tipo"] = $user->__get("tipo");
-        $param[":foto"] = $user->__get("foto");
-        $param[":monedero"] = $user->__get("monedero");
+            // Asignamos los valores del objeto que hemos recibido por parámetro
+            $param[":username"] = $user->__get("username");
+            $param[":email"] = $user->__get("email");
+            $param[":password"] = $user->__get("password");
+            $param[":tipo"] = $user->__get("tipo");
+            $param[":monedero"] = $user->__get("monedero");
 
-        // Ejecutamos la consulta
-        $this->ConsultaSimple($consulta, $param);
+            // Ejecutamos la consulta
+            $this->ConsultaSimple($consulta, $param);
+
+            return true;
+        } catch (Exception $e) {
+            error_log("Error al insertar usuario: " . $e->getMessage());
+            return false;
+        }
     }
+
 
     // Recibe por parámetro un objeto con los datos a actualizar
     public function actualizar($user)
     {
         // Cuando se realizan actualizaciones, se actualizan todos los campos, pero las claves primarias no se tocan
-        $consulta = "UPDATE usuarios SET username = :username, email = :email, password = :password, tipo = :tipo, monedero = :monedero, foto = :foto WHERE id = :id";
+        $consulta = "UPDATE usuarios SET username = :username, email = :email, password = :password, tipo = :tipo, monedero = :monedero WHERE id = :id";
         $param = array();
 
         // Asignamos los valores del objeto que hemos recibido por parámetro
@@ -186,7 +224,6 @@ class DaoUsuarios extends DB
         $param[":email"] = $user->__get("email");
         $param[":password"] = $user->__get("password");
         $param[":tipo"] = $user->__get("tipo");
-        $param[":foto"] = $user->__get("foto");
         $param[":monedero"] = $user->__get("monedero");
 
         // Ejecutamos la consulta
@@ -195,7 +232,7 @@ class DaoUsuarios extends DB
 
     public function buscar($username = "")
     {
-        $consulta = "SELECT id, username, email, password, tipo, foto, monedero FROM usuarios WHERE 1 ";
+        $consulta = "SELECT id, username, email, password, tipo, monedero FROM usuarios WHERE 1 ";
         $param = array();
 
         $this->usuarios = array();
@@ -218,7 +255,6 @@ class DaoUsuarios extends DB
             $user->__set("password", $fila['password']);
             $user->__set("tipo", $fila['tipo']);
             $user->__set("monedero", $fila['monedero']);
-            $user->__set("foto", $fila['foto']);
 
             // Se inserta el objeto que acabamos de crear en el Array de objetos tiendas
             $this->usuarios[] = $user;
@@ -260,7 +296,6 @@ class DaoUsuarios extends DB
             $user->__set("password", $fila['password']);
             $user->__set("tipo", $fila['tipo']);
             $user->__set("monedero", $fila['monedero']);
-            $user->__set("foto", $fila['foto']);
 
             // Se inserta el objeto que acabamos de crear en el Array de objetos usergorías
             $this->usuarios[] = $user;

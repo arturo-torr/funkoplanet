@@ -8,6 +8,7 @@ class Producto
     private $nombre;
     private $descripcion;
     private $precio;
+    private $uds_disponibles;
     private $estado;
     private $fecha_subida;
 
@@ -29,6 +30,7 @@ class Producto
             'nombre' => $this->nombre,
             'descripcion' => $this->descripcion,
             'precio' => $this->precio,
+            'uds_disponibles' => $this->uds_disponibles,
             'estado' => $this->estado,
             'fecha_subida' => $this->fecha_subida
         );

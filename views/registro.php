@@ -30,9 +30,10 @@
                                 <h5 class="card-title text-center text-white fw-bold">¡Bienvenido a FunkoPlanet</h5>
                             </div>
                             <div class="card-body">
-                                <form name="fLogin" method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>" enctype="multipart/form-data">
+                                <form name="fRegistro" method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>" enctype="multipart/form-data" novalidate>
                                     <div class="mb-3 form-group">
-                                        <label for="email" class="form-label">Introduzca un nombre de usuario: *</label>
+                                        <label for="username" class="form-label">Introduzca un nombre de usuario:
+                                            *</label>
                                         <div class="input-group">
                                             <span class="input-group-text">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user-square" width="30" height="30" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -43,6 +44,11 @@
                                                 </svg>
                                             </span>
                                             <input type="text" class="form-control" id="username" name="username" required>
+                                            <div class="valid-feedback"></div>
+                                            <div class="invalid-feedback">
+                                                El nombre de usuario no es válido porque está vacío o se encuentra
+                                                registrado.
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="mb-3 form-group">
@@ -56,7 +62,12 @@
                                                     <path d="M3 7l9 6l9 -6" />
                                                 </svg>
                                             </span>
-                                            <input type="email" class="form-control" id="email" name="email" required>
+                                            <input type="email" class="form-control" id="email" name="email" placeholder="ejemplo@hotmail.com" required>
+                                            <div class="valid-feedback"></div>
+                                            <div class="invalid-feedback">
+                                                El e-mail no cumple las condiciones o ya se encuentra registrado.
+                                                Asegúrese de que es correcto.
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="mb-3 form-group">
@@ -77,7 +88,19 @@
                                                     <path d="M17 11l4 2" />
                                                 </svg>
                                             </span>
-                                            <input type="password" class="form-control" id="password" name="password" required>
+                                            <input type="password" class="form-control" id="password" name="password" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,15}[^'\s]" minlength='8' required>
+                                            <div class="valid-feedback"></div>
+                                            <div class="invalid-feedback">
+                                                La contraseña debe de contener las siguientes especificaciones para ser
+                                                segura:
+                                                <ul>
+                                                    <li>Longitud entre 8 - 15 caracteres.</li>
+                                                    <li>Al menos una letra minúscula y una mayúscula.</li>
+                                                    <li>Al menos un dígito.</li>
+                                                    <li>Deberá usar alguno de estos caracteres especiales: "$ @ $ ! % *
+                                                        ? &"</li>
+                                                </ul>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="mb-3 form-group">
@@ -98,12 +121,11 @@
                                                 </svg>
                                             </span>
                                             <input type="password" class="form-control" id="password2" name="password2" required>
+                                            <div class="valid-feedback"></div>
+                                            <div class="invalid-feedback">
+                                                Las contraseñas no coinciden.
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="fotoNueva" class="form-label">Seleccione una imagen de
-                                            usuario:</label>
-                                        <input class="form-control" id="fotoNueva" name="fotoNueva" type="file">
                                     </div>
                                     <div class="mb-3">
                                         <p class="fs-6 fst-italic">Los campos con asteriscos son obligatorios.</p>
@@ -119,99 +141,9 @@
         </section>
     </main>
 
-    <!-- Modal -->
-    <div class="modal fade" id="incorrectoModal" tabindex="-1" aria-labelledby="incorrectoModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header bg_purple text-white">
-                    <h1 class="modal-title fs-5 fw-bold" id="incorrectoModalLabel">Usuario o contraseña incorrectos
-                    </h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    El usuario o contraseña que ha introducido son incorrectos. Por favor, inténtelo de nuevo.
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn_purple text-white fw-bold" data-bs-dismiss="modal">Cerrar</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <?php
     require_once "../views/footer.php";
     require_once "../views/scripts.php";
-    ?>
-    <script>
-        function showIncorrectoModal() {
-            let myModal = new bootstrap.Modal(document.getElementById('incorrectoModal'));
-            myModal.show();
-        }
-    </script>
-
-    <?php
-    function intentoLogin($user, $pass)
-    {
-        global $daoUsuarios;
-        global $daoLogin;
-        $filaPass = $daoUsuarios->obtenerPass($user);
-        $fila = "";
-
-        if (password_verify("$pass", $filaPass['password'])) {
-            $fila = $daoUsuarios->login($user);
-            $acceso = "C";
-        } else {
-            $acceso = "D";
-        }
-        $daoLogin->insertarIntento($user, $pass, $acceso);
-        return $fila;
-    }
-
-    // Si se ha pulsado en enviar
-    if (isset($_POST['Enviar'])) {
-        $username = $_POST['username'];
-        $email = $_POST['email'];
-        $pass = $_POST['password'];
-        $pass2 = $_POST['password2'];
-        // Por defecto el campo foto es vacío
-        $foto = "";
-
-        // Si obtenemos una foto, la recuperamos y la guardamos en la variable $foto
-        if ($_FILES['fotoNueva']['name'] != "") {
-            $temp = $_FILES['fotoNueva']['tmp_name'];
-            $contenido = file_get_contents($temp);
-            $contenido = base64_encode($contenido);
-            $foto = $contenido;
-        }
-
-        $user = new Usuario();
-
-        // Asignamos las propiedades correspondientes al nuevo objeto;
-        $encryptPassword = password_hash($pass, PASSWORD_BCRYPT);
-        $user->__set("username", $username);
-        $user->__set("email", $email);
-        $user->__set("password", $encryptPassword);
-        $user->__set("tipo", "E");
-        $user->__set("monedero", "0");
-        $user->__set("foto", $foto);
-
-        $daoUsuarios->insertar($user);
-
-        $fila = intentoLogin($username, $pass);
-
-        var_dump($fila);
-        if (($fila)  && ($username !== "") && ($pass !== "")) {
-            // Si el intento es correcto, coge las variables de sesión y redirige al index
-            $_SESSION['usuario'] = array(
-                'username' => $username,
-                'rol' => $fila['tipo'] // Agrega el rol a la sesión
-            );
-
-            echo "<script>window.location.replace('/funkoplanet/index.php');</script>";
-        } else {
-            echo "<script>showIncorrectoModal();</script>";
-        }
-    }
     ?>
 
 </body>
