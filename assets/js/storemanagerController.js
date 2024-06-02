@@ -35,6 +35,9 @@ class StoreManagerController {
     this[VIEW].bindButtonPago();
     this[VIEW].bindValidacionPago(this.handleDatosValidos);
     this[VIEW].bindValidacionRegistro(this.handleDatosRegistroValidos);
+    this[VIEW].sobreNosotrosModal();
+    this[VIEW].envioModal();
+    this[VIEW].politicaModal();
   };
 
   // Manejador que se llama cuando los datos del formulario de pago son válidos

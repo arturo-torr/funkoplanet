@@ -448,18 +448,38 @@ class StoreManagerView {
 
   // Enlazador que redirige al apartado de mis pedidos
   bindMisPedidos(handler) {
-    let enlace = document.getElementById("mis_pedidos");
-    if (enlace) {
-      enlace.addEventListener("click", () => handler());
+    let link = document.getElementById("mis_pedidos");
+    if (link) {
+      link.addEventListener("click", () => handler());
     }
   }
 
   // Enlazador que redirige al apartado de mis reservas
   bindMisReservas(handler) {
-    let enlace = document.getElementById("mis_reservas");
-    if (enlace) {
-      enlace.addEventListener("click", () => handler());
+    let link = document.getElementById("mis_reservas");
+    if (link) {
+      link.addEventListener("click", () => handler());
     }
+  }
+
+  sobreNosotrosModal() {
+    let link = document.getElementById("sobre_nosotros");
+    let modal = new bootstrap.Modal(
+      document.getElementById("sobreNosotrosModal")
+    );
+    link.addEventListener("click", () => modal.show());
+  }
+
+  envioModal() {
+    let link = document.getElementById("envio");
+    let modal = new bootstrap.Modal(document.getElementById("envioModal"));
+    link.addEventListener("click", () => modal.show());
+  }
+
+  politicaModal() {
+    let link = document.getElementById("politica");
+    let modal = new bootstrap.Modal(document.getElementById("politicaModal"));
+    link.addEventListener("click", () => modal.show());
   }
 
   // VALIDACIONES
