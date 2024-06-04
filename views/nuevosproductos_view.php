@@ -1,5 +1,5 @@
 <?php
-echo "<div class='container-fluid mx-auto text-center w-75 my-2'>
+echo "<div class='container-fluid mx-auto text-center w-75 my-2' id='novedades'>
 <h1 class='purple my-3'>¡Últimas novedades!</h1>
 <hr class='purple_line my-3'>";
 

@@ -3,6 +3,22 @@
 }
 
 /** --- HEADER --- **/
+nav {
+    font-size: 1.2em;
+}
+
+h1, legend {
+    font-size: 2.5em;
+}
+
+p {
+    font-size: 1em;
+}
+
+h5 {
+    font-size: 1.5em;
+}
+
 .navbar {
     background-color: #6F006A !important;
     transition: top 0.3s;

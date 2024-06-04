@@ -21,13 +21,13 @@
                         <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="2" aria-label="Slide 3"></button>
                     </div>
                     <div class="carousel-item active">
-                        <img src="./assets/img/carousel_1.jpg" class="d-block w-100" alt="Carousel-1-Img">
+                        <a href='#novedades'><img src="./assets/img/carousel_1.jpg" class="d-block w-100" alt="Carousel-1-Img"></a>
                     </div>
                     <div class="carousel-item">
-                        <img src="./assets/img/carousel_2.jpg" class="d-block w-100" alt="Carousel-2-Img">
+                        <a href='/funkoplanet/views/products.php'><img src="./assets/img/carousel_2.jpg" class="d-block w-100" alt="Carousel-2-Img"></a>
                     </div>
                     <div class="carousel-item">
-                        <img src="./assets/img/carousel_3.jpg" class="d-block w-100" alt="Carousel-3-Img">
+                        <a href="/funkoplanet/views/products.php?category=33"><img src="./assets/img/carousel_3.jpg" class="d-block w-100" alt="Carousel-3-Img"></a>
                     </div>
                 </div>
                 <button class="carousel-control-prev" type="button" data-bs-target="#carousel" data-bs-slide="prev">
@@ -62,7 +62,7 @@
                         <div class="card border-0">
                             <img src="./assets/img/cohete.gif" class="w-50 mx-auto" alt="Card-Cohete">
                             <div class="card-body">
-                                <h5 class="card-title text-center">Rapidez</h5>
+                                <h5 class="card-title text-center purple fw-bold">Rapidez</h5>
                                 <p class="card-text text-center">Todos nuestros envíos salen del almacen el mismo día
                                     que lo has
                                     pedido si es antes de las 18.00h. </p>
@@ -73,7 +73,7 @@
                         <div class="card border-0">
                             <img src="./assets/img/globo.gif" class="w-50 mx-auto" alt="Card-Descuentos">
                             <div class="card-body">
-                                <h5 class="card-title text-center">Descuentos</h5>
+                                <h5 class="card-title text-center purple fw-bold">Descuentos</h5>
                                 <p class="card-text text-center">¿Es tu cumpleaños? ¡Estás de suerte! Con FunkoPlanet
                                     contarás con divertidos descuentos.</p>
                             </div>
@@ -83,7 +83,7 @@
                         <div class="card border-0">
                             <img src="./assets/img/ayuda.gif" class="w-50 mx-auto" alt="Card-Ayuda">
                             <div class="card-body">
-                                <h5 class="card-title text-center">Ayuda</h5>
+                                <h5 class="card-title text-center purple fw-bold">Ayuda</h5>
                                 <p class="card-text text-center">¿No sabes qué Funko elegir? ¡Nosotros te ayudamos!</p>
                             </div>
                         </div>
@@ -92,7 +92,7 @@
                         <div class="card border-0">
                             <img src="./assets/img/planeta-verde.gif" class="w-50 mx-auto" alt="Card-Sostenible">
                             <div class="card-body">
-                                <h5 class="card-title text-center">Sostenibilidad</h5>
+                                <h5 class="card-title text-center purple fw-bold">Sostenibilidad</h5>
                                 <p class="card-text text-center">FunkoPlanet solo utiliza embalajes de cartón 100%
                                     reciclado para sus envíos. ¡Cuidemos el planeta!</p>
                             </div>
