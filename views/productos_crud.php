@@ -106,6 +106,9 @@
                                         $prod->__set("descripcion", $descripciones[$clave]);
                                         $prod->__set("precio", $precios[$clave]);
                                         $prod->__set("uds_disponibles", $disponibles[$clave]);
+                                        if (($prod->__get("uds_disponibles") > 0) && ($estados[$clave] == "Agotado")) {
+                                            $estados[$clave] = "Stock";
+                                        }
                                         $prod->__set("estado", $estados[$clave]);
 
                                         $daoProductos->actualizar($prod);
