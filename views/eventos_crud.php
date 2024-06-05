@@ -78,26 +78,53 @@
                                     $fechas = $_POST['Fechas'];
                                     $nombres = $_POST['Nombres'];
                                     $descripciones = $_POST['Descripciones'];
+
+                                    $errores = [];
                                     // Se recorre con un ForEach para cada uno de los mascotas seleccionados
                                     foreach ($selec as $clave => $valor) {
-                                        // Almacenamos en array la fecha de nacimiento para ese Id
-                                        $camposFecha = explode("/", $fechas[$clave]);
 
-                                        // La convertimos a epoch para guardarla de esta forma
-                                        $fechaEpoch = mktime(0, 0, 0, $camposFecha[1], $camposFecha[0], $camposFecha[2]);
+                                        // Se realizan las validaciones de servidor
+                                        if (empty($nombres[$clave])) {
+                                            $errores[] = "El nombre del evento con ID $clave no puede estar vacío.";
+                                        }
+
+                                        if (empty($descripciones[$clave])) {
+                                            $errores[] = "La categoría del evento " . $nombres[$clave] . " no puede estar vacía.";
+                                        }
+
+                                        if (empty($usuarios[$clave])) {
+                                            $errores[] = "El usuario del evento " . $nombres[$clave] . " no puede estar vacío.";
+                                        }
+
+                                        if (!preg_match('/^\d{1,2}\/\d{1,2}\/\d{4}$/', $fechas[$clave])) {
+                                            $errores[] = "La fecha del evento " . $nombres[$clave] . " no se ajusta al formato dd/mm/yyyy";
+                                        }
+
+                                        if (empty($errores)) {
+                                            // Almacenamos en array la fecha de nacimiento para ese Id
+                                            $camposFecha = explode("/", $fechas[$clave]);
+
+                                            // La convertimos a epoch para guardarla de esta forma
+                                            $fechaEpoch = mktime(0, 0, 0, $camposFecha[1], $camposFecha[0], $camposFecha[2]);
 
 
-                                        // Creamos una nueva situación
-                                        $event = new Evento();
+                                            // Creamos una nueva situación
+                                            $event = new Evento();
 
-                                        // Asignamos las propiedades correspondientes al nuevo objeto
-                                        $event->__set("id", $clave);
-                                        $event->__set("id_usuario", $usuarios[$clave]);
-                                        $event->__set("nombre", $nombres[$clave]);
-                                        $event->__set("descripcion", $descripciones[$clave]);
-                                        $event->__set("fecha", $fechaEpoch);
+                                            // Asignamos las propiedades correspondientes al nuevo objeto
+                                            $event->__set("id", $clave);
+                                            $event->__set("id_usuario", $usuarios[$clave]);
+                                            $event->__set("nombre", $nombres[$clave]);
+                                            $event->__set("descripcion", $descripciones[$clave]);
+                                            $event->__set("fecha", $fechaEpoch);
 
-                                        $daoEventos->actualizar($event);
+                                            $daoEventos->actualizar($event);
+                                        } else {
+                                            // Mostrar errores
+                                            foreach ($errores as $error) {
+                                                echo "<div class='alert alert-danger my-2'>$error</div>";
+                                            }
+                                        }
                                     }
                                 }
 
@@ -270,6 +297,59 @@
     require_once "../views/footer.php";
     require_once "../views/scripts.php";
     ?>
+    <script>
+        // Validación en la inserción de eventos
+        $(document).ready(function() {
+            // Método personalizado para el formato de las fechas
+            $.validator.addMethod("fechaPattern", function(value, element) {
+                return this.optional(element) || /^\d{2}\/\d{2}\/\d{4}$/.test(value);
+            }, "El formato debe ser dd/mm/yyyy.");
+            $("form[name='fEventos']").validate({
+                rules: {
+                    nombreNuevo: {
+                        required: function(element) {
+                            return $("input[name='Insertar']").is(":focus");
+                        },
+                        minlength: 5
+                    },
+                    descripcionNueva: {
+                        required: function(element) {
+                            return $("input[name='Insertar']").is(":focus");
+                        }
+                    },
+                    fechaNueva: {
+                        required: function(element) {
+                            return $("input[name='Insertar']").is(":focus");
+                        },
+                        fechaPattern: true
+                    },
+                    usuarioNuevo: {
+                        required: function(element) {
+                            return $("input[name='Insertar']").is(":focus");
+                        }
+                    }
+                },
+                messages: {
+                    nombreNuevo: {
+                        required: "Ingrese un nombre.",
+                        minlength: "El nombre debe tener al menos 5 caracteres."
+                    },
+                    descripcionNueva: {
+                        required: "Ingrese una descripción."
+                    },
+                    fechaNueva: {
+                        required: "Ingrese una fecha.",
+                    },
+                    usuarioNuevo: {
+                        required: "Seleccione un usuario."
+                    }
+                },
+                submitHandler: function(form) {
+                    form.submit();
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>
