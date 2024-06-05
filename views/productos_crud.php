@@ -93,27 +93,64 @@
                                     $disponibles = $_POST['Disponibles'];
                                     $estados = $_POST['Estados'];
 
-                                    // Se recorre con un ForEach para cada uno de los mascotas seleccionados
+                                    $errores = [];
+
+                                    // Se recorre con un ForEach para cada uno de los productos seleccionados
                                     foreach ($selec as $clave => $valor) {
 
-                                        $prod = new Producto();
-
-                                        // Asignamos las propiedades correspondientes al nuevo objeto
-                                        $prod->__set("id", $clave);
-                                        $prod->__set("nombre", $nombres[$clave]);
-                                        $prod->__set("id_categoria", $categorias[$clave]);
-                                        $prod->__set("id_usuario", $usuarios[$clave]);
-                                        $prod->__set("descripcion", $descripciones[$clave]);
-                                        $prod->__set("precio", $precios[$clave]);
-                                        $prod->__set("uds_disponibles", $disponibles[$clave]);
-                                        if (($prod->__get("uds_disponibles") > 0) && ($estados[$clave] == "Agotado")) {
-                                            $estados[$clave] = "Stock";
+                                        // Se realizan las validaciones de servidor
+                                        if (empty($nombres[$clave])) {
+                                            $errores[] = "El nombre del producto con ID $clave no puede estar vacío.";
                                         }
-                                        $prod->__set("estado", $estados[$clave]);
 
-                                        $daoProductos->actualizar($prod);
+                                        if (!is_numeric($precios[$clave]) || !preg_match('/^\d+\.\d{2}$/', $precios[$clave])) {
+                                            $errores[] = "El precio del producto con ID $clave debe ser un número válido con dos decimales.";
+                                        }
+
+                                        if (!is_numeric($disponibles[$clave]) || $disponibles[$clave] < 0) {
+                                            $errores[] = "La cantidad disponible del producto con ID $clave debe ser un número entero no negativo.";
+                                        }
+
+                                        if (empty($categorias[$clave])) {
+                                            $errores[] = "La categoría del producto con ID $clave no puede estar vacía.";
+                                        }
+
+                                        if (empty($usuarios[$clave])) {
+                                            $errores[] = "El usuario del producto con ID $clave no puede estar vacío.";
+                                        }
+
+                                        if (!in_array($estados[$clave], ["Agotado", "Reserva", "Stock"])) {
+                                            $errores[] = "El estado del producto con ID $clave es inválido. Debe ser Stock, Agotado o Reserva. .";
+                                        }
+
+                                        // Si no ha habido errores, se actualiza
+                                        if (empty($errores)) {
+                                            $prod = new Producto();
+
+                                            $prod->__set("id", $clave);
+                                            $prod->__set("nombre", $nombres[$clave]);
+                                            $prod->__set("id_categoria", $categorias[$clave]);
+                                            $prod->__set("id_usuario", $usuarios[$clave]);
+                                            $prod->__set("descripcion", $descripciones[$clave]);
+                                            $prod->__set("precio", $precios[$clave]);
+                                            $prod->__set("uds_disponibles", $disponibles[$clave]);
+
+                                            // Si se ha puesto el estado agotado y hay unidades disponibles, pasa a estar en stock
+                                            if (($prod->__get("uds_disponibles") > 0) && ($estados[$clave] == "Agotado")) {
+                                                $estados[$clave] = "Stock";
+                                            }
+                                            $prod->__set("estado", $estados[$clave]);
+
+                                            $daoProductos->actualizar($prod);
+                                        } else {
+                                            // Mostrar errores
+                                            foreach ($errores as $error) {
+                                                echo "<div class='alert alert-danger my-2'>$error</div>";
+                                            }
+                                        }
                                     }
                                 }
+
 
                                 // Si se ha seleccionado algún elemento y se ha pulsado en Borrar
                                 if (isset($_POST['Borrar']) && (isset($_POST['Selec']))) {
@@ -189,8 +226,8 @@
                                     // Se crea la fila de inserción
                                     echo "<tr class='align-middle text-center bg-light'>";
                                     echo "<td>*</td>
-                            <td><input type='text' class='form-control' name='nombreNuevo'></td>";
-                                    echo "<td> <select name='categoriaNueva' class='form-select'> ";
+                            <td><input type='text' class='form-control' name='nombreNuevo' required></td>";
+                                    echo "<td> <select name='categoriaNueva' class='form-select' required> ";
                                     echo "<option value=''></option>";
                                     $daoCategorias->listar();
                                     foreach ($daoCategorias->categoriasObjetos as $key => $cat) {
@@ -200,7 +237,7 @@
                                     echo "</select></td>";
                                     echo "
                             <td><input type='text' class='form-control' name='descripcionNueva'></td>
-                            <td><input type='text' class='form-control' name='precioNuevo'></td>
+                            <td><input type='text' class='form-control' name='precioNuevo' pattern='^\d+\.\d{2}$'></td>
                             <td><input type='number' min='0' class='form-control' name='udsDisponiblesNuevo'></td>
                             <td><input type='text' class='form-control' name='estadoNuevo'></td>";
 
@@ -422,6 +459,100 @@
     require_once "../views/footer.php";
     require_once "../views/scripts.php";
     ?>
+    <script>
+    $(document).ready(function() {
+
+        // Validaciones para el insertado de datos
+        $("form[name='fProductos']").validate({
+            rules: {
+                nombreNuevo: {
+                    required: function(element) {
+                        return $("input[name='Insertar']").is(":focus");
+                    },
+                    minlength: 5
+                },
+                categoriaNueva: {
+                    required: function(element) {
+                        return $("input[name='Insertar']").is(":focus");
+                    }
+                },
+                usuarioNuevo: {
+                    required: function(element) {
+                        return $("input[name='Insertar']").is(":focus");
+                    }
+                },
+                descripcionNueva: {
+                    required: function(element) {
+                        return $("input[name='Insertar']").is(":focus");
+                    }
+                },
+                precioNuevo: {
+                    required: function(element) {
+                        return $("input[name='Insertar']").is(":focus");
+                    },
+                },
+                udsDisponiblesNuevo: {
+                    required: function(element) {
+                        return $("input[name='Insertar']").is(":focus");
+                    },
+                    min: 0
+                },
+                estadoNuevo: {
+                    required: function(element) {
+                        return $("input[name='Insertar']").is(":focus");
+                    }
+                },
+            },
+            messages: {
+                nombreNuevo: {
+                    required: "Ingrese un nombre.",
+                    minlength: "El nombre debe tener al menos 5 caracteres."
+                },
+                categoriaNueva: {
+                    required: "Seleccione una categoría."
+                },
+                usuarioNuevo: {
+                    required: "Seleccione un usuario."
+                },
+                descripcionNueva: {
+                    required: "ingrese una descripción."
+                },
+                precioNuevo: {
+                    required: "Ingrese un precio.",
+                },
+                udsDisponiblesNuevo: {
+                    required: "Ingrese la cantidad disponible.",
+                    min: "La cantidad no puede ser negativa."
+                },
+                estadoNuevo: {
+                    required: "Ingrese el estado del producto."
+                },
+            },
+
+            submitHandler: function(form) {
+                form.submit();
+            }
+        });
+
+        // // Validaciones para el insertado de las imágenes de los productos
+        $("input[name='Guardar']").click(function() {
+            let files = $("input[name='NuevaF[]']").get(0).files;
+            if (files.length > 0) {
+                let valid = true;
+                $.each(files, function(index, file) {
+                    if (!file.type.match('image.*')) {
+                        valid = false;
+                        alert("Solo se permiten archivos de imagen.");
+                        return false;
+                    }
+                });
+                if (!valid) {
+                    return false;
+                }
+            }
+        });
+    });
+    </script>
 </body>
 
 </html>

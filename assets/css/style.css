@@ -294,3 +294,7 @@ h5 {
 .active_link {
     background-color: #da1ddc;
 }
+
+.error {
+    color: red;
+}

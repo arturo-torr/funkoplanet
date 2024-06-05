@@ -16,18 +16,24 @@
             <div id="carousel" class="carousel slide" data-bs-ride="carousel">
                 <div class="carousel-inner">
                     <div class="carousel-indicators">
-                        <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                        <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                        <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                        <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active"
+                            aria-current="true" aria-label="Slide 1"></button>
+                        <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="1"
+                            aria-label="Slide 2"></button>
+                        <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="2"
+                            aria-label="Slide 3"></button>
                     </div>
                     <div class="carousel-item active">
-                        <a href='#novedades'><img src="./assets/img/carousel_1.jpg" class="d-block w-100" alt="Carousel-1-Img"></a>
+                        <a href='#novedades'><img src="./assets/img/carousel_1.jpg" class="d-block w-100"
+                                alt="Carousel-1-Img"></a>
                     </div>
                     <div class="carousel-item">
-                        <a href='/funkoplanet/views/products.php'><img src="./assets/img/carousel_2.jpg" class="d-block w-100" alt="Carousel-2-Img"></a>
+                        <a href='/funkoplanet/views/products.php?category=&orden=nuevos&Filtrar=Filtrar'><img
+                                src="./assets/img/carousel_2.jpg" class="d-block w-100" alt="Carousel-2-Img"></a>
                     </div>
                     <div class="carousel-item">
-                        <a href="/funkoplanet/views/products.php?category=33"><img src="./assets/img/carousel_3.jpg" class="d-block w-100" alt="Carousel-3-Img"></a>
+                        <a href="/funkoplanet/views/products.php?category=33"><img src="./assets/img/carousel_3.jpg"
+                                class="d-block w-100" alt="Carousel-3-Img"></a>
                     </div>
                 </div>
                 <button class="carousel-control-prev" type="button" data-bs-target="#carousel" data-bs-slide="prev">
