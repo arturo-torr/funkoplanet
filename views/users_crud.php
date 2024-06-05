@@ -59,20 +59,46 @@
                                     $tipos = $_POST['Tipos'];
                                     $monederos = $_POST['Monederos'];
 
+                                    $errores = [];
+
                                     // Se recorre con un ForEach para cada uno de los mascotas seleccionados
                                     foreach ($selec as $clave => $valor) {
 
-                                        $user = new Usuario();
+                                        // Se realizan las validaciones de servidor
+                                        if (empty($usernames[$clave])) {
+                                            $errores[] = "El username con ID $clave no puede estar vacío.";
+                                        }
 
-                                        // Asignamos las propiedades correspondientes al nuevo objeto
-                                        $user->__set("id", $clave);
-                                        $user->__set("username", $usernames[$clave]);
-                                        $user->__set("email", $emails[$clave]);
-                                        $user->__set("password", password_hash($passwords[$clave], PASSWORD_BCRYPT));
-                                        $user->__set("tipo", $tipos[$clave]);
-                                        $user->__set("monedero", $monederos[$clave]);
+                                        if (!preg_match('/^[\w\.-]+@([\w-]+\.)+[\w-]{2,4}$/', $emails[$clave])) {
+                                            $errores[] = "El email del usuario " . $usernames[$clave] . " no se ajusta al formato de un correo electrónico.";
+                                        }
 
-                                        $daoUsuarios->actualizar($user);
+
+                                        if (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[\w$@$!%*?&]{8,15}$/', $passwords[$clave])) {
+                                            $errores[] = "La contraseña del usuario " . $usernames[$clave] . " no cumple con los requisitos.";
+                                        }
+                                        if (!preg_match('/^[APE]$/', $tipos[$clave])) {
+                                            $errores[] = "El tipo de usuario de " . $usernames[$clave] . " no tiene el formato A, P ó E.";
+                                        }
+
+                                        if (empty($errores)) {
+                                            $user = new Usuario();
+
+                                            // Asignamos las propiedades correspondientes al nuevo objeto
+                                            $user->__set("id", $clave);
+                                            $user->__set("username", $usernames[$clave]);
+                                            $user->__set("email", $emails[$clave]);
+                                            $user->__set("password", password_hash($passwords[$clave], PASSWORD_BCRYPT));
+                                            $user->__set("tipo", $tipos[$clave]);
+                                            $user->__set("monedero", $monederos[$clave]);
+
+                                            $daoUsuarios->actualizar($user);
+                                        } else {
+                                            // Mostrar errores
+                                            foreach ($errores as $error) {
+                                                echo "<div class='alert alert-danger my-2'>$error</div>";
+                                            }
+                                        }
                                     }
                                 }
 
@@ -227,6 +253,93 @@
     require_once "../views/footer.php";
     require_once "../views/scripts.php";
     ?>
+    <script>
+        $(document).ready(function() {
+
+            $.validator.addMethod("passPattern", function(value, element) {
+                    return this.optional(element) ||
+                        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,15}[^'\s]$/.test(
+                            value);
+                },
+                "La contraseña debe contener 1 mayúscula, 1 minúscula, 1 número y 1 carácter especial. La longitud mínima son 8 caracteres."
+            );
+            $.validator.addMethod("emailPattern", function(value, element) {
+                    return this.optional(element) ||
+                        /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
+                        .test(
+                            value);
+                },
+                "El e-mail no tiene un formato correcto.");
+            $.validator.addMethod("tipoPattern", function(value, element) {
+                    return this.optional(element) ||
+                        /^[APE]$/
+                        .test(
+                            value);
+                },
+                "Solo se admite: A, de Admin, P, de Premium y E de Estándar.");
+            $("form[name='fUsuarios']").validate({
+                rules: {
+                    usernameNuevo: {
+                        required: function(element) {
+                            return $("input[name='Insertar']").is(":focus");
+                        },
+                        minlength: 5
+                    },
+                    emailNuevo: {
+                        required: function(element) {
+                            return $("input[name='Insertar']").is(":focus");
+                        },
+                        emailPattern: true
+                    },
+                    passwordNueva: {
+                        required: function(element) {
+                            return $("input[name='Insertar']").is(":focus");
+                        },
+                        passPattern: true,
+                        minlength: 8,
+                        maxlength: 15
+                    },
+                    tipoNuevo: {
+                        required: function(element) {
+                            return $("input[name='Insertar']").is(":focus");
+                        },
+                        tipoPattern: true
+                    },
+                    monederoNuevo: {
+                        required: function(element) {
+                            return $("input[name='Insertar']").is(":focus");
+                        },
+                    }
+                },
+                messages: {
+                    usernameNuevo: {
+                        required: "Por favor, ingrese un nombre de usuario.",
+                        minlength: "El nombre de usuario debe tener al menos 5 caracteres."
+                    },
+                    emailNuevo: {
+                        required: "Por favor, ingrese un correo electrónico.",
+                        email: "Por favor, ingrese un correo electrónico válido."
+                    },
+                    passwordNueva: {
+                        required: "Por favor, ingrese una contraseña.",
+                        pattern: "La contraseña debe tener entre 8 y 15 caracteres, al menos una letra minúscula, una letra mayúscula, un número y un carácter especial.",
+                        minlength: "La contraseña debe tener al menos 8 caracteres.",
+                        maxlength: "La contraseña debe tener como máximo 15 caracteres."
+                    },
+                    tipoNuevo: {
+                        required: "Por favor, ingrese un tipo de usuario.",
+                    },
+                    monederoNuevo: {
+                        required: "Por favor, ingrese el monedero."
+                    }
+                },
+                submitHandler: function(form) {
+                    form.submit();
+                }
+            });
+        });
+    </script>
+    </script>
 </body>
 
 </html>

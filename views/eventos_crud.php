@@ -20,14 +20,19 @@
             <div class="container-fluid mt-2">
                 <div class="row">
                     <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-10 mx-auto table-responsive">
-                        <form name="fEventos" method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>" enctype="multipart/form-data">
+                        <form name="fEventos" method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>"
+                            enctype="multipart/form-data">
                             <fieldset>
                                 <legend class='purple'>Administración de Eventos</legend>
 
-                                <input type='submit' class='btn btn_purple text-white fw-bold' name='Insertar' value='Insertar'>
-                                <input type='submit' class='btn btn_purple text-white fw-bold' name='Buscar' value='Buscar'>
-                                <input type='submit' class='btn btn_purple text-white fw-bold' name='Actualizar' value='Actualizar'>
-                                <input type='submit' class='btn btn_purple text-white fw-bold' name='Borrar' value='Borrar'>
+                                <input type='submit' class='btn btn_purple text-white fw-bold' name='Insertar'
+                                    value='Insertar'>
+                                <input type='submit' class='btn btn_purple text-white fw-bold' name='Buscar'
+                                    value='Buscar'>
+                                <input type='submit' class='btn btn_purple text-white fw-bold' name='Actualizar'
+                                    value='Actualizar'>
+                                <input type='submit' class='btn btn_purple text-white fw-bold' name='Borrar'
+                                    value='Borrar'>
 
 
                                 <?php
@@ -298,57 +303,57 @@
     require_once "../views/scripts.php";
     ?>
     <script>
-        // Validación en la inserción de eventos
-        $(document).ready(function() {
-            // Método personalizado para el formato de las fechas
-            $.validator.addMethod("fechaPattern", function(value, element) {
-                return this.optional(element) || /^\d{2}\/\d{2}\/\d{4}$/.test(value);
-            }, "El formato debe ser dd/mm/yyyy.");
-            $("form[name='fEventos']").validate({
-                rules: {
-                    nombreNuevo: {
-                        required: function(element) {
-                            return $("input[name='Insertar']").is(":focus");
-                        },
-                        minlength: 5
+    // Validación en la inserción de eventos
+    $(document).ready(function() {
+        // Método personalizado para el formato de las fechas
+        $.validator.addMethod("fechaPattern", function(value, element) {
+            return this.optional(element) || /^\d{2}\/\d{2}\/\d{4}$/.test(value);
+        }, "El formato debe ser dd/mm/yyyy.");
+        $("form[name='fEventos']").validate({
+            rules: {
+                nombreNuevo: {
+                    required: function(element) {
+                        return $("input[name='Insertar']").is(":focus");
                     },
-                    descripcionNueva: {
-                        required: function(element) {
-                            return $("input[name='Insertar']").is(":focus");
-                        }
-                    },
-                    fechaNueva: {
-                        required: function(element) {
-                            return $("input[name='Insertar']").is(":focus");
-                        },
-                        fechaPattern: true
-                    },
-                    usuarioNuevo: {
-                        required: function(element) {
-                            return $("input[name='Insertar']").is(":focus");
-                        }
+                    minlength: 5
+                },
+                descripcionNueva: {
+                    required: function(element) {
+                        return $("input[name='Insertar']").is(":focus");
                     }
                 },
-                messages: {
-                    nombreNuevo: {
-                        required: "Ingrese un nombre.",
-                        minlength: "El nombre debe tener al menos 5 caracteres."
+                fechaNueva: {
+                    required: function(element) {
+                        return $("input[name='Insertar']").is(":focus");
                     },
-                    descripcionNueva: {
-                        required: "Ingrese una descripción."
-                    },
-                    fechaNueva: {
-                        required: "Ingrese una fecha.",
-                    },
-                    usuarioNuevo: {
-                        required: "Seleccione un usuario."
-                    }
+                    fechaPattern: true
                 },
-                submitHandler: function(form) {
-                    form.submit();
+                usuarioNuevo: {
+                    required: function(element) {
+                        return $("input[name='Insertar']").is(":focus");
+                    }
                 }
-            });
+            },
+            messages: {
+                nombreNuevo: {
+                    required: "Ingrese un nombre.",
+                    minlength: "El nombre debe tener al menos 5 caracteres."
+                },
+                descripcionNueva: {
+                    required: "Ingrese una descripción."
+                },
+                fechaNueva: {
+                    required: "Ingrese una fecha.",
+                },
+                usuarioNuevo: {
+                    required: "Seleccione un usuario."
+                }
+            },
+            submitHandler: function(form) {
+                form.submit();
+            }
         });
+    });
     </script>
 </body>
 
