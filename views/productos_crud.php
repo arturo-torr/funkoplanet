@@ -19,21 +19,43 @@
     $daoCategorias = new DaoCategorias($db);
     $daoUsuarios = new DaoUsuarios($db);
     $daoFotosProductos = new DaoFotosProductos($db);
+
+    // Comprueba si el usuario está registrado y es administrador
+    if (isset($_SESSION['usuario'])) {
+        $username = $_SESSION['usuario']['username'];
+        $usuarioAdministrador = $daoUsuarios->obtenerPorUsername($username);
+        if ($usuarioAdministrador) {
+            if ($usuarioAdministrador->__get("tipo") !== "A") {
+                echo "<script>window.location.href = '/funkoplanet/index.php'</script>";
+            }
+        } else {
+            echo "<script>window.location.href = '/funkoplanet/index.php'</script>";
+        }
+    } else {
+        echo "<script>window.location.href = '/funkoplanet/index.php'</script>";
+    }
     ?>
 
     <main>
         <section class="py-2">
             <div class="container-fluid mt-2">
                 <div class="row">
-                    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-10 mx-auto table-responsive">
-                        <form name="fProductos" method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>" enctype="multipart/form-data">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-10 mx-auto">
+                        <form name="fProductos" method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>"
+                            enctype="multipart/form-data">
                             <fieldset>
                                 <legend class='purple'>Administración de Productos</legend>
 
-                                <input type='submit' class='btn btn_purple text-white fw-bold' name='Insertar' value='Insertar'>
-                                <input type='submit' class='btn btn_purple text-white fw-bold' name='Buscar' value='Buscar'>
-                                <input type='submit' class='btn btn_purple text-white fw-bold' name='Actualizar' value='Actualizar'>
-                                <input type='submit' class='btn btn_purple text-white fw-bold' name='Borrar' value='Borrar'>
+                                <input type='submit' class='btn btn_purple text-white fw-bold' name='Insertar'
+                                    value='Insertar'>
+                                <input type='submit' class='btn btn_purple text-white fw-bold' name='Buscar'
+                                    value='Buscar'>
+                                <input type='submit' class='btn btn_purple text-white fw-bold' name='Actualizar'
+                                    value='Actualizar'>
+                                <input type='submit' class='btn btn_purple text-white fw-bold' name='Borrar'
+                                    value='Borrar'>
+                                <input type='reset' class='btn btn_purple text-white fw-bold' name='Cancelar'
+                                    value='Cancelar'>
 
 
                                 <?php
@@ -208,14 +230,14 @@
 
                                 // Si es >= a 0, la lista
                                 if (count($daoProductos->productos) >= 0) {
-                                    echo "<table class='mt-2 table table-hover table-bordered border_purple text-center bg_purple'>";
+                                    echo "<table class='mt-2 table table-hover table-bordered border_purple table-responsive text-center bg_purple'>";
                                     echo "<th class='text-white fw-bold'>Selección</th>
                             <th class='text-white fw-bold'>Nombre</th>
                             <th class='text-white fw-bold'>Categoría</th>
                             <th class='text-white fw-bold'>Descripción</th>
-                            <th class='text-white fw-bold'>Precio</th>
-                            <th class='text-white fw-bold'>Disponibles</th>
-                            <th class='text-white fw-bold'>Estado</th>
+                            <th class='text-white fw-bold col-1'>Precio</th>
+                            <th class='text-white fw-bold col-1'>Disponibles</th>
+                            <th class='text-white fw-bold col-1'>Estado</th>
                             <th class='text-white fw-bold'>Usuario</th>";
 
                                     // Se crea la fila de inserción
@@ -384,7 +406,8 @@
                                 </select>
 
                                 <br>
-                                <input type='submit' class='btn btn_purple text-white fw-bold' name='Mostrar' value='Mostrar'>
+                                <input type='submit' class='btn btn_purple text-white fw-bold' name='Mostrar'
+                                    value='Mostrar'>
 
                             </fieldset>
                             <?php
@@ -454,98 +477,98 @@
     require_once "../views/scripts.php";
     ?>
     <script>
-        $(document).ready(function() {
+    $(document).ready(function() {
 
-            // Validaciones para el insertado de datos
-            $("form[name='fProductos']").validate({
-                rules: {
-                    nombreNuevo: {
-                        required: function(element) {
-                            return $("input[name='Insertar']").is(":focus");
-                        },
-                        minlength: 5
+        // Validaciones para el insertado de datos
+        $("form[name='fProductos']").validate({
+            rules: {
+                nombreNuevo: {
+                    required: function(element) {
+                        return $("input[name='Insertar']").is(":focus");
                     },
-                    categoriaNueva: {
-                        required: function(element) {
-                            return $("input[name='Insertar']").is(":focus");
-                        }
-                    },
-                    usuarioNuevo: {
-                        required: function(element) {
-                            return $("input[name='Insertar']").is(":focus");
-                        }
-                    },
-                    descripcionNueva: {
-                        required: function(element) {
-                            return $("input[name='Insertar']").is(":focus");
-                        }
-                    },
-                    precioNuevo: {
-                        required: function(element) {
-                            return $("input[name='Insertar']").is(":focus");
-                        },
-                    },
-                    udsDisponiblesNuevo: {
-                        required: function(element) {
-                            return $("input[name='Insertar']").is(":focus");
-                        },
-                        min: 0
-                    },
-                    estadoNuevo: {
-                        required: function(element) {
-                            return $("input[name='Insertar']").is(":focus");
-                        }
+                    minlength: 5
+                },
+                categoriaNueva: {
+                    required: function(element) {
+                        return $("input[name='Insertar']").is(":focus");
+                    }
+                },
+                usuarioNuevo: {
+                    required: function(element) {
+                        return $("input[name='Insertar']").is(":focus");
+                    }
+                },
+                descripcionNueva: {
+                    required: function(element) {
+                        return $("input[name='Insertar']").is(":focus");
+                    }
+                },
+                precioNuevo: {
+                    required: function(element) {
+                        return $("input[name='Insertar']").is(":focus");
                     },
                 },
-                messages: {
-                    nombreNuevo: {
-                        required: "Ingrese un nombre.",
-                        minlength: "El nombre debe tener al menos 5 caracteres."
+                udsDisponiblesNuevo: {
+                    required: function(element) {
+                        return $("input[name='Insertar']").is(":focus");
                     },
-                    categoriaNueva: {
-                        required: "Seleccione una categoría."
-                    },
-                    usuarioNuevo: {
-                        required: "Seleccione un usuario."
-                    },
-                    descripcionNueva: {
-                        required: "Ingrese una descripción."
-                    },
-                    precioNuevo: {
-                        required: "Ingrese un precio.",
-                    },
-                    udsDisponiblesNuevo: {
-                        required: "Ingrese la cantidad disponible.",
-                        min: "La cantidad no puede ser negativa."
-                    },
-                    estadoNuevo: {
-                        required: "Ingrese el estado del producto."
-                    },
+                    min: 0
                 },
+                estadoNuevo: {
+                    required: function(element) {
+                        return $("input[name='Insertar']").is(":focus");
+                    }
+                },
+            },
+            messages: {
+                nombreNuevo: {
+                    required: "Ingrese un nombre.",
+                    minlength: "El nombre debe tener al menos 5 caracteres."
+                },
+                categoriaNueva: {
+                    required: "Seleccione una categoría."
+                },
+                usuarioNuevo: {
+                    required: "Seleccione un usuario."
+                },
+                descripcionNueva: {
+                    required: "Ingrese una descripción."
+                },
+                precioNuevo: {
+                    required: "Ingrese un precio.",
+                },
+                udsDisponiblesNuevo: {
+                    required: "Ingrese la cantidad disponible.",
+                    min: "La cantidad no puede ser negativa."
+                },
+                estadoNuevo: {
+                    required: "Ingrese el estado del producto."
+                },
+            },
 
-                submitHandler: function(form) {
-                    form.submit();
-                }
-            });
+            submitHandler: function(form) {
+                form.submit();
+            }
+        });
 
-            // // Validaciones para el insertado de las imágenes de los productos
-            $("input[name='Guardar']").click(function() {
-                let files = $("input[name='NuevaF[]']").get(0).files;
-                if (files.length > 0) {
-                    let valid = true;
-                    $.each(files, function(index, file) {
-                        if (!file.type.match('image.*')) {
-                            valid = false;
-                            alert("Solo se permiten archivos de imagen.");
-                            return false;
-                        }
-                    });
-                    if (!valid) {
+        // // Validaciones para el insertado de las imágenes de los productos
+        $("input[name='Guardar']").click(function() {
+            let files = $("input[name='NuevaF[]']").get(0).files;
+            if (files.length > 0) {
+                let valid = true;
+                $.each(files, function(index, file) {
+                    if (!file.type.match('image.*')) {
+                        valid = false;
+                        alert("Solo se permiten archivos de imagen.");
                         return false;
                     }
+                });
+                if (!valid) {
+                    return false;
                 }
-            });
+            }
         });
+    });
     </script>
 </body>
 

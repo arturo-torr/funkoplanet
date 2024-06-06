@@ -11,8 +11,24 @@
     require_once "../views/header.php";
     require_once "../dao/EventoDAO.php";
     require_once "../dao/UsuarioDAO.php";
-    $daoEventos = new DaoEventos("funkoplanet");
-    $daoUsuarios = new DaoUsuarios("funkoplanet");
+    $db = "funkoplanet";
+    $daoEventos = new DaoEventos($db);
+    $daoUsuarios = new DaoUsuarios($db);
+
+    // Comprueba si el usuario está registrado y es administrador
+    if (isset($_SESSION['usuario'])) {
+        $username = $_SESSION['usuario']['username'];
+        $usuarioAdministrador = $daoUsuarios->obtenerPorUsername($username);
+        if ($usuarioAdministrador) {
+            if ($usuarioAdministrador->__get("tipo") !== "A") {
+                echo "<script>window.location.href = '/funkoplanet/index.php'</script>";
+            }
+        } else {
+            echo "<script>window.location.href = '/funkoplanet/index.php'</script>";
+        }
+    } else {
+        echo "<script>window.location.href = '/funkoplanet/index.php'</script>";
+    }
     ?>
 
     <main>
@@ -33,6 +49,8 @@
                                     value='Actualizar'>
                                 <input type='submit' class='btn btn_purple text-white fw-bold' name='Borrar'
                                     value='Borrar'>
+                                <input type='reset' class='btn btn_purple text-white fw-bold' name='Cancelar'
+                                    value='Cancelar'>
 
 
                                 <?php

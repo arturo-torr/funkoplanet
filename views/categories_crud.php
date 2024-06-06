@@ -11,7 +11,25 @@
     require_once "../views/header.php";
     require_once "../dao/CategoriaDAO.php";
     require_once '../models/Categoria.php';
-    $daoCategorias = new DaoCategorias("funkoplanet");
+    require_once "../dao/UsuarioDAO.php";
+    $db = "funkoplanet";
+    $daoCategorias = new DaoCategorias($db);
+    $daoUsuarios = new DaoUsuarios($db);
+
+    // Comprueba si el usuario está registrado y es administrador
+    if (isset($_SESSION['usuario'])) {
+        $username = $_SESSION['usuario']['username'];
+        $usuarioAdministrador = $daoUsuarios->obtenerPorUsername($username);
+        if ($usuarioAdministrador) {
+            if ($usuarioAdministrador->__get("tipo") !== "A") {
+                echo "<script>window.location.href = '/funkoplanet/index.php'</script>";
+            }
+        } else {
+            echo "<script>window.location.href = '/funkoplanet/index.php'</script>";
+        }
+    } else {
+        echo "<script>window.location.href = '/funkoplanet/index.php'</script>";
+    }
     ?>
 
     <main>
@@ -19,21 +37,15 @@
             <div class="container-fluid mt-2">
                 <div class="row">
                     <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-10 mx-auto table-responsive">
-                        <form name="fCategorias" method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>"
-                            enctype="multipart/form-data" novalidate>
+                        <form name="fCategorias" method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>" enctype="multipart/form-data" novalidate>
                             <fieldset>
                                 <legend class='purple'>Administración de Categorías</legend>
 
-                                <input type='submit' class='btn btn_purple text-white fw-bold' name='Insertar'
-                                    value='Insertar'>
-                                <input type='submit' class='btn btn_purple text-white fw-bold' name='Buscar'
-                                    value='Buscar'>
-                                <input type='submit' class='btn btn_purple text-white fw-bold' name='Actualizar'
-                                    value='Actualizar'>
-                                <input type='submit' class='btn btn_purple text-white fw-bold' name='Borrar'
-                                    value='Borrar'>
-                                <input type='reset' class='btn btn_purple text-white fw-bold' name='Cancelar'
-                                    value='Cancelar'>
+                                <input type='submit' class='btn btn_purple text-white fw-bold' name='Insertar' value='Insertar'>
+                                <input type='submit' class='btn btn_purple text-white fw-bold' name='Buscar' value='Buscar'>
+                                <input type='submit' class='btn btn_purple text-white fw-bold' name='Actualizar' value='Actualizar'>
+                                <input type='submit' class='btn btn_purple text-white fw-bold' name='Borrar' value='Borrar'>
+                                <input type='reset' class='btn btn_purple text-white fw-bold' name='Cancelar' value='Cancelar'>
 
 
                                 <?php

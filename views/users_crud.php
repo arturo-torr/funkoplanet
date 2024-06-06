@@ -11,7 +11,23 @@
     require_once "../views/header.php";
     require_once "../dao/UsuarioDAO.php";
     require_once '../models/Usuario.php';
-    $daoUsuarios = new DaoUsuarios("funkoplanet");
+    $db = "funkoplanet";
+    $daoUsuarios = new DaoUsuarios($db);
+
+    // Comprueba si el usuario está registrado y es administrador
+    if (isset($_SESSION['usuario'])) {
+        $username = $_SESSION['usuario']['username'];
+        $usuarioAdministrador = $daoUsuarios->obtenerPorUsername($username);
+        if ($usuarioAdministrador) {
+            if ($usuarioAdministrador->__get("tipo") !== "A") {
+                echo "<script>window.location.href = '/funkoplanet/index.php'</script>";
+            }
+        } else {
+            echo "<script>window.location.href = '/funkoplanet/index.php'</script>";
+        }
+    } else {
+        echo "<script>window.location.href = '/funkoplanet/index.php'</script>";
+    }
     ?>
     <main>
         <section class="py-2">
@@ -31,6 +47,8 @@
                                     value='Actualizar'>
                                 <input type='submit' class='btn btn_purple text-white fw-bold' name='Borrar'
                                     value='Borrar'>
+                                <input type='reset' class='btn btn_purple text-white fw-bold' name='Cancelar'
+                                    value='Cancelar'>
 
 
                                 <?php
