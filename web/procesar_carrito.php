@@ -1,5 +1,8 @@
 <?php
 session_start();
+require_once "../dao/ProductoDAO.php";
+$db = "funkoplanet";
+$daoProductos = new DaoProductos($db);
 
 header('Content-Type: application/json');
 
@@ -28,7 +31,10 @@ try {
         foreach ($_SESSION['carrito'] as $index => $producto) {
             // Si lo encuentra, actualiza la cantidad y pone la vriable a true
             if ($producto['idProducto'] === $idProducto) {
-                $_SESSION['carrito'][$index]['cantidad'] += $cantidad;
+                $prod = $daoProductos->obtener($producto['idProducto']);
+                if ($prod->__get("uds_disponibles") >= ($_SESSION['carrito'][$index]['cantidad'] + $cantidad)) {
+                    $_SESSION['carrito'][$index]['cantidad'] += $cantidad;
+                }
                 $productoEncontrado = true;
                 break;
             }

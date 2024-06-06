@@ -27,7 +27,8 @@
                     <div class="col-md-6">
                         <div class="card">
                             <div class="card-header bg_purple">
-                                <h5 class="card-title text-center text-white fw-bold">¡Bienvenido a FunkoPlanet</h5>
+                                <h5 class="card-title text-center text-white fw-bold my-2">¡Bienvenido a FunkoPlanet
+                                </h5>
                             </div>
                             <div class="card-body">
                                 <form name="fRegistro" method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>" enctype="multipart/form-data" novalidate>

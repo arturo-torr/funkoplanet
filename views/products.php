@@ -33,7 +33,7 @@
     if (isset($_GET['disponibilidad'])) {
         $disponibilidad = $_GET['disponibilidad'];
     }
-    $orden = "";
+    $orden = "nuevos";
     if (isset($_GET['orden'])) {
         $orden = $_GET['orden'];
     }
@@ -143,11 +143,11 @@
                             $daoFotosProductos->listarPorId($prod["id"]);
                             // Abre un nuevo div de fila si es el primer producto o si ya se han mostrado 3 productos
                             if ($cont == 0 || $cont % 4 == 0) {
-                                echo "<div class='row'>";
+                                echo "<div class='row' data-aos='fade-up'
+                    data-aos-duration='1000'>";
                             }
 
-                            echo "<div class='col-sm-12 col-md-6 col-lg-3 col-xl-3 p-2 product__box' data-aos='fade-up'
-                    data-aos-duration='1000'>";
+                            echo "<div class='col-sm-12 col-md-6 col-lg-3 col-xl-3 p-2 product__box'>";
                             if (strtoupper($prod["estado"]) == "STOCK") {
                                 echo "<div class='label__stock rounded'>DISPONIBLE</div>";
                             } else if (strtoupper($prod["estado"]) == "RESERVA") {

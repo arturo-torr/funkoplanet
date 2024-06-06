@@ -85,22 +85,37 @@ class DaoPedidos extends DB
 
     public function listarPedidoyDetPedido($idUsuario)
     {
-
-        $consulta = "SELECT 
+        $consulta = "SELECT DISTINCT
         ped.id_pedido, 
         ped.fecha, 
         det.cantidad, 
         det.precio_unitario,
-        prod.id,
-        prod.estado
+        res.id_producto
     FROM 
         pedido ped
     INNER JOIN 
         detpedido det ON ped.id_pedido = det.id_pedido
     INNER JOIN 
-        producto prod ON det.id_producto = prod.id
+        reserva res ON det.id_producto = res.id_producto AND ped.id_usuario = res.id_usuario
     WHERE 
-        ped.id_usuario = :id_usuario AND prod.estado = 'Reserva';";
+        ped.id_usuario = :id_usuario AND res.id_usuario = :id_usuario
+    ORDER BY ped.id_pedido";
+
+
+        //     $consulta = "SELECT 
+        //     ped.id_pedido, 
+        //     ped.fecha, 
+        //     det.cantidad, 
+        //     det.precio_unitario,
+        //     res.id_producto
+        // FROM 
+        //     pedido ped
+        // INNER JOIN 
+        //     detpedido det ON ped.id_pedido = det.id_pedido
+        // INNER JOIN 
+        //     reserva res ON det.id_producto = res.id_producto
+        // WHERE 
+        //     ped.id_usuario = :id_usuario";
 
         $param = array();
 
@@ -120,8 +135,7 @@ class DaoPedidos extends DB
             $pedido->__set("fecha", $fila['fecha']);
             $pedido->__set("cantidad", $fila['cantidad']);
             $pedido->__set("precio_unitario", $fila['precio_unitario']);
-            $pedido->__set("id_producto", $fila['id']);
-            $pedido->__set("estado", $fila['estado']);
+            $pedido->__set("id_producto", $fila['id_producto']);
             // Se inserta el objeto que acabamos de crear en el Array de objetos tiendas
             $this->pedidos[] = $pedido;
         }

@@ -7,7 +7,7 @@ class PedYDet
     private $cantidad;
     private $precio_unitario;
     private $id_producto;
-    private $estado;
+    //private $estado;
 
     public function __get($nombre)
     {
