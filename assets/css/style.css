@@ -106,8 +106,7 @@ h5 {
 }
 
 .img_individualproduct {
-    width: 100%;
-    height: 32vh;
+    max-height: 32vh;
 }
 
 @keyframes expandir {

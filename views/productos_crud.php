@@ -41,15 +41,21 @@
             <div class="container-fluid mt-2">
                 <div class="row">
                     <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-10 mx-auto">
-                        <form name="fProductos" method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>" enctype="multipart/form-data">
+                        <form name="fProductos" method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>"
+                            enctype="multipart/form-data">
                             <fieldset>
                                 <legend class='purple'>Administración de Productos</legend>
 
-                                <input type='submit' class='btn btn_purple text-white fw-bold' name='Insertar' value='Insertar'>
-                                <input type='submit' class='btn btn_purple text-white fw-bold' name='Buscar' value='Buscar'>
-                                <input type='submit' class='btn btn_purple text-white fw-bold' name='Actualizar' value='Actualizar'>
-                                <input type='submit' class='btn btn_purple text-white fw-bold' name='Borrar' value='Borrar'>
-                                <input type='reset' class='btn btn_purple text-white fw-bold' name='Cancelar' value='Cancelar'>
+                                <input type='submit' class='btn btn_purple text-white fw-bold' name='Insertar'
+                                    value='Insertar'>
+                                <input type='submit' class='btn btn_purple text-white fw-bold' name='Buscar'
+                                    value='Buscar'>
+                                <input type='submit' class='btn btn_purple text-white fw-bold' name='Actualizar'
+                                    value='Actualizar'>
+                                <input type='submit' class='btn btn_purple text-white fw-bold' name='Borrar'
+                                    value='Borrar'>
+                                <input type='reset' class='btn btn_purple text-white fw-bold' name='Cancelar'
+                                    value='Cancelar'>
 
 
                                 <?php
@@ -380,30 +386,38 @@
                                 $estado = $_POST['estadoNuevo'];
 
                                 $daoProductos->buscar($nombre, $categoria, $precio, $estado, $usuario);
-                                echo "<div class='container-fluid'><div class='row'>";
+                                echo "<div class='container-fluid' id='busquedaProductos'><div class='row'>";
                                 echo "<div class='col-12 col-sm-12 col-md-12 col-lg-12 col-xl-10 mx-auto table-responsive'>";
                                 echo "<fieldset><legend class='purple'>Resultados de la búsqueda</legend>";
-                                echo "<table class='mt-2 table bg_purple table-bordered border_purple text-center'>";
-                                echo "<th class='text-white fw-bold'>Nombre</th>
-                                <th class='text-white fw-bold'>Categoría</th>
-                                <th class='text-white fw-bold'>Precio</th>
-                                <th class='text-white fw-bold'>Estado</th>
-                                <th class='text-white fw-bold'>Usuario</th>";
+                                if (count($daoProductos->productos) > 0) {
+                                    echo "<table class='mt-2 table bg_purple table-bordered border_purple text-center'>";
+                                    echo "<th class='text-white fw-bold'>Nombre</th>
+                                    <th class='text-white fw-bold'>Categoría</th>
+                                    <th class='text-white fw-bold'>Precio</th>
+                                    <th class='text-white fw-bold'>Estado</th>
+                                    <th class='text-white fw-bold'>Usuario</th>";
 
-                                foreach ($daoProductos->productos as $prod) {
-                                    echo "<tr class='align-middle bg-light'>";
-                                    echo "<td>" . $prod->__get("nombre") . "</td>";
-                                    $categoria = $daoCategorias->obtener($prod->__get("id_categoria"));
-                                    echo "<td>" . $categoria->__get("nombre") . "</td>";
-                                    echo "<td>" . $prod->__get("precio") . "</td>";
-                                    echo "<td>" . $prod->__get("estado") . "</td>";
-                                    $usuario = $daoUsuarios->obtener($prod->__get("id_usuario"));
-                                    echo "<td>" . $usuario->__get("username") . "</td>";
+                                    foreach ($daoProductos->productos as $prod) {
+                                        echo "<tr class='align-middle bg-light'>";
+                                        echo "<td>" . $prod->__get("nombre") . "</td>";
+                                        $categoria = $daoCategorias->obtener($prod->__get("id_categoria"));
+                                        echo "<td>" . $categoria->__get("nombre") . "</td>";
+                                        echo "<td>" . $prod->__get("precio") . "</td>";
+                                        echo "<td>" . $prod->__get("estado") . "</td>";
+                                        $usuario = $daoUsuarios->obtener($prod->__get("id_usuario"));
+                                        echo "<td>" . $usuario->__get("username") . "</td>";
+                                    }
+                                    echo "</table>";
+                                    echo "</fieldset>";
+                                } else {
+                                    echo "<div class='alert alert-warning my-2'>No ha habido resultados para la búsqueda.</div>";
                                 }
-
-
-                                echo "</table>";
-                                echo "</fieldset>";
+                                echo "<script>
+                                document.addEventListener('DOMContentLoaded', function() {
+                                    let busqueda = document.getElementById('busquedaProductos');
+                                    if (busqueda) busqueda.scrollIntoView({ behavior: 'smooth' });
+                                });
+                            </script>";
                                 echo "</div></div></div><hr class='purple_line my-2'>";
                             }
                             ?>
@@ -416,7 +430,7 @@
                                 <select name="productos" class='form-select w-25'>
                                     <option value=""></option>
                                     <?php
-                                    $daoProductos->listar();
+                                    $daoProductos->listarAlfabeticamente();
                                     $id = "";
                                     if (isset($_POST['productos'])) {
                                         $id = $_POST['productos'];
@@ -434,7 +448,8 @@
                                 </select>
 
                                 <br>
-                                <input type='submit' class='btn btn_purple text-white fw-bold' name='Mostrar' value='Mostrar'>
+                                <input type='submit' class='btn btn_purple text-white fw-bold' name='Mostrar'
+                                    value='Mostrar'>
 
                             </fieldset>
                             <?php
@@ -532,98 +547,98 @@
     require_once "../views/scripts.php";
     ?>
     <script>
-        $(document).ready(function() {
+    $(document).ready(function() {
 
-            // Validaciones para el insertado de datos
-            $("form[name='fProductos']").validate({
-                rules: {
-                    nombreNuevo: {
-                        required: function(element) {
-                            return $("input[name='Insertar']").is(":focus");
-                        },
-                        minlength: 3
+        // Validaciones para el insertado de datos
+        $("form[name='fProductos']").validate({
+            rules: {
+                nombreNuevo: {
+                    required: function(element) {
+                        return $("input[name='Insertar']").is(":focus");
                     },
-                    categoriaNueva: {
-                        required: function(element) {
-                            return $("input[name='Insertar']").is(":focus");
-                        }
-                    },
-                    usuarioNuevo: {
-                        required: function(element) {
-                            return $("input[name='Insertar']").is(":focus");
-                        }
-                    },
-                    descripcionNueva: {
-                        required: function(element) {
-                            return $("input[name='Insertar']").is(":focus");
-                        }
-                    },
-                    precioNuevo: {
-                        required: function(element) {
-                            return $("input[name='Insertar']").is(":focus");
-                        },
-                    },
-                    udsDisponiblesNuevo: {
-                        required: function(element) {
-                            return $("input[name='Insertar']").is(":focus");
-                        },
-                        min: 0
-                    },
-                    estadoNuevo: {
-                        required: function(element) {
-                            return $("input[name='Insertar']").is(":focus");
-                        }
+                    minlength: 3
+                },
+                categoriaNueva: {
+                    required: function(element) {
+                        return $("input[name='Insertar']").is(":focus");
+                    }
+                },
+                usuarioNuevo: {
+                    required: function(element) {
+                        return $("input[name='Insertar']").is(":focus");
+                    }
+                },
+                descripcionNueva: {
+                    required: function(element) {
+                        return $("input[name='Insertar']").is(":focus");
+                    }
+                },
+                precioNuevo: {
+                    required: function(element) {
+                        return $("input[name='Insertar']").is(":focus");
                     },
                 },
-                messages: {
-                    nombreNuevo: {
-                        required: "Ingrese un nombre.",
-                        minlength: "El nombre debe tener al menos 3 caracteres."
+                udsDisponiblesNuevo: {
+                    required: function(element) {
+                        return $("input[name='Insertar']").is(":focus");
                     },
-                    categoriaNueva: {
-                        required: "Seleccione una categoría."
-                    },
-                    usuarioNuevo: {
-                        required: "Seleccione un usuario."
-                    },
-                    descripcionNueva: {
-                        required: "Ingrese una descripción."
-                    },
-                    precioNuevo: {
-                        required: "Ingrese un precio.",
-                    },
-                    udsDisponiblesNuevo: {
-                        required: "Ingrese la cantidad disponible.",
-                        min: "La cantidad no puede ser negativa."
-                    },
-                    estadoNuevo: {
-                        required: "Ingrese el estado del producto."
-                    },
+                    min: 0
                 },
+                estadoNuevo: {
+                    required: function(element) {
+                        return $("input[name='Insertar']").is(":focus");
+                    }
+                },
+            },
+            messages: {
+                nombreNuevo: {
+                    required: "Ingrese un nombre.",
+                    minlength: "El nombre debe tener al menos 3 caracteres."
+                },
+                categoriaNueva: {
+                    required: "Seleccione una categoría."
+                },
+                usuarioNuevo: {
+                    required: "Seleccione un usuario."
+                },
+                descripcionNueva: {
+                    required: "Ingrese una descripción."
+                },
+                precioNuevo: {
+                    required: "Ingrese un precio.",
+                },
+                udsDisponiblesNuevo: {
+                    required: "Ingrese la cantidad disponible.",
+                    min: "La cantidad no puede ser negativa."
+                },
+                estadoNuevo: {
+                    required: "Ingrese el estado del producto."
+                },
+            },
 
-                submitHandler: function(form) {
-                    form.submit();
-                }
-            });
+            submitHandler: function(form) {
+                form.submit();
+            }
+        });
 
-            // // Validaciones para el insertado de las imágenes de los productos
-            $("input[name='Guardar']").click(function() {
-                let files = $("input[name='NuevaF[]']").get(0).files;
-                if (files.length > 0) {
-                    let valid = true;
-                    $.each(files, function(index, file) {
-                        if (!file.type.match('image.*')) {
-                            valid = false;
-                            alert("Solo se permiten archivos de imagen.");
-                            return false;
-                        }
-                    });
-                    if (!valid) {
+        // // Validaciones para el insertado de las imágenes de los productos
+        $("input[name='Guardar']").click(function() {
+            let files = $("input[name='NuevaF[]']").get(0).files;
+            if (files.length > 0) {
+                let valid = true;
+                $.each(files, function(index, file) {
+                    if (!file.type.match('image.*')) {
+                        valid = false;
+                        alert("Solo se permiten archivos de imagen.");
                         return false;
                     }
+                });
+                if (!valid) {
+                    return false;
                 }
-            });
+            }
         });
+    });
     </script>
 </body>
 

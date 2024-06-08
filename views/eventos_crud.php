@@ -311,26 +311,36 @@
                 }
 
                 $daoEventos->buscar($nombre, $usuario, $fechaEpoch);
-                echo "<div class='container-fluid'><div class='row'>";
+                echo "<div class='container-fluid' id='busquedaEventos'><div class='row'>";
                 echo "<div class='col-12 col-sm-12 col-md-12 col-lg-12 col-xl-10 mx-auto table-responsive'>";
                 echo "<fieldset><legend class='purple'>Resultados de la búsqueda</legend>";
-                echo "<table class='mt-2 table bg_purple table-bordered border_purple text-center'>
-            <th class='text-white fw-bold'>Nombre</th><th class='text-white fw-bold'>Descripción</th><th class='text-white fw-bold'>Fecha</th><th class='text-white fw-bold'>Usuario</th>";
+                if (count($daoEventos->eventos) > 0) {
+                    echo "<table class='mt-2 table bg_purple table-bordered border_purple text-center'>
+                <th class='text-white fw-bold'>Nombre</th><th class='text-white fw-bold'>Descripción</th><th class='text-white fw-bold'>Fecha</th><th class='text-white fw-bold'>Usuario</th>";
 
-                foreach ($daoEventos->eventos as $event) {
-                    echo "<tr class='align-middle bg-light'>";
-                    echo "<td>" . $event->__get("nombre") . "</td>";
-                    echo "<td>" . $event->__get("descripcion") . "</td>";
-                    $fechaLegible = ConvertirLegible($event->__get("fecha"));
-                    echo "<td>" . $fechaLegible . "</td>";
-                    $usuario = $daoUsuarios->obtener($event->__get("id_usuario"));
-                    echo "<td>" . $usuario->__get("username") . "</td>";
+                    foreach ($daoEventos->eventos as $event) {
+                        echo "<tr class='align-middle bg-light'>";
+                        echo "<td>" . $event->__get("nombre") . "</td>";
+                        echo "<td>" . $event->__get("descripcion") . "</td>";
+                        $fechaLegible = ConvertirLegible($event->__get("fecha"));
+                        echo "<td>" . $fechaLegible . "</td>";
+                        $usuario = $daoUsuarios->obtener($event->__get("id_usuario"));
+                        echo "<td>" . $usuario->__get("username") . "</td>";
+                    }
+
+
+                    echo "</table>";
+                } else {
+                    echo "<div class='alert alert-warning my-2'>No ha habido resultados para la búsqueda.</div>";
                 }
-
-
-                echo "</table>";
                 echo "</fieldset>";
                 echo "</div></div></div>";
+                echo "<script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    let busqueda = document.getElementById('busquedaEventos');
+                    if (busqueda) busqueda.scrollIntoView({ behavior: 'smooth' });
+                });
+            </script>";
             }
             ?>
         </section>

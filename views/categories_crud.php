@@ -37,21 +37,15 @@
             <div class="container-fluid mt-2">
                 <div class="row">
                     <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-10 mx-auto table-responsive">
-                        <form name="fCategorias" method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>"
-                            enctype="multipart/form-data" novalidate>
+                        <form name="fCategorias" method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>" enctype="multipart/form-data" novalidate>
                             <fieldset>
                                 <legend class='purple'>Administración de Categorías</legend>
 
-                                <input type='submit' class='btn btn_purple text-white fw-bold' name='Insertar'
-                                    value='Insertar'>
-                                <input type='submit' class='btn btn_purple text-white fw-bold' name='Buscar'
-                                    value='Buscar'>
-                                <input type='submit' class='btn btn_purple text-white fw-bold' name='Actualizar'
-                                    value='Actualizar'>
-                                <input type='submit' class='btn btn_purple text-white fw-bold' name='Borrar'
-                                    value='Borrar'>
-                                <input type='reset' class='btn btn_purple text-white fw-bold' name='Cancelar'
-                                    value='Cancelar'>
+                                <input type='submit' class='btn btn_purple text-white fw-bold' name='Insertar' value='Insertar'>
+                                <input type='submit' class='btn btn_purple text-white fw-bold' name='Buscar' value='Buscar'>
+                                <input type='submit' class='btn btn_purple text-white fw-bold' name='Actualizar' value='Actualizar'>
+                                <input type='submit' class='btn btn_purple text-white fw-bold' name='Borrar' value='Borrar'>
+                                <input type='reset' class='btn btn_purple text-white fw-bold' name='Cancelar' value='Cancelar'>
 
 
                                 <?php
@@ -301,27 +295,36 @@
             // Si se da click en buscar
             if (isset($_POST['Buscar'])) {
                 $nombre = $_POST['nombreNuevo'];
-
                 $daoCategorias->buscar($nombre);
-                echo "<div class='container-fluid' id='busqueda'><div class='row'>";
+                echo "<div class='container-fluid' id='busquedaCategorias'><div class='row'>";
                 echo "<div class='col-12 col-sm-12 col-md-12 col-lg-12 col-xl-10 mx-auto table-responsive'>";
                 echo "<fieldset><legend class='purple'>Resultados de la búsqueda</legend>";
-                echo "<table class='mt-2 table bg_purple table-bordered border_purple text-center'>
-            <th class='text-white fw-bold'>Nombre</th><th class='text-white fw-bold'>Descripción</th><th class='text-white fw-bold'>Foto</th>";
+                if (count($daoCategorias->categoriasObjetos) > 0) {
+                    echo "<table class='mt-2 table bg_purple table-bordered border_purple text-center'>
+                <th class='text-white fw-bold'>Nombre</th><th class='text-white fw-bold'>Descripción</th><th class='text-white fw-bold'>Foto</th>";
 
-                foreach ($daoCategorias->categoriasObjetos as $cate) {
-                    echo "<tr class='align-middle bg-light'>";
-                    echo "<td>" . $cate->__get("nombre") . "</td>";
-                    echo "<td>" . $cate->__get("descripcion") . "</td>";
-                    $conte = $cate->__get("foto");
-                    echo "<td>
-                       <img src='data:image/jpg;base64,$conte' width=70 height=70 alt='Cat:" . $cate->__get("id") . "'>";
-                    echo "</tr>";
+                    foreach ($daoCategorias->categoriasObjetos as $cate) {
+                        echo "<tr class='align-middle bg-light'>";
+                        echo "<td>" . $cate->__get("nombre") . "</td>";
+                        echo "<td>" . $cate->__get("descripcion") . "</td>";
+                        $conte = $cate->__get("foto");
+                        echo "<td>
+                           <img src='data:image/jpg;base64,$conte' width=70 height=70 alt='Cat:" . $cate->__get("id") . "'>";
+                        echo "</tr>";
+                    }
+                    echo "</table>";
+                } else {
+                    echo "<div class='alert alert-warning my-2'>No ha habido resultados para la búsqueda.</div>";
                 }
-                echo "</table>";
                 echo "</fieldset>";
                 echo "</div></div></div>";
             }
+            echo "<script>
+            document.addEventListener('DOMContentLoaded', function() {
+                let busqueda = document.getElementById('busquedaCategorias');
+                if (busqueda) busqueda.scrollIntoView({ behavior: 'smooth' });
+            });
+        </script>";
             ?>
         </section>
     </main>
@@ -330,55 +333,55 @@
     require_once "../views/scripts.php";
     ?>
     <script>
-    $(document).ready(function() {
-        // Agrega el método de validación personalizado para archivos de imagen
-        $.validator.addMethod("imageType", function(value, element) {
-            if (element.files.length === 0) {
-                return true; // No hay archivo, no validar
-            }
-            const fileType = element.files[0].type;
-            return fileType === "image/jpeg" || fileType === "image/png";
-        }, "Solo se permiten archivos JPG o PNG.");
+        $(document).ready(function() {
+            // Agrega el método de validación personalizado para archivos de imagen
+            $.validator.addMethod("imageType", function(value, element) {
+                if (element.files.length === 0) {
+                    return true; // No hay archivo, no validar
+                }
+                const fileType = element.files[0].type;
+                return fileType === "image/jpeg" || fileType === "image/png";
+            }, "Solo se permiten archivos JPG o PNG.");
 
-        $("form[name='fCategorias']").validate({
-            rules: {
-                nombreNuevo: {
-                    required: function(element) {
-                        return $("input[name='Insertar']").is(":focus");
+            $("form[name='fCategorias']").validate({
+                rules: {
+                    nombreNuevo: {
+                        required: function(element) {
+                            return $("input[name='Insertar']").is(":focus");
+                        },
+                        minlength: 3
                     },
-                    minlength: 3
-                },
-                descripcionNueva: {
-                    required: function(element) {
-                        return $("input[name='Insertar']").is(":focus");
+                    descripcionNueva: {
+                        required: function(element) {
+                            return $("input[name='Insertar']").is(":focus");
+                        },
+                        minlength: 10
                     },
-                    minlength: 10
-                },
-                fotoNueva: {
-                    required: function(element) {
-                        return $("input[name='Insertar']").is(":focus");
+                    fotoNueva: {
+                        required: function(element) {
+                            return $("input[name='Insertar']").is(":focus");
+                        },
+                        imageType: true
                     },
-                    imageType: true
                 },
-            },
-            messages: {
-                nombreNuevo: {
-                    required: "Ingrese un nombre.",
-                    minlength: "El nombre debe tener al menos 3 caracteres."
+                messages: {
+                    nombreNuevo: {
+                        required: "Ingrese un nombre.",
+                        minlength: "El nombre debe tener al menos 3 caracteres."
+                    },
+                    descripcionNueva: {
+                        required: "Ingrese una descripción.",
+                        minlength: "La descripción debe tener al menos 10 caracteres."
+                    },
+                    fotoNueva: {
+                        required: "Seleccione una imagen."
+                    },
                 },
-                descripcionNueva: {
-                    required: "Ingrese una descripción.",
-                    minlength: "La descripción debe tener al menos 10 caracteres."
-                },
-                fotoNueva: {
-                    required: "Seleccione una imagen."
-                },
-            },
-            submitHandler: function(form) {
-                form.submit();
-            }
+                submitHandler: function(form) {
+                    form.submit();
+                }
+            });
         });
-    });
     </script>
 </body>
 

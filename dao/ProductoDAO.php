@@ -64,6 +64,36 @@ class DaoProductos extends DB
     }
 
     // Método que permite listar el contenido de la tabla
+    public function listarAlfabeticamente()
+    {
+        $consulta = "SELECT * FROM producto ORDER BY nombre";
+        $param = array();
+
+        $this->productos = array();
+
+        // Realiza la consulta;
+        $this->ConsultaDatos($consulta);
+
+        foreach ($this->filas as $fila) {
+            // Creamos una nueva situación
+            $prod = new Producto();
+
+            // Asignamos las propiedades correspondientes al nuevo objeto
+            $prod->__set("id", $fila['id']);
+            $prod->__set("id_categoria", $fila['id_categoria']);
+            $prod->__set("id_usuario", $fila['id_usuario']);
+            $prod->__set("nombre", $fila['nombre']);
+            $prod->__set("descripcion", $fila['descripcion']);
+            $prod->__set("precio", $fila['precio']);
+            $prod->__set("uds_disponibles", $fila['uds_disponibles']);
+            $prod->__set("estado", $fila['estado']);
+
+            $this->productos[] = $prod;
+            $this->productosJSON[] = $prod->toArray();
+        }
+    }
+
+    // Método que permite listar el contenido de la tabla
     public function listarPorCategoria($idCategoria)
     {
         $consulta = "SELECT * FROM producto WHERE id_categoria = :id_categoria";
@@ -240,6 +270,12 @@ class DaoProductos extends DB
         if ($precio != "") {
             $consulta .= " AND precio LIKE :precio";
             $param[":precio"] = "%" . $precio . "%";
+        }
+
+
+        if ($estado != "") {
+            $consulta .= " AND estado LIKE :estado";
+            $param[":estado"] = "%" . $estado . "%";
         }
 
         if ($usuario != "") {

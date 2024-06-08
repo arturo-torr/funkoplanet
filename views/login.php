@@ -134,7 +134,7 @@
             } else {
                 $acceso = "D";
             }
-            $daoLogin->insertarIntento($user, $pass, $acceso);
+            $daoLogin->insertarIntento($user, password_hash($pass, PASSWORD_BCRYPT), $acceso);
         }
 
         return $fila;
