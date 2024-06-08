@@ -170,13 +170,13 @@
                                         $passwordHash = $usuario->__get("password");
                                         $pass = $passwords[$clave];
 
-                                        // Verifica si la contraseña en texto plano coincide con el hash almacenado
+
                                         if ($pass !== $passwordHash) {
-                                            // Si no coincide la testea con la expresión regular
                                             if (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[\w$@$!%*?&]{8,15}$/', $pass)) {
                                                 $errores[] = "La contraseña del usuario " . $usernames[$clave] . " no cumple con los requisitos.";
                                             }
                                         }
+
 
                                         // Comprueba el tipo de usuario
                                         if (!preg_match('/^[APE]$/', $tipos[$clave])) {
@@ -190,10 +190,14 @@
                                             $user->__set("id", $clave);
                                             $user->__set("username", $usernames[$clave]);
                                             $user->__set("email", $emails[$clave]);
-                                            $user->__set("password", password_hash($passwords[$clave], PASSWORD_BCRYPT));
                                             $user->__set("tipo", $tipos[$clave]);
                                             $user->__set("monedero", $monederos[$clave]);
 
+                                            if ($pass !== $passwordHash) {
+                                                $user->__set("password", password_hash($pass, PASSWORD_BCRYPT));
+                                            } else {
+                                                $user->__set("password", $passwordHash);
+                                            }
                                             $daoUsuarios->actualizar($user);
                                             echo "<div class='alert alert-success my-2'>Se ha actualizado correctamente el usuario con ID " . $clave . ": " . $usernames[$clave] . "</div>";
                                         } else {
