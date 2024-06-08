@@ -30,6 +30,9 @@ class StoreManagerController {
     this[VIEW].bindCarrito(this.handleCarrito);
     this[VIEW].bindIncrementoFinalizarCompra(this.handleCantidadesFinCompra);
     this[VIEW].bindDecrementoFinalizarCompra(this.handleCantidadesFinCompra);
+    this[VIEW].bindVaciarCarritoFinalizarCompra(
+      this.handleVaciarCarritoFinalizarCompra
+    );
     this[VIEW].changeImagesInNewProducts();
     this[VIEW].mostrarCantidad();
     this[VIEW].bindButtonPago();
@@ -280,12 +283,46 @@ class StoreManagerController {
         this[VIEW].offCanvasCarrito.show();
         this[VIEW].actualizarCarrito();
         this[VIEW].bindFinalizarCompra(this.handleFinalizar);
+        this[VIEW].bindVaciarCarrito(this.handleVaciarCarrito);
       })
       .catch((error) => {
         console.error("Error al actualizar el offCanvas:", error);
       });
   };
 
+  handleVaciarCarrito = () => {
+    fetch("/funkoplanet/web/vaciar_carrito.php")
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.status === "success") {
+          localStorage.removeItem("cantidades");
+          this.handleCarrito();
+        } else {
+          console.error("Error al vaciar el carrito:", data.message);
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  };
+
+  handleVaciarCarritoFinalizarCompra = () => {
+    fetch("/funkoplanet/web/vaciar_carrito.php")
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.status === "success") {
+          localStorage.removeItem("cantidades");
+          location.reload();
+          this.handleCarrito();
+          this[VIEW].mostrarCantidad();
+        } else {
+          console.error("Error al vaciar el carrito:", data.message);
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  };
   // Manejador que recibe el id de producto y la cantidad para actualizar el carrito
   handleCompra = (idProducto, cantidad) => {
     // Pasa a numero la cantidad

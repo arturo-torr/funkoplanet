@@ -2,7 +2,6 @@
     box-sizing: border-box;
 }
 
-/** --- HEADER --- **/
 nav {
     font-size: 1.2em;
 }
@@ -18,6 +17,8 @@ p {
 h5 {
     font-size: 1.5em;
 }
+
+/** --- HEADER --- **/
 
 .navbar {
     background-color: #6F006A !important;

@@ -37,15 +37,21 @@
             <div class="container-fluid mt-2">
                 <div class="row">
                     <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-10 mx-auto table-responsive">
-                        <form name="fCategorias" method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>" enctype="multipart/form-data" novalidate>
+                        <form name="fCategorias" method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>"
+                            enctype="multipart/form-data" novalidate>
                             <fieldset>
                                 <legend class='purple'>Administración de Categorías</legend>
 
-                                <input type='submit' class='btn btn_purple text-white fw-bold' name='Insertar' value='Insertar'>
-                                <input type='submit' class='btn btn_purple text-white fw-bold' name='Buscar' value='Buscar'>
-                                <input type='submit' class='btn btn_purple text-white fw-bold' name='Actualizar' value='Actualizar'>
-                                <input type='submit' class='btn btn_purple text-white fw-bold' name='Borrar' value='Borrar'>
-                                <input type='reset' class='btn btn_purple text-white fw-bold' name='Cancelar' value='Cancelar'>
+                                <input type='submit' class='btn btn_purple text-white fw-bold' name='Insertar'
+                                    value='Insertar'>
+                                <input type='submit' class='btn btn_purple text-white fw-bold' name='Buscar'
+                                    value='Buscar'>
+                                <input type='submit' class='btn btn_purple text-white fw-bold' name='Actualizar'
+                                    value='Actualizar'>
+                                <input type='submit' class='btn btn_purple text-white fw-bold' name='Borrar'
+                                    value='Borrar'>
+                                <input type='reset' class='btn btn_purple text-white fw-bold' name='Cancelar'
+                                    value='Cancelar'>
 
 
                                 <?php
@@ -191,7 +197,7 @@
                                             $contenido = base64_encode($contenido);
                                             $foto = $contenido;
                                         } else {
-                                            $errores[] = "El archivo para la categoría " . $nombres . " debe ser PNG o JPG y no superar el tamaño máximo de 1MB.";
+                                            $errores[] = "El archivo para la categoría " . $nombre . " debe ser PNG o JPG y no superar el tamaño máximo de 1MB.";
                                         }
                                     }
 
@@ -324,55 +330,55 @@
     require_once "../views/scripts.php";
     ?>
     <script>
-        $(document).ready(function() {
-            // Agrega el método de validación personalizado para archivos de imagen
-            $.validator.addMethod("imageType", function(value, element) {
-                if (element.files.length === 0) {
-                    return true; // No hay archivo, no validar
-                }
-                const fileType = element.files[0].type;
-                return fileType === "image/jpeg" || fileType === "image/png";
-            }, "Solo se permiten archivos JPG o PNG.");
+    $(document).ready(function() {
+        // Agrega el método de validación personalizado para archivos de imagen
+        $.validator.addMethod("imageType", function(value, element) {
+            if (element.files.length === 0) {
+                return true; // No hay archivo, no validar
+            }
+            const fileType = element.files[0].type;
+            return fileType === "image/jpeg" || fileType === "image/png";
+        }, "Solo se permiten archivos JPG o PNG.");
 
-            $("form[name='fCategorias']").validate({
-                rules: {
-                    nombreNuevo: {
-                        required: function(element) {
-                            return $("input[name='Insertar']").is(":focus");
-                        },
-                        minlength: 3
+        $("form[name='fCategorias']").validate({
+            rules: {
+                nombreNuevo: {
+                    required: function(element) {
+                        return $("input[name='Insertar']").is(":focus");
                     },
-                    descripcionNueva: {
-                        required: function(element) {
-                            return $("input[name='Insertar']").is(":focus");
-                        },
-                        minlength: 10
-                    },
-                    fotoNueva: {
-                        required: function(element) {
-                            return $("input[name='Insertar']").is(":focus");
-                        },
-                        imageType: true
-                    },
+                    minlength: 3
                 },
-                messages: {
-                    nombreNuevo: {
-                        required: "Ingrese un nombre.",
-                        minlength: "El nombre debe tener al menos 3 caracteres."
+                descripcionNueva: {
+                    required: function(element) {
+                        return $("input[name='Insertar']").is(":focus");
                     },
-                    descripcionNueva: {
-                        required: "Ingrese una descripción.",
-                        minlength: "La descripción debe tener al menos 10 caracteres."
-                    },
-                    fotoNueva: {
-                        required: "Seleccione una imagen."
-                    },
+                    minlength: 10
                 },
-                submitHandler: function(form) {
-                    form.submit();
-                }
-            });
+                fotoNueva: {
+                    required: function(element) {
+                        return $("input[name='Insertar']").is(":focus");
+                    },
+                    imageType: true
+                },
+            },
+            messages: {
+                nombreNuevo: {
+                    required: "Ingrese un nombre.",
+                    minlength: "El nombre debe tener al menos 3 caracteres."
+                },
+                descripcionNueva: {
+                    required: "Ingrese una descripción.",
+                    minlength: "La descripción debe tener al menos 10 caracteres."
+                },
+                fotoNueva: {
+                    required: "Seleccione una imagen."
+                },
+            },
+            submitHandler: function(form) {
+                form.submit();
+            }
         });
+    });
     </script>
 </body>
 

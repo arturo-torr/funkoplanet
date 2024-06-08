@@ -88,6 +88,8 @@
                                         <div class="d-flex justify-content-center my-2">
                                             <button class="btn btn_purple text-white fw-bold" id="btn_pago">Pasar a
                                                 pago</button>
+                                            <button class='btn btn_purple text-white fw-bold mx-1'
+                                                id='btn_vaciarFinalizar'>Vaciar carrito</button>
                                         </div>
                                     </div>
                                 </div>
