@@ -11,29 +11,74 @@
     require_once "../views/header.php";
     require_once "../dao/UsuarioDAO.php";
     require_once '../models/Usuario.php';
-    $daoUsuarios = new DaoUsuarios("funkoplanet");
+    $db = "funkoplanet";
+    $daoUsuarios = new DaoUsuarios($db);
+
+    // Comprueba si el usuario está registrado y es administrador
+    if (isset($_SESSION['usuario'])) {
+        $username = $_SESSION['usuario']['username'];
+        $usuarioAdministrador = $daoUsuarios->obtenerPorUsername($username);
+        if ($usuarioAdministrador) {
+            if ($usuarioAdministrador->__get("tipo") !== "A") {
+                echo "<script>window.location.href = '/funkoplanet/index.php'</script>";
+            }
+        } else {
+            echo "<script>window.location.href = '/funkoplanet/index.php'</script>";
+        }
+    } else {
+        echo "<script>window.location.href = '/funkoplanet/index.php'</script>";
+    }
     ?>
     <main>
         <section class="py-2">
             <div class="container-fluid mt-2">
                 <div class="row">
                     <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-10 mx-auto table-responsive">
-                        <form name="fUsuarios" method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>"
-                            enctype="multipart/form-data">
+                        <form name="fUsuarios" method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>" enctype="multipart/form-data">
                             <fieldset>
                                 <legend class='purple'>Administración de Usuarios</legend>
 
-                                <input type='submit' class='btn btn_purple text-white fw-bold' name='Insertar'
-                                    value='Insertar'>
-                                <input type='submit' class='btn btn_purple text-white fw-bold' name='Buscar'
-                                    value='Buscar'>
-                                <input type='submit' class='btn btn_purple text-white fw-bold' name='Actualizar'
-                                    value='Actualizar'>
-                                <input type='submit' class='btn btn_purple text-white fw-bold' name='Borrar'
-                                    value='Borrar'>
+                                <input type='submit' class='btn btn_purple text-white fw-bold' name='Insertar' value='Insertar'>
+                                <input type='submit' class='btn btn_purple text-white fw-bold' name='Buscar' value='Buscar'>
+                                <input type='submit' class='btn btn_purple text-white fw-bold' name='Actualizar' value='Actualizar'>
+                                <input type='submit' class='btn btn_purple text-white fw-bold' name='Borrar' value='Borrar'>
+                                <input type='reset' class='btn btn_purple text-white fw-bold' name='Cancelar' value='Cancelar'>
 
 
                                 <?php
+
+                                $numReg = 5;
+
+                                if (isset($_POST['numReg'])) {
+                                    $numReg = $_POST['numReg'];
+                                }
+
+                                if (isset($_GET['numReg'])) {
+                                    $numReg = $_GET['numReg'];
+                                }
+
+                                $pagina = 1; // Empezamos por defecto mostrando la página 1
+                                if (isset($_GET['numPaginas'])) {
+                                    $pagina = $_GET['numPaginas'];
+                                }
+
+                                $numPaginas = $daoUsuarios->hallarPaginas($numReg);
+
+                                $inicio = ($pagina - 1) * $numReg; // algoritmo para mostrar los registros necesarios
+
+                                echo "<br><label class='form-label my-2' for='numReg'>Número de registros que desea visualizar: </label>";
+
+                                // permite recargar la página sin necesidad de tener un submit, usando javascript
+                                echo "<select name='numReg' class='form-select w-25' onChange='document.fUsuarios.submit()'>";
+                                for ($i = 1; $i < 11; $i++) {
+                                    echo "<option value='$i' ";
+                                    if ($i == $numReg) {
+                                        echo " selected";
+                                    }
+                                    echo ">$i</option>";
+                                }
+
+                                echo "</select>";
 
                                 // Si se ha seleccionado Insertar
                                 if (isset($_POST['Insertar'])) {
@@ -67,6 +112,7 @@
                                         $user->__set("monedero", $monedero);
 
                                         $daoUsuarios->insertar($user);
+                                        echo "<div class='alert alert-success my-2'>Se ha insertado correctamente el usuario $username</div>";
                                     } else {
                                         // Mostrar errores
                                         foreach ($errores as $error) {
@@ -97,7 +143,9 @@
                                         // Verifica que no exista un usuario con ese nombre
                                         $usuario = $daoUsuarios->obtenerPorUsername($usernames[$clave]);
                                         if ($usuario) {
-                                            $errores[] = "Ya existe un usuario con el username " . $usernames[$clave] . "";
+                                            if ($usuario->__get("id") != $clave) {
+                                                $errores[] = "Ya existe un usuario con el username " . $usernames[$clave] . "";
+                                            }
                                         }
 
                                         if (!preg_match('/^[\w\.-]+@([\w-]+\.)+[\w-]{2,4}$/', $emails[$clave])) {
@@ -107,20 +155,22 @@
                                         // Verifica que no exista un usuario con ese email
                                         $usuario = $daoUsuarios->obtenerPorEmail($emails[$clave]);
                                         if ($usuario) {
-                                            $errores[] = "Ya existe un usuario con el email " . $emails[$clave] . "";
+                                            if ($usuario->__get("id") != $clave) {
+                                                $errores[] = "Ya existe un usuario con el email " . $emails[$clave] . "";
+                                            }
                                         }
 
                                         $usuario = $daoUsuarios->obtener($clave);
                                         $passwordHash = $usuario->__get("password");
                                         $pass = $passwords[$clave];
 
-                                        // Verifica si la contraseña en texto plano coincide con el hash almacenado
+
                                         if ($pass !== $passwordHash) {
-                                            // Si no coincide la testea con la expresión regular
                                             if (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[\w$@$!%*?&]{8,15}$/', $pass)) {
                                                 $errores[] = "La contraseña del usuario " . $usernames[$clave] . " no cumple con los requisitos.";
                                             }
                                         }
+
 
                                         // Comprueba el tipo de usuario
                                         if (!preg_match('/^[APE]$/', $tipos[$clave])) {
@@ -134,11 +184,16 @@
                                             $user->__set("id", $clave);
                                             $user->__set("username", $usernames[$clave]);
                                             $user->__set("email", $emails[$clave]);
-                                            $user->__set("password", password_hash($passwords[$clave], PASSWORD_BCRYPT));
                                             $user->__set("tipo", $tipos[$clave]);
                                             $user->__set("monedero", $monederos[$clave]);
 
+                                            if ($pass !== $passwordHash) {
+                                                $user->__set("password", password_hash($pass, PASSWORD_BCRYPT));
+                                            } else {
+                                                $user->__set("password", $passwordHash);
+                                            }
                                             $daoUsuarios->actualizar($user);
+                                            echo "<div class='alert alert-success my-2'>Se ha actualizado correctamente el usuario con ID " . $clave . ": " . $usernames[$clave] . "</div>";
                                         } else {
                                             // Mostrar errores
                                             foreach ($errores as $error) {
@@ -157,42 +212,10 @@
                                     }
                                 }
 
-                                $numReg = 5;
 
-                                if (isset($_POST['numReg'])) {
-                                    $numReg = $_POST['numReg'];
-                                }
 
-                                if (isset($_GET['numReg'])) {
-                                    $numReg = $_GET['numReg'];
-                                }
-
-                                $pagina = 1; // Empezamos por defecto mostrando la página 1
-                                if (isset($_GET['numPaginas'])) {
-                                    $pagina = $_GET['numPaginas'];
-                                }
-
-                                $numPaginas = $daoUsuarios->hallarPaginas($numReg);
-
-                                $inicio = ($pagina - 1) * $numReg; // algoritmo para mostrar los registros necesarios
-
-                                // El Dao Lista todas las categorías
+                                // El Dao Lista todas los usuarios
                                 $daoUsuarios->listarConLimite($inicio, $numReg);
-
-                                echo "<br><label class='form-label my-2' for='numReg'>Número de registros que desea visualizar: </label>";
-
-                                // permite recargar la página sin necesidad de tener un submit, usando javascript
-                                echo "<select name='numReg' class='form-select w-25' onChange='document.fUsuarios.submit()'>";
-                                for ($i = 1; $i < 11; $i++) {
-                                    echo "<option value='$i' ";
-                                    if ($i == $numReg) {
-                                        echo " selected";
-                                    }
-                                    echo ">$i</option>";
-                                }
-
-                                echo "</select>";
-
                                 // Si es >= a 0, la lista
                                 if (count($daoUsuarios->usuarios) >= 0) {
                                     echo "<table class='mt-2 table table-hover table-bordered border_purple text-center bg_purple'>";
@@ -269,27 +292,37 @@
                 $username = $_POST['usernameNuevo'];
 
                 $daoUsuarios->buscar($username);
-                echo "<div class='container-fluid'><div class='row'>";
+                echo "<div class='container-fluid' id='busquedaUsuarios'><div class='row'>";
                 echo "<div class='col-12 col-sm-12 col-md-12 col-lg-12 col-xl-10 mx-auto table-responsive'>";
-                echo "<fieldset><legend class='purple'>Resultados de la búsqueda</legend>";
-                echo "<table class='mt-2 table bg_purple table-bordered border_purple text-center'>";
-                echo "<th class='text-white fw-bold'>Username</th>
-            <th class='text-white fw-bold'>Email</th>
-            <th class='text-white fw-bold'>Tipo</th>
-            <th class='text-white fw-bold'>Monedero</th>";
+                if (count($daoUsuarios->usuarios) > 0) {
+                    echo "<fieldset><legend class='purple'>Resultados de la búsqueda</legend>";
+                    echo "<table class='mt-2 table bg_purple table-bordered border_purple text-center'>";
+                    echo "<th class='text-white fw-bold'>Username</th>
+                <th class='text-white fw-bold'>Email</th>
+                <th class='text-white fw-bold'>Tipo</th>
+                <th class='text-white fw-bold'>Monedero</th>";
 
-                foreach ($daoUsuarios->usuarios as $user) {
-                    echo "<tr class='align-middle bg-light'>";
-                    echo "<td>" . $user->__get("username") . "</td>";
-                    echo "<td>" . $user->__get("email") . "</td>";
-                    echo "<td>" . $user->__get("tipo") . "</td>";
-                    echo "<td>" . $user->__get("monedero") . "</td>";
+                    foreach ($daoUsuarios->usuarios as $user) {
+                        echo "<tr class='align-middle bg-light'>";
+                        echo "<td>" . $user->__get("username") . "</td>";
+                        echo "<td>" . $user->__get("email") . "</td>";
+                        echo "<td>" . $user->__get("tipo") . "</td>";
+                        echo "<td>" . $user->__get("monedero") . "</td>";
+                    }
+
+
+                    echo "</table>";
+                    echo "</fieldset>";
+                } else {
+                    echo "<div class='alert alert-warning my-2'>No ha habido resultados para la búsqueda.</div>";
                 }
-
-
-                echo "</table>";
-                echo "</fieldset>";
                 echo "</div></div></div>";
+                echo "<script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    let busqueda = document.getElementById('busquedaUsuarios');
+                    if (busqueda) busqueda.scrollIntoView({ behavior: 'smooth' });
+                });
+            </script>";
             }
             ?>
         </section>
@@ -301,96 +334,96 @@
     ?>
 
     <script>
-    // Validaciones cliente - insertado
-    $(document).ready(function() {
+        // Validaciones cliente - insertado
+        $(document).ready(function() {
 
-        // Regex para la password
-        $.validator.addMethod("passPattern", function(value, element) {
-                return this.optional(element) ||
-                    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,15}[^'\s]$/.test(
-                        value);
-            },
-            "La contraseña debe contener 1 mayúscula, 1 minúscula, 1 número y 1 carácter especial. La longitud mínima son 8 caracteres."
-        );
+            // Regex para la password
+            $.validator.addMethod("passPattern", function(value, element) {
+                    return this.optional(element) ||
+                        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,15}[^'\s]$/.test(
+                            value);
+                },
+                "La contraseña debe contener 1 mayúscula, 1 minúscula, 1 número y 1 carácter especial. La longitud mínima son 8 caracteres."
+            );
 
-        // Regex para el email
-        $.validator.addMethod("emailPattern", function(value, element) {
-                return this.optional(element) ||
-                    /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
-                    .test(
-                        value);
-            },
-            "El e-mail no tiene un formato correcto.");
+            // Regex para el email
+            $.validator.addMethod("emailPattern", function(value, element) {
+                    return this.optional(element) ||
+                        /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
+                        .test(
+                            value);
+                },
+                "El e-mail no tiene un formato correcto.");
 
-        // Regex para tipo usuario 
-        $.validator.addMethod("tipoPattern", function(value, element) {
-                return this.optional(element) ||
-                    /^[APE]$/
-                    .test(
-                        value);
-            },
-            "Solo se admite: A, de Admin, P, de Premium y E de Estándar.");
-        $("form[name='fUsuarios']").validate({
-            rules: {
-                usernameNuevo: {
-                    required: function(element) {
-                        return $("input[name='Insertar']").is(":focus");
-                    },
-                    minlength: 5
+            // Regex para tipo usuario 
+            $.validator.addMethod("tipoPattern", function(value, element) {
+                    return this.optional(element) ||
+                        /^[APE]$/
+                        .test(
+                            value);
                 },
-                emailNuevo: {
-                    required: function(element) {
-                        return $("input[name='Insertar']").is(":focus");
+                "Solo se admite: A, de Admin, P, de Premium y E de Estándar.");
+            $("form[name='fUsuarios']").validate({
+                rules: {
+                    usernameNuevo: {
+                        required: function(element) {
+                            return $("input[name='Insertar']").is(":focus");
+                        },
+                        minlength: 5
                     },
-                    emailPattern: true
+                    emailNuevo: {
+                        required: function(element) {
+                            return $("input[name='Insertar']").is(":focus");
+                        },
+                        emailPattern: true
+                    },
+                    passwordNueva: {
+                        required: function(element) {
+                            return $("input[name='Insertar']").is(":focus");
+                        },
+                        passPattern: true,
+                        minlength: 8,
+                        maxlength: 15
+                    },
+                    tipoNuevo: {
+                        required: function(element) {
+                            return $("input[name='Insertar']").is(":focus");
+                        },
+                        tipoPattern: true
+                    },
+                    monederoNuevo: {
+                        required: function(element) {
+                            return $("input[name='Insertar']").is(":focus");
+                        },
+                    }
                 },
-                passwordNueva: {
-                    required: function(element) {
-                        return $("input[name='Insertar']").is(":focus");
+                messages: {
+                    usernameNuevo: {
+                        required: "Por favor, ingrese un nombre de usuario.",
+                        minlength: "El nombre de usuario debe tener al menos 5 caracteres."
                     },
-                    passPattern: true,
-                    minlength: 8,
-                    maxlength: 15
+                    emailNuevo: {
+                        required: "Por favor, ingrese un correo electrónico.",
+                        email: "Por favor, ingrese un correo electrónico válido."
+                    },
+                    passwordNueva: {
+                        required: "Por favor, ingrese una contraseña.",
+                        pattern: "La contraseña debe tener entre 8 y 15 caracteres, al menos una letra minúscula, una letra mayúscula, un número y un carácter especial.",
+                        minlength: "La contraseña debe tener al menos 8 caracteres.",
+                        maxlength: "La contraseña debe tener como máximo 15 caracteres."
+                    },
+                    tipoNuevo: {
+                        required: "Por favor, ingrese un tipo de usuario.",
+                    },
+                    monederoNuevo: {
+                        required: "Por favor, ingrese el monedero."
+                    }
                 },
-                tipoNuevo: {
-                    required: function(element) {
-                        return $("input[name='Insertar']").is(":focus");
-                    },
-                    tipoPattern: true
-                },
-                monederoNuevo: {
-                    required: function(element) {
-                        return $("input[name='Insertar']").is(":focus");
-                    },
+                submitHandler: function(form) {
+                    form.submit();
                 }
-            },
-            messages: {
-                usernameNuevo: {
-                    required: "Por favor, ingrese un nombre de usuario.",
-                    minlength: "El nombre de usuario debe tener al menos 5 caracteres."
-                },
-                emailNuevo: {
-                    required: "Por favor, ingrese un correo electrónico.",
-                    email: "Por favor, ingrese un correo electrónico válido."
-                },
-                passwordNueva: {
-                    required: "Por favor, ingrese una contraseña.",
-                    pattern: "La contraseña debe tener entre 8 y 15 caracteres, al menos una letra minúscula, una letra mayúscula, un número y un carácter especial.",
-                    minlength: "La contraseña debe tener al menos 8 caracteres.",
-                    maxlength: "La contraseña debe tener como máximo 15 caracteres."
-                },
-                tipoNuevo: {
-                    required: "Por favor, ingrese un tipo de usuario.",
-                },
-                monederoNuevo: {
-                    required: "Por favor, ingrese el monedero."
-                }
-            },
-            submitHandler: function(form) {
-                form.submit();
-            }
+            });
         });
-    });
     </script>
     </script>
 </body>

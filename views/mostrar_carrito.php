@@ -45,6 +45,7 @@ echo "<div class='col-auto text-end'><span class='fw-bold'>Total: " . number_for
 echo "<span id='span_cantidades' style='display: none'>$totalCantidades</span>";
 echo "<hr>";
 echo "<div class='d-flex justify-content-center'>";
-echo "<button class='btn btn_purple text-white fw-bold' id='btn_finalizar'>Finalizar compra</button>";
+echo "<button class='btn btn_purple text-white fw-bold mx-1' id='btn_finalizar'>Finalizar compra</button>";
+echo "<button class='btn btn_purple text-white fw-bold mx-1' id='btn_vaciar'>Vaciar carrito</button>";
 echo "</div>";
 echo "</div>";

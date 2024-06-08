@@ -337,6 +337,17 @@ class StoreManagerView {
     if (button) button.addEventListener("click", () => handler());
   }
 
+  // Enlazador para cuando se da en botón dentro de carrito
+  bindVaciarCarrito(handler) {
+    const button = document.getElementById("btn_vaciar");
+    if (button) button.addEventListener("click", () => handler());
+  }
+
+  bindVaciarCarritoFinalizarCompra(handler) {
+    const button = document.getElementById("btn_vaciarFinalizar");
+    if (button) button.addEventListener("click", () => handler());
+  }
+
   // Enlazador que se da cuando se clickea en el botón de incremento al finalizar la compra
   bindIncrementoFinalizarCompra(handler) {
     document.querySelectorAll(".btn_incremento").forEach((button) => {

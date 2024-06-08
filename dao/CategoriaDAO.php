@@ -212,6 +212,38 @@ class DaoCategorias extends DB
         return $numPaginas;
     }
 
+    // Función que permite obtener un elemento a partir de un nombre de usuario
+    public function obtenerPorNombre($nombre)
+    {
+        // Consulta para evitar inyectado de SQL
+        $consulta = "SELECT * FROM categoria WHERE nombre=:nombre";
+        $param = array(":nombre" => $nombre);
+
+        // Se realiza para vaciar el array de las mascotas entre consulta y consulta
+        $this->categorias = array();
+
+        $this->ConsultaDatos($consulta, $param);
+
+        // Cómo solo puede devolver una fila, hacemos la comprobación
+        if (count($this->filas) == 1) {
+            // Asignamos en una variable el array de filas en la posición 0, que es la única que hay
+            $fila = $this->filas[0];
+
+            $cate = new Categoria();
+
+            // Asignamos las propiedades correspondientes al nuevo objeto
+            $cate->__set("id", $fila['id']);
+            $cate->__set("nombre", $fila['nombre']);
+            $cate->__set("descripcion", $fila['descripcion']);
+            $cate->__set("foto", $fila['foto']);
+        } else {
+            return null;
+        }
+
+        // Devolvemos el objeto
+        return $cate;
+    }
+
     public function listarConLimite($inicio, $numRegistros)
     {
         $consulta = "SELECT * FROM categoria LIMIT $inicio,$numRegistros";
