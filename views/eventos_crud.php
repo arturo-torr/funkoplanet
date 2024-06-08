@@ -36,21 +36,15 @@
             <div class="container-fluid mt-2">
                 <div class="row">
                     <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-10 mx-auto table-responsive">
-                        <form name="fEventos" method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>"
-                            enctype="multipart/form-data">
+                        <form name="fEventos" method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>" enctype="multipart/form-data">
                             <fieldset>
                                 <legend class='purple'>Administración de Eventos</legend>
 
-                                <input type='submit' class='btn btn_purple text-white fw-bold' name='Insertar'
-                                    value='Insertar'>
-                                <input type='submit' class='btn btn_purple text-white fw-bold' name='Buscar'
-                                    value='Buscar'>
-                                <input type='submit' class='btn btn_purple text-white fw-bold' name='Actualizar'
-                                    value='Actualizar'>
-                                <input type='submit' class='btn btn_purple text-white fw-bold' name='Borrar'
-                                    value='Borrar'>
-                                <input type='reset' class='btn btn_purple text-white fw-bold' name='Cancelar'
-                                    value='Cancelar'>
+                                <input type='submit' class='btn btn_purple text-white fw-bold' name='Insertar' value='Insertar'>
+                                <input type='submit' class='btn btn_purple text-white fw-bold' name='Buscar' value='Buscar'>
+                                <input type='submit' class='btn btn_purple text-white fw-bold' name='Actualizar' value='Actualizar'>
+                                <input type='submit' class='btn btn_purple text-white fw-bold' name='Borrar' value='Borrar'>
+                                <input type='reset' class='btn btn_purple text-white fw-bold' name='Cancelar' value='Cancelar'>
 
 
                                 <?php
@@ -112,7 +106,7 @@
                                         }
 
                                         if (empty($descripciones[$clave])) {
-                                            $errores[] = "La categoría del evento " . $nombres[$clave] . " no puede estar vacía.";
+                                            $errores[] = "La descripción del evento " . $nombres[$clave] . " no puede estar vacía.";
                                         }
 
                                         if (empty($usuarios[$clave])) {
@@ -142,6 +136,7 @@
                                             $event->__set("fecha", $fechaEpoch);
 
                                             $daoEventos->actualizar($event);
+                                            echo "<div class='alert alert-success my-2'>Se ha actualizado correctamente el evento con ID $clave: " . $nombres[$clave] . "</div>";
                                         } else {
                                             // Mostrar errores
                                             foreach ($errores as $error) {
@@ -167,21 +162,47 @@
                                     $descripcion = $_POST['descripcionNueva'];
                                     $fecha = $_POST['fechaNueva'];
 
-                                    // Almacenamos en array la fecha
-                                    $camposFecha = explode("/", $fecha);
+                                    $errores = [];
 
-                                    // La convertimos a epoch para guardarla de esta forma
-                                    $fechaEpoch = mktime(0, 0, 0, $camposFecha[1], $camposFecha[0], $camposFecha[2]);
+                                    // Se realizan las validaciones de servidor
+                                    if (empty($nombre)) {
+                                        $errores[] = "El nombre del evento no puede estar vacío.";
+                                    }
+
+                                    if (empty($descripcion)) {
+                                        $errores[] = "La descripción no puede estar vacía.";
+                                    }
+
+                                    if (empty($usuario)) {
+                                        $errores[] = "El usuario creador del evento no puede estar vacío.";
+                                    }
+
+                                    if (!preg_match('/^\d{1,2}\/\d{1,2}\/\d{4}$/', $fecha)) {
+                                        $errores[] = "La fecha del evento no se ajusta al formato dd/mm/yyyy";
+                                    }
+
+                                    if (empty($errores)) {
+                                        // Almacenamos en array la fecha
+                                        $camposFecha = explode("/", $fecha);
+
+                                        // La convertimos a epoch para guardarla de esta forma
+                                        $fechaEpoch = mktime(0, 0, 0, $camposFecha[1], $camposFecha[0], $camposFecha[2]);
 
 
-                                    // Creamos una nueva situación
-                                    $event = new Evento();
-                                    $event->__set("id_usuario", $usuario);
-                                    $event->__set("nombre", $nombre);
-                                    $event->__set("descripcion", $descripcion);
-                                    $event->__set("fecha", $fechaEpoch);
+                                        // Creamos una nueva situación
+                                        $event = new Evento();
+                                        $event->__set("id_usuario", $usuario);
+                                        $event->__set("nombre", $nombre);
+                                        $event->__set("descripcion", $descripcion);
+                                        $event->__set("fecha", $fechaEpoch);
 
-                                    $daoEventos->insertar($event);
+                                        $daoEventos->insertar($event);
+                                        echo "<div class='alert alert-success my-2'>Se ha insertado correctamente el evento $nombre</div>";
+                                    } else {
+                                        foreach ($errores as $error) {
+                                            echo "<div class='alert alert-danger my-2'>$error</div>";
+                                        }
+                                    }
                                 }
 
                                 // El Dao Lista todos los Eventos
@@ -321,57 +342,57 @@
     require_once "../views/scripts.php";
     ?>
     <script>
-    // Validación en la inserción de eventos
-    $(document).ready(function() {
-        // Método personalizado para el formato de las fechas
-        $.validator.addMethod("fechaPattern", function(value, element) {
-            return this.optional(element) || /^\d{2}\/\d{2}\/\d{4}$/.test(value);
-        }, "El formato debe ser dd/mm/yyyy.");
-        $("form[name='fEventos']").validate({
-            rules: {
-                nombreNuevo: {
-                    required: function(element) {
-                        return $("input[name='Insertar']").is(":focus");
+        // Validación en la inserción de eventos
+        $(document).ready(function() {
+            // Método personalizado para el formato de las fechas
+            $.validator.addMethod("fechaPattern", function(value, element) {
+                return this.optional(element) || /^\d{2}\/\d{2}\/\d{4}$/.test(value);
+            }, "El formato debe ser dd/mm/yyyy.");
+            $("form[name='fEventos']").validate({
+                rules: {
+                    nombreNuevo: {
+                        required: function(element) {
+                            return $("input[name='Insertar']").is(":focus");
+                        },
+                        minlength: 5
                     },
-                    minlength: 5
-                },
-                descripcionNueva: {
-                    required: function(element) {
-                        return $("input[name='Insertar']").is(":focus");
+                    descripcionNueva: {
+                        required: function(element) {
+                            return $("input[name='Insertar']").is(":focus");
+                        }
+                    },
+                    fechaNueva: {
+                        required: function(element) {
+                            return $("input[name='Insertar']").is(":focus");
+                        },
+                        fechaPattern: true
+                    },
+                    usuarioNuevo: {
+                        required: function(element) {
+                            return $("input[name='Insertar']").is(":focus");
+                        }
                     }
                 },
-                fechaNueva: {
-                    required: function(element) {
-                        return $("input[name='Insertar']").is(":focus");
+                messages: {
+                    nombreNuevo: {
+                        required: "Ingrese un nombre.",
+                        minlength: "El nombre debe tener al menos 5 caracteres."
                     },
-                    fechaPattern: true
-                },
-                usuarioNuevo: {
-                    required: function(element) {
-                        return $("input[name='Insertar']").is(":focus");
+                    descripcionNueva: {
+                        required: "Ingrese una descripción."
+                    },
+                    fechaNueva: {
+                        required: "Ingrese una fecha.",
+                    },
+                    usuarioNuevo: {
+                        required: "Seleccione un usuario."
                     }
+                },
+                submitHandler: function(form) {
+                    form.submit();
                 }
-            },
-            messages: {
-                nombreNuevo: {
-                    required: "Ingrese un nombre.",
-                    minlength: "El nombre debe tener al menos 5 caracteres."
-                },
-                descripcionNueva: {
-                    required: "Ingrese una descripción."
-                },
-                fechaNueva: {
-                    required: "Ingrese una fecha.",
-                },
-                usuarioNuevo: {
-                    required: "Seleccione un usuario."
-                }
-            },
-            submitHandler: function(form) {
-                form.submit();
-            }
+            });
         });
-    });
     </script>
 </body>
 

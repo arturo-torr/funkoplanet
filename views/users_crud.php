@@ -53,6 +53,39 @@
 
                                 <?php
 
+                                $numReg = 5;
+
+                                if (isset($_POST['numReg'])) {
+                                    $numReg = $_POST['numReg'];
+                                }
+
+                                if (isset($_GET['numReg'])) {
+                                    $numReg = $_GET['numReg'];
+                                }
+
+                                $pagina = 1; // Empezamos por defecto mostrando la página 1
+                                if (isset($_GET['numPaginas'])) {
+                                    $pagina = $_GET['numPaginas'];
+                                }
+
+                                $numPaginas = $daoUsuarios->hallarPaginas($numReg);
+
+                                $inicio = ($pagina - 1) * $numReg; // algoritmo para mostrar los registros necesarios
+
+                                echo "<br><label class='form-label my-2' for='numReg'>Número de registros que desea visualizar: </label>";
+
+                                // permite recargar la página sin necesidad de tener un submit, usando javascript
+                                echo "<select name='numReg' class='form-select w-25' onChange='document.fUsuarios.submit()'>";
+                                for ($i = 1; $i < 11; $i++) {
+                                    echo "<option value='$i' ";
+                                    if ($i == $numReg) {
+                                        echo " selected";
+                                    }
+                                    echo ">$i</option>";
+                                }
+
+                                echo "</select>";
+
                                 // Si se ha seleccionado Insertar
                                 if (isset($_POST['Insertar'])) {
                                     $username = $_POST['usernameNuevo'];
@@ -85,6 +118,7 @@
                                         $user->__set("monedero", $monedero);
 
                                         $daoUsuarios->insertar($user);
+                                        echo "<div class='alert alert-success my-2'>Se ha insertado correctamente el usuario $username</div>";
                                     } else {
                                         // Mostrar errores
                                         foreach ($errores as $error) {
@@ -115,7 +149,9 @@
                                         // Verifica que no exista un usuario con ese nombre
                                         $usuario = $daoUsuarios->obtenerPorUsername($usernames[$clave]);
                                         if ($usuario) {
-                                            $errores[] = "Ya existe un usuario con el username " . $usernames[$clave] . "";
+                                            if ($usuario->__get("id") != $clave) {
+                                                $errores[] = "Ya existe un usuario con el username " . $usernames[$clave] . "";
+                                            }
                                         }
 
                                         if (!preg_match('/^[\w\.-]+@([\w-]+\.)+[\w-]{2,4}$/', $emails[$clave])) {
@@ -125,7 +161,9 @@
                                         // Verifica que no exista un usuario con ese email
                                         $usuario = $daoUsuarios->obtenerPorEmail($emails[$clave]);
                                         if ($usuario) {
-                                            $errores[] = "Ya existe un usuario con el email " . $emails[$clave] . "";
+                                            if ($usuario->__get("id") != $clave) {
+                                                $errores[] = "Ya existe un usuario con el email " . $emails[$clave] . "";
+                                            }
                                         }
 
                                         $usuario = $daoUsuarios->obtener($clave);
@@ -157,6 +195,7 @@
                                             $user->__set("monedero", $monederos[$clave]);
 
                                             $daoUsuarios->actualizar($user);
+                                            echo "<div class='alert alert-success my-2'>Se ha actualizado correctamente el usuario con ID " . $clave . ": " . $usernames[$clave] . "</div>";
                                         } else {
                                             // Mostrar errores
                                             foreach ($errores as $error) {
@@ -175,42 +214,10 @@
                                     }
                                 }
 
-                                $numReg = 5;
 
-                                if (isset($_POST['numReg'])) {
-                                    $numReg = $_POST['numReg'];
-                                }
 
-                                if (isset($_GET['numReg'])) {
-                                    $numReg = $_GET['numReg'];
-                                }
-
-                                $pagina = 1; // Empezamos por defecto mostrando la página 1
-                                if (isset($_GET['numPaginas'])) {
-                                    $pagina = $_GET['numPaginas'];
-                                }
-
-                                $numPaginas = $daoUsuarios->hallarPaginas($numReg);
-
-                                $inicio = ($pagina - 1) * $numReg; // algoritmo para mostrar los registros necesarios
-
-                                // El Dao Lista todas las categorías
+                                // El Dao Lista todas los usuarios
                                 $daoUsuarios->listarConLimite($inicio, $numReg);
-
-                                echo "<br><label class='form-label my-2' for='numReg'>Número de registros que desea visualizar: </label>";
-
-                                // permite recargar la página sin necesidad de tener un submit, usando javascript
-                                echo "<select name='numReg' class='form-select w-25' onChange='document.fUsuarios.submit()'>";
-                                for ($i = 1; $i < 11; $i++) {
-                                    echo "<option value='$i' ";
-                                    if ($i == $numReg) {
-                                        echo " selected";
-                                    }
-                                    echo ">$i</option>";
-                                }
-
-                                echo "</select>";
-
                                 // Si es >= a 0, la lista
                                 if (count($daoUsuarios->usuarios) >= 0) {
                                     echo "<table class='mt-2 table table-hover table-bordered border_purple text-center bg_purple'>";
