@@ -30,6 +30,7 @@ $password = $_POST['password'];
 
 $user = new Usuario();
 
+
 // Asignamos las propiedades correspondientes al nuevo objeto
 $encryptPassword = password_hash($password, PASSWORD_BCRYPT);
 $user->__set("username", $username);
