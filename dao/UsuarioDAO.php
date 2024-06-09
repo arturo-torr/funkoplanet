@@ -103,23 +103,25 @@ class DaoUsuarios extends DB
     }
 
     // Función que permite obtener un elemento a partir de un nombre de usuario
+    // Función que permite obtener un elemento a partir de un nombre de usuario
     public function obtenerPorUsername($username)
     {
-        // Consulta para evitar inyectado de SQL
-        $consulta = "SELECT * FROM usuarios WHERE username=:username";
+        // Consulta para evitar inyección de SQL
+        $consulta = "SELECT * FROM usuarios WHERE username = :username";
         $param = array(":username" => $username);
 
-        // Se realiza para vaciar el array de las mascotas entre consulta y consulta
+        // Se realiza para vaciar el array de usuarios entre consulta y consulta
         $this->usuarios = array();
 
+        // Ejecutar la consulta con los parámetros
         $this->ConsultaDatos($consulta, $param);
 
-        // Cómo solo puede devolver una fila, hacemos la comprobación
+        // Como solo puede devolver una fila, hacemos la comprobación
         if (count($this->filas) == 1) {
             // Asignamos en una variable el array de filas en la posición 0, que es la única que hay
             $fila = $this->filas[0];
 
-            // Creamos una nueva situación
+            // Creamos un nuevo usuario
             $user = new Usuario();
 
             // Asignamos las propiedades correspondientes al nuevo objeto
@@ -130,12 +132,15 @@ class DaoUsuarios extends DB
             $user->__set("tipo", $fila['tipo']);
             $user->__set("monedero", $fila['monedero']);
         } else {
+            // Si no hay filas, devolver null
             return null;
         }
 
-        // Devolvemos el objeto
+        // Devolver el objeto usuario
         return $user;
     }
+
+
 
     public function obtenerPorEmail($email)
     {
