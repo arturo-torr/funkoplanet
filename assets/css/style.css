@@ -1,21 +1,29 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
 * {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
     box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    font-family: "Roboto", sans-serif;
 }
 
+
 nav {
-    font-size: 1.2em;
+    font-size: 1.25em;
 }
 
 h1, legend {
-    font-size: 2.5em;
+    font-size: 2.55em;
 }
 
 p {
-    font-size: 1em;
+    font-size: 1.05em;
 }
 
 h5 {
-    font-size: 1.5em;
+    font-size: 1.55em;
 }
 
 /** --- HEADER --- **/

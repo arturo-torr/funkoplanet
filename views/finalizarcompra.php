@@ -124,7 +124,7 @@
                                     <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 my-1">
                                         <label for="numTarjeta" class="form-label">Número de la tarjeta:</label>
                                         <input type="text" id="creditCard" class="form-control" name="creditCard"
-                                            placeholder="XXXX XXXX XXXX XXXX" maxlength="16"
+                                            placeholder="[4][5]XXXXXXXXXXXXXXX" maxlength="16"
                                             pattern="^(5[1-5][0-9]{14}|4[0-9]{12}(?:[0-9]{3})?)$" required>
                                         <div class="valid-feedback"></div>
                                         <div class="invalid-feedback">
