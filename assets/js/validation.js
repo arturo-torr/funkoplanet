@@ -131,11 +131,19 @@ function validacionRegistro(handler) {
         .then((response) => response.json())
         .then((data) => {
           if (data.success) {
-            showFeedBack(this.email, true);
+            if (this.email.checkValidity()) {
+              showFeedBack(this.email, true);
+            } else {
+              isValid = false;
+              showFeedBack(this.email, false);
+              firstInvalidElement = this.email;
+            }
           } else {
-            isValid = false;
-            showFeedBack(this.email, false);
-            firstInvalidElement = this.email;
+            if (!this.email.checkValidity()) {
+              isValid = false;
+              showFeedBack(this.email, false);
+              firstInvalidElement = this.email;
+            }
           }
         });
 
