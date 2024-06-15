@@ -43,7 +43,7 @@ h5 {
 }
 
 .nav-link.dropdown-toggle:focus {
-    color: chartreuse;
+    color: #7fff00;
 }
 
 .li_img {
@@ -157,7 +157,7 @@ h5 {
 }
 
 .label__stock, .label_individual--stock {
-    background-color: green;
+    background-color: #008000;
 }
 
 .label__reserva, .label_individual--reserva {
