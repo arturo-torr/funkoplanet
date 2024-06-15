@@ -36,13 +36,14 @@
 
     ?>
     <main>
-        <section id="individual_product" data-aos='fade-up' data-aos-duration='1000' class="my-4">
+        <section id="individual_product" data-aos='fade-up' data-aos-duration='1000' class="my-4 py-2">
             <div class='container-fluid mx-auto w-75 text-center'>
-                <div class="row align-items-center">
+                <div class="row align-items-stretch">
                     <div
-                        class="col-sm-12 col-md-12 col-lg-12 col-xl-6 p-1 mt-2 order-2 order-sm-2 order-md-2 order-lg-2 order-xl-1">
-                        <div class="container-fluid d-flex justify-content-center text-center">
-                            <div id="mainImage" class='border rounded border_purple p-1 mx-1 w-100'>
+                        class="col-sm-12 col-md-12 col-lg-12 col-xl-6  mt-2 order-2 order-sm-2 order-md-2 order-lg-2 order-xl-1 d-flex flex-column">
+                        <div
+                            class="container-fluid d-flex justify-content-center text-center flex-grow-1 border rounded border_purple">
+                            <div id="mainImage" class=' w-100 mx-1 d-flex align-items-center justify-content-center'>
                                 <?php
                                 if (!empty($daoFotosProductos->fotosPro)) {
                                     $conte = $daoFotosProductos->fotosPro[0]->__get("foto");
@@ -51,12 +52,12 @@
                                 ?>
                             </div>
                         </div>
-                        <div class="container mt-3">
-                            <div class="d-flex">
+                        <div class="container mt-2 border rounded border_purple">
+                            <div class="d-flex justify-content-around">
                                 <?php
                                 foreach ($daoFotosProductos->fotosPro as $key => $fotoPro) {
                                     $conte = $fotoPro->__get("foto");
-                                    echo "<div class='border rounded border_purple p-1 mx-1 w-100 ' onmouseover='changeMainImage(\"$conte\")'><img src='data:image/jpg;base64,$conte' class='img-fluid w-50'></div>";
+                                    echo "<div onmouseover='changeMainImage(\"$conte\")'><img src='data:image/jpg;base64,$conte' class='w-75'></div>";
                                 }
                                 ?>
                             </div>
@@ -64,55 +65,60 @@
                     </div>
 
                     <div
-                        class="col-sm-12 col-md-12 col-lg-12 col-xl-6 order-1 order-sm-1 order-md-1 order-lg-1 order-xl-2">
-                        <div class='container-fluid'>
-                            <div class="row">
-                                <div class="col-12">
-                                    <?php
-                                    $conte = $cat->__get("foto");
-                                    echo "<img src='data:image/jpg;base64,$conte' alt='Imagen " . $cat->__get("nombre") . "' class='img-fluid rounded w-100 img_individualproduct my-3'>";
-                                    ?>
-                                    <h1 class='purple mt-2 text-center'><?php echo $prod->__get("nombre") ?></h1>
-                                    <p><?php echo $prod->__get("descripcion") ?></p>
-                                    <hr class="w-75 text-center mx-auto">
+                        class="col-sm-12 col-md-12 col-lg-12 col-xl-6 order-1 order-sm-1 order-md-1 order-lg-1 order-xl-2 mt-2">
+                        <div class='card d-flex border_purple'>
+                            <div class=" card-header bg_purple text-white fw-bold">
+                                <h1 class="m-0 p-0"><?php echo $prod->__get("nombre") ?></h1>
+                            </div>
+                            <div class="card-body d-flex flex-column">
+                                <?php
+                                $conte = $cat->__get("foto");
+                                echo "<img src='data:image/jpg;base64,$conte' alt='Imagen " . $cat->__get("nombre") . "' class='img-fluid rounded w-100 img_individualproduct my-3'>";
+                                ?>
+                                <div class="d-flex align-items-center justify-content-center">
                                     <?php
                                     if (strtoupper($prod->__get("estado")) == "STOCK") {
-                                        echo "<span class='label_individual--stock rounded'>DISPONIBLE</span>";
+                                        echo "<span class='label_individual--stock rounded my-2 mx-2'>DISPONIBLE</span>";
                                     } else if (strtoupper($prod->__get("estado")) == "RESERVA") {
-                                        echo "<span class='label_individual--reserva rounded'>RESERVA</span>";
+                                        echo "<span class='label_individual--reserva rounded my-2 mx-2'>RESERVA</span>";
                                     } else if (strtoupper($prod->__get("estado")) == "AGOTADO") {
-                                        echo "<span class='label_individual--agotado rounded'>AGOTADO</span>";
+                                        echo "<span class='label_individual--agotado rounded my-2 mx-2'>AGOTADO</span>";
                                     }
                                     ?>
                                     <span class="individual_price"><?php echo $prod->__get("precio") ?>€</span>
                                 </div>
-                            </div>
+                                <p><?php echo $prod->__get("descripcion") ?></p>
+                                <hr class="w-75 text-center mx-auto">
 
-                            <div class="row ">
-                                <?php
-                                if ($prod->__get("uds_disponibles") > 0) {
-                                    echo "<span class='my-2'>Actualmente quedan <strong>" . $prod->__get("uds_disponibles") . "</strong> unidades en stock.</span>";
-                                } else {
-                                    echo "<span class='my-2'>No existen unidades disponibles para este artículo actualmente.</span>";
-                                }
-
-                                ?>
-                                <span class="my-2">Seleccione la cantidad deseada:</span>
-                                <div class="col-12">
-                                    <button id="btn_decremento"
-                                        class='btn btn_purple px-3 fw-bold text-white'>-</button>
-                                    <span type='number' id="cantidad" class="btn px-3">1</span>
-                                    <button id="btn_incremento" class='btn btn_purple px-3 fw-bold text-white'
-                                        data-disponibles='<?php echo $prod->__get("uds_disponibles") ?>'>+</button>
+                                <div class="my-3">
                                     <?php
-                                    if (strtoupper($prod->__get("estado")) == "STOCK") {
-                                        echo "<button class='btn btn_purple fw-bold text-white no_decoration mx-2' id='btn_comprar' data-product='" . $prod->__get("id") . "'>AÑADIR AL CARRITO</button>";
-                                    } else if (strtoupper($prod->__get("estado")) == "RESERVA") {
-                                        echo "<button class='btn btn_purple fw-bold text-white no_decoration mx-2' id='btn_reservar' data-product='" . $prod->__get("id") . "'>RESERVAR PRODUCTO</button>";
-                                    } else if (strtoupper($prod->__get("estado")) == "AGOTADO") {
-                                        echo "<button class='btn btn_purple fw-bold text-white no_decoration mx-2 disabled' role='button' aria-disabled='true'>AÑADIR AL CARRITO</button>";
+                                    if ($prod->__get("uds_disponibles") > 0) {
+                                        echo "<span class='my-2'>Actualmente quedan <strong>" . $prod->__get("uds_disponibles") . "</strong> unidades en stock.</span>";
+                                    } else {
+                                        echo "<span class='my-2'>No existen unidades disponibles para este artículo actualmente.</span>";
                                     }
                                     ?>
+                                </div>
+
+                                <span class="my-2 text-center d-block">Seleccione la cantidad deseada:</span>
+                                <div class="d-flex justify-content-center mt-auto">
+                                    <div class="d-flex align-items-center">
+                                        <button id="btn_decremento"
+                                            class='btn btn_purple text-white mx-1 py-2'>-</button>
+                                        <span id="cantidad" class="btn mx-1">1</span>
+                                        <button id="btn_incremento" class='btn btn_purple text-white mx-1 py-2'
+                                            data-disponibles='<?php echo $prod->__get("uds_disponibles") ?>'>+</button>
+
+                                        <?php
+                                        if (strtoupper($prod->__get("estado")) == "STOCK") {
+                                            echo "<button class='btn btn_purple fw-bold text-white no_decoration py-2' id='btn_comprar' data-product='" . $prod->__get("id") . "'>AÑADIR AL CARRITO</button>";
+                                        } else if (strtoupper($prod->__get("estado")) == "RESERVA") {
+                                            echo "<button class='btn btn_purple fw-bold text-white no_decoration py-2' id='btn_reservar' data-product='" . $prod->__get("id") . "'>RESERVAR</button>";
+                                        } else if (strtoupper($prod->__get("estado")) == "AGOTADO") {
+                                            echo "<button class='btn btn_purple fw-bold text-white no_decoration py-2 disabled' role='button' aria-disabled='true'>AÑADIR AL CARRITO</button>";
+                                        }
+                                        ?>
+                                    </div>
                                 </div>
                             </div>
                         </div>
